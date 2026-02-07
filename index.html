@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <title>僑港順德龍山同鄉會 - 公文生成系統</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+      font-family: "Microsoft YaHei", sans-serif; 
+      background: #e0e0e0; 
+      margin: 0; 
+      padding: 20px; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+    }
+    
+    .control-panel { 
+      background: white; 
+      padding: 20px; 
+      border-radius: 8px; 
+      width: 100%; 
+      max-width: 794px; 
+      margin-bottom: 20px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+    }
+    
+    .input-group { margin-bottom: 15px; }
+    label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 14px; }
+    input, textarea { 
+      width: 100%; 
+      padding: 10px; 
+      border: 1px solid #ccc; 
+      border-radius: 4px; 
+      font-size: 14px; 
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+    textarea { resize: vertical; }
+    
+    .btn-main { 
+      background: #c00; 
+      color: white; 
+      border: none; 
+      padding: 15px; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      width: 100%; 
+      font-size: 16px; 
+      font-weight: bold; 
+      transition: background 0.3s;
+    }
+    .btn-main:hover { background: #a00; }
+    .btn-main:disabled { background: #999; cursor: not-allowed; }
+    
+    /* 隐藏的渲染区域 */
+    #render-area {
+      position: fixed;
+      left: -9999px;
+      top: -9999px;
+    }
+    
+    /* A4纸样式 */
+    .a4-page { 
+      background: white; 
+      width: 794px; 
+      height: 1123px; 
+      display: flex; 
+      flex-direction: column; 
+      position: relative; 
+      overflow: hidden;
+    }
+
+    .header-wrapper { 
+      border-bottom: 2px solid #c00; 
+      width: 100%; 
+      padding: 0;
+    }
+    
+    .header-img { 
+      width: 100%; 
+      height: 100px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .paper-content { 
+      padding: 40px 80px; 
+      flex: 1; 
+      display: flex; 
+      flex-direction: column; 
+    }
+    
+    .doc-title { 
+      font-size: 32px; 
+      font-weight: bold; 
+      text-align: center; 
+      margin-bottom: 30px; 
+      line-height: 1.5; 
+    }
+    
+    .doc-recipient { 
+      font-size: 20px; 
+      line-height: 1.8; 
+      margin-bottom: 10px; 
+      text-align: left; 
+    }
+    
+    .body-container { 
+      font-size: 20px; 
+      line-height: 1.8; 
+      text-indent: 2em; 
+      flex: 1;
+      text-align: left; 
+    }
+    
+    .body-container p {
+      margin-bottom: 10px;
+      text-indent: 2em;
+    }
+    
+    .doc-salutation { 
+      font-size: 20px; 
+      padding-left: 2em; 
+      margin-top: 20px; 
+      margin-bottom: 30px; 
+      text-align: left; 
+    }
+    
+    .signature-container { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-end;
+      text-align: right;
+      margin-top: 20px;
+      padding-right: 20px;
+    }
+    
+    .sig-name { 
+      font-size: 24px; 
+      margin-bottom: 8px; 
+    }
+    
+    .sig-date { 
+      font-size: 20px; 
+    }
+
+    /* 结果展示 */
+    #result-container { 
+      margin-top: 30px; 
+      text-align: center; 
+      display: none; 
+      width: 100%; 
+      max-width: 794px; 
+      padding-bottom: 50px;
+    }
+    
+    .result-wrapper {
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 8px; 
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .result-img { 
+      width: 100%; 
+      border: 1px solid #ddd; 
+      margin-bottom: 15px;
+    }
+    
+    .download-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.3s;
+    }
+    
+    .download-btn:hover { background: #218838; }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="control-panel">
+  <h2 style="margin-top:0;color:#c00;text-align:center;">公文生成系統</h2>
+  
+  <div class="input-group">
+    <label>公文標題</label>
+    <input type="text" id="input-title" placeholder="請輸入公文標題">
+  </div>
+  
+  <div class="input-group">
+    <label>送達單位</label>
+    <input type="text" id="input-recipient" placeholder="請輸入收件方名稱">
+  </div>
+  
+  <div class="input-group">
+    <label>正文內容</label>
+    <textarea id="input-content" rows="10" placeholder="請輸入正文內容..."></textarea>
+  </div>
+  
+  <div class="input-group">
+    <label>敬語</label>
+    <input type="text" id="input-salutation" value="此致">
+  </div>
+  
+  <div class="input-group">
+    <label>署名</label>
+    <input type="text" id="input-name" placeholder="請輸入署名">
+  </div>
+  
+  <div class="input-group">
+    <label>日期</label>
+    <input type="text" id="input-date">
+  </div>
+  
+  <button class="btn-main" onclick="generateDocument()" id="generateBtn">
+    生成公文
+  </button>
+</div>
+
+<!-- 隐藏的渲染区域 -->
+<div id="render-area">
+  <div class="a4-page" id="doc-page">
+    <div class="header-wrapper">
+      <img class="header-img" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzk0IiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNzk0IiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjMDAwMCIvPgogIDx0ZXh0IHg9IjM5NyIgeT0iNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIzMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuapn+aXpeWcsOWMu+WtgemDqOaJjeW3p+mHjzwvdGV4dD4KPC9zdmc+" id="header-img">
+    </div>
+    <div class="paper-content">
+      <div class="doc-title" id="show-title"></div>
+      <div class="doc-recipient" id="show-recipient"></div>
+      <div class="body-container" id="show-body"></div>
+      <div class="doc-salutation" id="show-salutation"></div>
+      <div class="signature-container">
+        <div class="sig-name" id="show-name"></div>
+        <div class="sig-date" id="show-date"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 结果展示 -->
+<div id="result-container">
+  <div class="result-wrapper">
+    <h3 style="margin-top:0;color:#c00;">公文生成成功</h3>
+    <img class="result-img" id="result-image" alt="公文預覽">
+    <br>
+    <a href="#" class="download-btn" id="download-link" download="公文.png">
+      下載公文圖片
+    </a>
+  </div>
+</div>
+
+<script>
+// 页面加载时设置当前日期
+window.onload = function() {
+  setCurrentDate();
+  loadFromStorage();
+};
+
+function setCurrentDate() {
+  const now = new Date();
+  document.getElementById('input-date').value = 
+    `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
+}
+
+// 自动保存到本地存储
+function saveToStorage() {
+  const data = {
+    title: document.getElementById('input-title').value,
+    recipient: document.getElementById('input-recipient').value,
+    content: document.getElementById('input-content').value,
+    salutation: document.getElementById('input-salutation').value,
+    name: document.getElementById('input-name').value,
+    date: document.getElementById('input-date').value
+  };
+  localStorage.setItem('documentData', JSON.stringify(data));
+}
+
+// 从本地存储恢复
+function loadFromStorage() {
+  const saved = localStorage.getItem('documentData');
+  if (saved) {
+    const data = JSON.parse(saved);
+    document.getElementById('input-title').value = data.title || '';
+    document.getElementById('input-recipient').value = data.recipient || '';
+    document.getElementById('input-content').value = data.content || '';
+    document.getElementById('input-salutation').value = data.salutation || '此致';
+    document.getElementById('input-name').value = data.name || '';
+    document.getElementById('input-date').value = data.date || '';
+  }
+}
+
+// 监听输入变化，自动保存
+['input-title', 'input-recipient', 'input-content', 'input-salutation', 'input-name', 'input-date']
+  .forEach(id => {
+    document.getElementById(id).addEventListener('input', saveToStorage);
+  });
+
+// 生成公文
+async function generateDocument() {
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span>生成中...';
+  
+  try {
+    // 填充内容
+    document.getElementById('show-title').textContent = document.getElementById('input-title').value;
+    
+    const recipient = document.getElementById('input-recipient').value;
+    document.getElementById('show-recipient').textContent = recipient ? recipient + '：' : '';
+    
+    // 处理正文（按段落）
+    const content = document.getElementById('input-content').value;
+    const bodyContainer = document.getElementById('show-body');
+    bodyContainer.innerHTML = '';
+    
+    const paragraphs = content.split('\n').filter(p => p.trim() !== '');
+    paragraphs.forEach(text => {
+      const p = document.createElement('p');
+      p.textContent = text;
+      bodyContainer.appendChild(p);
+    });
+    
+    document.getElementById('show-salutation').textContent = document.getElementById('input-salutation').value;
+    document.getElementById('show-name').textContent = document.getElementById('input-name').value;
+    document.getElementById('show-date').textContent = document.getElementById('input-date').value;
+    
+    // 等待图片加载
+    await waitForImage();
+    
+    // 生成图片
+    const page = document.getElementById('doc-page');
+    const canvas = await html2canvas(page, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      width: 794,
+      height: 1123,
+      logging: false
+    });
+    
+    // 显示结果
+    const imgData = canvas.toDataURL('image/png');
+    document.getElementById('result-image').src = imgData;
+    document.getElementById('download-link').href = imgData;
+    document.getElementById('download-link').download = 
+      (document.getElementById('input-title').value || '公文') + '.png';
+    document.getElementById('result-container').style.display = 'block';
+    
+    // 滚动到结果
+    document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
+    
+    // 记录日志
+    logToGAS();
+    
+  } catch (error) {
+    console.error('生成失败:', error);
+    alert('生成失敗，請檢查網絡連接或刷新頁面重試');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '生成公文';
+  }
+}
+
+// 等待header图片加载
+function waitForImage() {
+  return new Promise((resolve) => {
+    const img = document.getElementById('header-img');
+    if (img.complete) {
+      resolve();
+    } else {
+      img.onload = resolve;
+      img.onerror = resolve; // 即使失败也继续
+      setTimeout(resolve, 1000); // 超时保护
+    }
+  });
+}
+
+// 记录到Google Sheets
+function logToGAS() {
+  const gas_url = "https://script.google.com/macros/s/AKfycbwRu5P74s_0LMbIB8u6qo04bX-NGGsGa9l2pc32xz4o16DgDq7RxIYXAGlfTkqbzO_8/exec";
+  
+  fetch(gas_url, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      title: document.getElementById('input-title').value, 
+      recipient: document.getElementById('input-recipient').value, 
+      user: document.getElementById('input-name').value, 
+      content: document.getElementById('input-content').value,
+      timestamp: new Date().toISOString()
+    })
+  }).catch(err => console.log('記錄日誌失敗:', err));
+}
+</script>
+
+</body>
+</html>
