@@ -240,32 +240,8 @@
   </button>
 </div>
 
-<!-- 隐藏的渲染区域 -->
-<div id="render-area">
-  <!-- 第一頁 -->
-  <div class="a4-page" id="page-1">
-    <div class="header-wrapper">
-      <img class="header-img" src="banner.jpg" id="header-img-1">
-    </div>
-    <div class="paper-content">
-      <div class="doc-title" id="show-title-1"></div>
-      <div class="doc-recipient" id="show-recipient-1"></div>
-      <div class="body-container" id="body-p1"></div>
-      <div id="closing-p1"></div>
-    </div>
-  </div>
-
-  <!-- 第二頁 -->
-  <div class="a4-page" id="page-2">
-    <div class="header-wrapper">
-      <img class="header-img" src="banner.jpg" id="header-img-2">
-    </div>
-    <div class="paper-content">
-      <div class="body-container" id="body-p2"></div>
-      <div id="closing-p2"></div>
-    </div>
-  </div>
-</div>
+<!-- 隐藏的渲染区域 - 动态生成页面 -->
+<div id="render-area"></div>
 
 <!-- 落款模板 -->
 <div id="closing-template" style="display:none;">
@@ -344,6 +320,63 @@ function createClosingHTML(salutation, name, date) {
   `;
 }
 
+// 创建新页面
+function createPage(pageNum, title, recipient) {
+  const page = document.createElement('div');
+  page.className = 'a4-page';
+  page.id = `page-${pageNum}`;
+  
+  const isFirstPage = pageNum === 1;
+  
+  page.innerHTML = `
+    <div class="header-wrapper">
+      <img class="header-img" src="banner.jpg" id="header-img-${pageNum}">
+    </div>
+    <div class="paper-content">
+      ${isFirstPage ? `
+        <div class="doc-title" id="show-title-${pageNum}">${title}</div>
+        <div class="doc-recipient" id="show-recipient-${pageNum}">${recipient ? recipient + '：' : ''}</div>
+      ` : ''}
+      <div class="body-container" id="body-p${pageNum}"></div>
+      <div id="closing-p${pageNum}"></div>
+    </div>
+  `;
+  
+  return page;
+}
+
+// 计算页面内容高度
+function calculatePageContentHeight(page) {
+  if (!page) return 0;
+  const paperContent = page.querySelector('.paper-content');
+  if (!paperContent) return 0;
+  
+  const title = paperContent.querySelector('.doc-title');
+  const recipient = paperContent.querySelector('.doc-recipient');
+  const body = paperContent.querySelector('.body-container');
+  
+  let height = 40; // 初始padding-top
+  
+  if (title && title.offsetHeight) {
+    height += title.offsetHeight + 30; // 标题 + margin
+  }
+  if (recipient && recipient.offsetHeight && recipient.textContent.trim()) {
+    height += recipient.offsetHeight + 10;
+  }
+  if (body && body.offsetHeight) {
+    height += body.offsetHeight;
+  }
+  
+  return height;
+}
+
+// 计算页面总高度（包括落款）
+function calculatePageTotalHeight(page) {
+  if (!page) return 0;
+  const paperContent = page.querySelector('.paper-content');
+  return paperContent && paperContent.scrollHeight ? paperContent.scrollHeight : 0;
+}
+
 // 生成公文
 async function generateDocument() {
   const btn = document.getElementById('generateBtn');
@@ -356,17 +389,6 @@ async function generateDocument() {
       throw new Error('html2canvas 庫未加載，請檢查網絡連接並刷新頁面');
     }
     
-    // 等待banner圖片加載
-    const headerImg1 = document.getElementById('header-img-1');
-    const headerImg2 = document.getElementById('header-img-2');
-    if (headerImg1 && !headerImg1.complete) {
-      await new Promise((resolve, reject) => {
-        headerImg1.onload = resolve;
-        headerImg1.onerror = () => reject(new Error('Banner圖片加載失敗'));
-        setTimeout(() => reject(new Error('Banner圖片加載超時')), 5000);
-      });
-    }
-    
     // 获取输入值
     const title = document.getElementById('input-title').value;
     const recipient = document.getElementById('input-recipient').value;
@@ -375,74 +397,88 @@ async function generateDocument() {
     const name = document.getElementById('input-name').value;
     const date = document.getElementById('input-date').value;
     
-    // 重置页面
-    const page1 = document.getElementById('page-1');
-    const page2 = document.getElementById('page-2');
-    const bodyP1 = document.getElementById('body-p1');
-    const bodyP2 = document.getElementById('body-p2');
-    const closingP1 = document.getElementById('closing-p1');
-    const closingP2 = document.getElementById('closing-p2');
-    
-    bodyP1.innerHTML = '';
-    bodyP2.innerHTML = '';
-    closingP1.innerHTML = '';
-    closingP2.innerHTML = '';
-    page2.style.display = 'none';
-    
-    // 填充第一页标题和收件人
-    document.getElementById('show-title-1').textContent = title;
-    document.getElementById('show-recipient-1').textContent = recipient ? recipient + '：' : '';
+    // 清空渲染区域
+    const renderArea = document.getElementById('render-area');
+    renderArea.innerHTML = '';
     
     // 处理正文段落
     const paragraphs = content.split('\n').filter(p => p.trim() !== '');
-    const maxContentHeight = 920; // 最大内容高度（从标题到落款之前）
+    const maxContentHeight = 920; // 最大内容高度（不包括落款）
+    const maxTotalHeight = 1050; // 最大总高度（包括落款）
     
-    let currentPage = 1;
-    let currentBody = bodyP1;
+    let pages = [];
+    let currentPageNum = 1;
+    let currentPage = createPage(currentPageNum, title, recipient);
+    renderArea.appendChild(currentPage);
+    pages.push(currentPage);
     
+    let currentBody = currentPage.querySelector('.body-container');
+    
+    // 逐段处理正文
     for (let i = 0; i < paragraphs.length; i++) {
       const pText = paragraphs[i];
       const pElem = document.createElement('p');
       pElem.textContent = pText;
       currentBody.appendChild(pElem);
       
-      // 检查是否超出高度（且不是最后一个段落）
-      if (currentPage === 1 && i < paragraphs.length - 1) {
-        const contentHeight = calculateContentHeight(page1);
+      // 检查当前页是否超出高度（不是最后一段时才检查）
+      if (i < paragraphs.length - 1) {
+        const contentHeight = calculatePageContentHeight(currentPage);
         if (contentHeight > maxContentHeight) {
-          // 移除此段落，放到第二页
+          // 当前页已满，移除此段落并创建新页
           currentBody.removeChild(pElem);
-          page2.style.display = 'flex';
-          currentPage = 2;
-          currentBody = bodyP2;
+          
+          // 创建新页面
+          currentPageNum++;
+          currentPage = createPage(currentPageNum, title, recipient);
+          renderArea.appendChild(currentPage);
+          pages.push(currentPage);
+          
+          currentBody = currentPage.querySelector('.body-container');
           currentBody.appendChild(pElem);
         }
       }
     }
     
-    // 添加落款到当前页面
+    // 在最后一页添加落款
     const closingHTML = createClosingHTML(salutation, name, date);
-    if (currentPage === 1) {
-      closingP1.innerHTML = closingHTML;
-    } else {
-      closingP2.innerHTML = closingHTML;
+    const lastPageClosing = currentPage.querySelector(`#closing-p${currentPageNum}`);
+    lastPageClosing.innerHTML = closingHTML;
+    
+    // 检查最后一页是否超出总高度，如果是则移到新页面
+    const lastPageTotalHeight = calculatePageTotalHeight(currentPage);
+    if (lastPageTotalHeight > maxTotalHeight && pages.length === 1) {
+      // 只有一页且超出，需要移到第二页
+      lastPageClosing.innerHTML = '';
+      
+      currentPageNum++;
+      const newPage = createPage(currentPageNum, title, recipient);
+      renderArea.appendChild(newPage);
+      pages.push(newPage);
+      
+      const newPageClosing = newPage.querySelector(`#closing-p${currentPageNum}`);
+      newPageClosing.innerHTML = closingHTML;
     }
     
-    // 检查是否需要把落款移到第二页
-    if (currentPage === 1) {
-      const totalHeight = calculateTotalHeight(page1);
-      if (totalHeight > 1050) { // 如果加落款后超出一页
-        closingP1.innerHTML = '';
-        page2.style.display = 'flex';
-        closingP2.innerHTML = closingHTML;
+    // 等待渲染完成
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // 等待所有banner图片加载
+    const bannerPromises = [];
+    for (let i = 1; i <= pages.length; i++) {
+      const img = document.getElementById(`header-img-${i}`);
+      if (img && !img.complete) {
+        bannerPromises.push(new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
+          setTimeout(resolve, 2000);
+        }));
       }
     }
-    
-    // 等待渲染
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await Promise.all(bannerPromises);
     
     // 生成图片
-    await captureAllPages(title);
+    await captureAllPages(title, pages);
     
     document.getElementById('result-container').style.display = 'block';
     document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
@@ -467,37 +503,10 @@ async function generateDocument() {
   }
 }
 
-// 计算第一页内容高度（正文部分）
-function calculateContentHeight(page) {
-  if (!page) return 0;
-  const title = page.querySelector('.doc-title');
-  const recipient = page.querySelector('.doc-recipient');
-  const body = page.querySelector('.body-container');
-  
-  let height = 0;
-  if (title && title.offsetHeight) height += title.offsetHeight + 30; // 标题 + margin
-  if (recipient && recipient.textContent && recipient.offsetHeight) height += recipient.offsetHeight + 10;
-  if (body && body.offsetHeight) height += body.offsetHeight;
-  
-  return height;
-}
-
-// 计算第一页总高度（包括落款）
-function calculateTotalHeight(page) {
-  if (!page) return 0;
-  const content = page.querySelector('.paper-content');
-  return content && content.scrollHeight ? content.scrollHeight : 0;
-}
-
 // 捕捉所有页面
-async function captureAllPages(title) {
+async function captureAllPages(title, pages) {
   const listContainer = document.getElementById('result-images-list');
   listContainer.innerHTML = '';
-  
-  const pages = [document.getElementById('page-1')];
-  if (document.getElementById('page-2').style.display === 'flex') {
-    pages.push(document.getElementById('page-2'));
-  }
   
   for (let i = 0; i < pages.length; i++) {
     const canvas = await html2canvas(pages[i], {
