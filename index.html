@@ -7,7 +7,7 @@
   <style>
     * { box-sizing: border-box; }
     body { 
-      font-family: "Microsoft YaHei", sans-serif; 
+      font-family: "Microsoft YaHei", "SimSun", sans-serif; 
       background: #e0e0e0; 
       margin: 0; 
       padding: 20px; 
@@ -69,12 +69,12 @@
       flex-direction: column; 
       position: relative; 
       overflow: hidden;
+      margin-bottom: 10px;
     }
 
     .header-wrapper { 
       border-bottom: 2px solid #c00; 
       width: 100%; 
-      padding: 0;
     }
     
     .header-img { 
@@ -88,7 +88,7 @@
       padding: 40px 80px; 
       flex: 1; 
       display: flex; 
-      flex-direction: column; 
+      flex-direction: column;
     }
     
     .doc-title { 
@@ -110,39 +110,47 @@
       font-size: 20px; 
       line-height: 1.8; 
       text-indent: 2em; 
-      flex: 1;
       text-align: left; 
     }
     
     .body-container p {
       margin-bottom: 10px;
       text-indent: 2em;
+      margin-top: 0;
     }
     
     .doc-salutation { 
       font-size: 20px; 
-      padding-left: 2em; 
-      margin-top: 20px; 
+      padding-left: 6em; 
+      margin-top: 30px; 
       margin-bottom: 30px; 
       text-align: left; 
     }
     
+    .signature-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+      margin-bottom: 40px;
+      padding-right: 40px;
+    }
+    
     .signature-container { 
-      display: flex; 
+      display: inline-flex; 
       flex-direction: column; 
-      align-items: flex-end;
-      text-align: right;
-      margin-top: 20px;
-      padding-right: 20px;
+      align-items: center;
+      text-align: center;
     }
     
     .sig-name { 
       font-size: 24px; 
       margin-bottom: 8px; 
+      white-space: nowrap;
     }
     
     .sig-date { 
       font-size: 20px; 
+      white-space: nowrap;
     }
 
     /* 结果展示 */
@@ -160,6 +168,17 @@
       padding: 20px; 
       border-radius: 8px; 
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+    
+    .result-label {
+      background: #c00;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 10px;
+      font-weight: bold;
     }
     
     .result-img { 
@@ -180,9 +199,16 @@
       text-decoration: none;
       display: inline-block;
       transition: background 0.3s;
+      margin: 5px;
     }
     
     .download-btn:hover { background: #218838; }
+    
+    .download-all-btn {
+      background: #007bff;
+    }
+    
+    .download-all-btn:hover { background: #0056b3; }
     
     .loading {
       display: inline-block;
@@ -241,32 +267,45 @@
 
 <!-- 隐藏的渲染区域 -->
 <div id="render-area">
-  <div class="a4-page" id="doc-page">
+  <!-- 第一頁 -->
+  <div class="a4-page" id="page-1">
     <div class="header-wrapper">
-      <img class="header-img" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzk0IiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNzk0IiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjMDAwMCIvPgogIDx0ZXh0IHg9IjM5NyIgeT0iNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIzMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuapn+aXpeWcsOWMu+WtgemDqOaJjeW3p+mHjzwvdGV4dD4KPC9zdmc+" id="header-img">
+      <img class="header-img" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzk0IiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNzk0IiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjMDAwMCIvPgogIDx0ZXh0IHg9IjM5NyIgeT0iNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIzMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuapn+aXpeWcsOWMu+WtgemDqOaJjeW3p+mHjzwvdGV4dD4KPC9zdmc+" id="header-img-1">
     </div>
     <div class="paper-content">
-      <div class="doc-title" id="show-title"></div>
-      <div class="doc-recipient" id="show-recipient"></div>
-      <div class="body-container" id="show-body"></div>
-      <div class="doc-salutation" id="show-salutation"></div>
-      <div class="signature-container">
-        <div class="sig-name" id="show-name"></div>
-        <div class="sig-date" id="show-date"></div>
-      </div>
+      <div class="doc-title" id="show-title-1"></div>
+      <div class="doc-recipient" id="show-recipient-1"></div>
+      <div class="body-container" id="body-p1"></div>
+      <div id="closing-p1"></div>
     </div>
+  </div>
+
+  <!-- 第二頁 -->
+  <div class="a4-page" id="page-2">
+    <div class="header-wrapper">
+      <img class="header-img" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzk0IiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNzk0IiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjMDAwMCIvPgogIDx0ZXh0IHg9IjM5NyIgeT0iNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIzMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuapn+aXpeWcsOWMu+WtgemDqOaJjeW3p+mHjzwvdGV4dD4KPC9zdmc+" id="header-img-2">
+    </div>
+    <div class="paper-content">
+      <div class="body-container" id="body-p2"></div>
+      <div id="closing-p2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 落款模板 -->
+<div id="closing-template" style="display:none;">
+  <div class="doc-salutation"></div>
+  <div class="signature-container">
+    <div class="sig-name"></div>
+    <div class="sig-date"></div>
   </div>
 </div>
 
 <!-- 结果展示 -->
 <div id="result-container">
-  <div class="result-wrapper">
-    <h3 style="margin-top:0;color:#c00;">公文生成成功</h3>
-    <img class="result-img" id="result-image" alt="公文預覽">
-    <br>
-    <a href="#" class="download-btn" id="download-link" download="公文.png">
-      下載公文圖片
-    </a>
+  <div id="result-images-list"></div>
+  <div style="margin-top:20px;">
+    <button class="download-btn download-all-btn" onclick="downloadAll()">下載全部圖片</button>
   </div>
 </div>
 
@@ -316,6 +355,19 @@ function loadFromStorage() {
     document.getElementById(id).addEventListener('input', saveToStorage);
   });
 
+// 生成落款HTML
+function createClosingHTML(salutation, name, date) {
+  return `
+    <div class="doc-salutation">${salutation}</div>
+    <div class="signature-wrapper">
+      <div class="signature-container">
+        <div class="sig-name">${name}</div>
+        <div class="sig-date">${date}</div>
+      </div>
+    </div>
+  `;
+}
+
 // 生成公文
 async function generateDocument() {
   const btn = document.getElementById('generateBtn');
@@ -323,51 +375,84 @@ async function generateDocument() {
   btn.innerHTML = '<span class="loading"></span>生成中...';
   
   try {
-    // 填充内容
-    document.getElementById('show-title').textContent = document.getElementById('input-title').value;
-    
+    // 获取输入值
+    const title = document.getElementById('input-title').value;
     const recipient = document.getElementById('input-recipient').value;
-    document.getElementById('show-recipient').textContent = recipient ? recipient + '：' : '';
-    
-    // 处理正文（按段落）
     const content = document.getElementById('input-content').value;
-    const bodyContainer = document.getElementById('show-body');
-    bodyContainer.innerHTML = '';
+    const salutation = document.getElementById('input-salutation').value;
+    const name = document.getElementById('input-name').value;
+    const date = document.getElementById('input-date').value;
     
+    // 重置页面
+    const page1 = document.getElementById('page-1');
+    const page2 = document.getElementById('page-2');
+    const bodyP1 = document.getElementById('body-p1');
+    const bodyP2 = document.getElementById('body-p2');
+    const closingP1 = document.getElementById('closing-p1');
+    const closingP2 = document.getElementById('closing-p2');
+    
+    bodyP1.innerHTML = '';
+    bodyP2.innerHTML = '';
+    closingP1.innerHTML = '';
+    closingP2.innerHTML = '';
+    page2.style.display = 'none';
+    
+    // 填充第一页标题和收件人
+    document.getElementById('show-title-1').textContent = title;
+    document.getElementById('show-recipient-1').textContent = recipient ? recipient + '：' : '';
+    
+    // 处理正文段落
     const paragraphs = content.split('\n').filter(p => p.trim() !== '');
-    paragraphs.forEach(text => {
-      const p = document.createElement('p');
-      p.textContent = text;
-      bodyContainer.appendChild(p);
-    });
+    const maxContentHeight = 920; // 最大内容高度（从标题到落款之前）
     
-    document.getElementById('show-salutation').textContent = document.getElementById('input-salutation').value;
-    document.getElementById('show-name').textContent = document.getElementById('input-name').value;
-    document.getElementById('show-date').textContent = document.getElementById('input-date').value;
+    let currentPage = 1;
+    let currentBody = bodyP1;
     
-    // 等待图片加载
-    await waitForImage();
+    for (let i = 0; i < paragraphs.length; i++) {
+      const pText = paragraphs[i];
+      const pElem = document.createElement('p');
+      pElem.textContent = pText;
+      currentBody.appendChild(pElem);
+      
+      // 检查是否超出高度（且不是最后一个段落）
+      if (currentPage === 1 && i < paragraphs.length - 1) {
+        const contentHeight = calculateContentHeight(page1);
+        if (contentHeight > maxContentHeight) {
+          // 移除此段落，放到第二页
+          currentBody.removeChild(pElem);
+          page2.style.display = 'flex';
+          currentPage = 2;
+          currentBody = bodyP2;
+          currentBody.appendChild(pElem);
+        }
+      }
+    }
+    
+    // 添加落款到当前页面
+    const closingHTML = createClosingHTML(salutation, name, date);
+    if (currentPage === 1) {
+      closingP1.innerHTML = closingHTML;
+    } else {
+      closingP2.innerHTML = closingHTML;
+    }
+    
+    // 检查是否需要把落款移到第二页
+    if (currentPage === 1) {
+      const totalHeight = calculateTotalHeight(page1);
+      if (totalHeight > 1050) { // 如果加落款后超出一页
+        closingP1.innerHTML = '';
+        page2.style.display = 'flex';
+        closingP2.innerHTML = closingHTML;
+      }
+    }
+    
+    // 等待渲染
+    await new Promise(resolve => setTimeout(resolve, 100));
     
     // 生成图片
-    const page = document.getElementById('doc-page');
-    const canvas = await html2canvas(page, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: '#ffffff',
-      width: 794,
-      height: 1123,
-      logging: false
-    });
+    await captureAllPages(title);
     
-    // 显示结果
-    const imgData = canvas.toDataURL('image/png');
-    document.getElementById('result-image').src = imgData;
-    document.getElementById('download-link').href = imgData;
-    document.getElementById('download-link').download = 
-      (document.getElementById('input-title').value || '公文') + '.png';
     document.getElementById('result-container').style.display = 'block';
-    
-    // 滚动到结果
     document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
     
     // 记录日志
@@ -382,17 +467,89 @@ async function generateDocument() {
   }
 }
 
-// 等待header图片加载
-function waitForImage() {
-  return new Promise((resolve) => {
-    const img = document.getElementById('header-img');
-    if (img.complete) {
-      resolve();
-    } else {
-      img.onload = resolve;
-      img.onerror = resolve; // 即使失败也继续
-      setTimeout(resolve, 1000); // 超时保护
-    }
+// 计算第一页内容高度（正文部分）
+function calculateContentHeight(page) {
+  const title = page.querySelector('.doc-title');
+  const recipient = page.querySelector('.doc-recipient');
+  const body = page.querySelector('.body-container');
+  
+  let height = 0;
+  if (title) height += title.offsetHeight + 30; // 标题 + margin
+  if (recipient && recipient.textContent) height += recipient.offsetHeight + 10;
+  if (body) height += body.offsetHeight;
+  
+  return height;
+}
+
+// 计算第一页总高度（包括落款）
+function calculateTotalHeight(page) {
+  const content = page.querySelector('.paper-content');
+  return content ? content.scrollHeight : 0;
+}
+
+// 捕捉所有页面
+async function captureAllPages(title) {
+  const listContainer = document.getElementById('result-images-list');
+  listContainer.innerHTML = '';
+  
+  const pages = [document.getElementById('page-1')];
+  if (document.getElementById('page-2').style.display === 'flex') {
+    pages.push(document.getElementById('page-2'));
+  }
+  
+  window.generatedImages = []; // 存储生成的图片数据
+  
+  for (let i = 0; i < pages.length; i++) {
+    const canvas = await html2canvas(pages[i], {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      width: 794,
+      height: 1123,
+      logging: false
+    });
+    
+    const imgData = canvas.toDataURL('image/png');
+    window.generatedImages.push({
+      data: imgData,
+      filename: `${title || '公文'}_${i + 1}of${pages.length}.png`
+    });
+    
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'result-wrapper';
+    
+    const label = document.createElement('div');
+    label.className = 'result-label';
+    label.textContent = pages.length === 1 ? '公文預覽' : `第 ${i + 1} 頁 / 共 ${pages.length} 頁`;
+    
+    const img = document.createElement('img');
+    img.className = 'result-img';
+    img.src = imgData;
+    
+    const downloadBtn = document.createElement('a');
+    downloadBtn.href = imgData;
+    downloadBtn.download = `${title || '公文'}_${i + 1}of${pages.length}.png`;
+    downloadBtn.className = 'download-btn';
+    downloadBtn.textContent = '下載此頁';
+    
+    itemDiv.appendChild(label);
+    itemDiv.appendChild(img);
+    itemDiv.appendChild(downloadBtn);
+    listContainer.appendChild(itemDiv);
+  }
+}
+
+// 下载所有图片
+function downloadAll() {
+  if (!window.generatedImages || window.generatedImages.length === 0) return;
+  
+  window.generatedImages.forEach((img, index) => {
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = img.data;
+      link.download = img.filename;
+      link.click();
+    }, index * 300); // 延迟下载避免浏览器拦截
   });
 }
 
