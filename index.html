@@ -185,29 +185,6 @@
       margin-bottom: 15px;
     }
     
-    .download-btn {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
-      transition: background 0.3s;
-      margin: 5px;
-    }
-    
-    .download-btn:hover { background: #218838; }
-    
-    .download-all-btn {
-      background: #007bff;
-    }
-    
-    .download-all-btn:hover { background: #0056b3; }
-    
     .loading {
       display: inline-block;
       width: 20px;
@@ -301,10 +278,11 @@
 
 <!-- 结果展示 -->
 <div id="result-container">
-  <div id="result-images-list"></div>
-  <div style="margin-top:20px;">
-    <button class="download-btn download-all-btn" onclick="downloadAll()">下載全部圖片</button>
+  <div style="background:#c00;color:white;padding:15px;border-radius:8px 8px 0 0;margin-bottom:10px;text-align:center;">
+    <strong>公文生成完成！</strong><br>
+    <small>長按圖片即可保存到相冊</small>
   </div>
+  <div id="result-images-list"></div>
 </div>
 
 <script>
@@ -521,8 +499,6 @@ async function captureAllPages(title) {
     pages.push(document.getElementById('page-2'));
   }
   
-  window.generatedImages = []; // 存储生成的图片数据
-  
   for (let i = 0; i < pages.length; i++) {
     const canvas = await html2canvas(pages[i], {
       scale: 2,
@@ -534,13 +510,10 @@ async function captureAllPages(title) {
     });
     
     const imgData = canvas.toDataURL('image/png');
-    window.generatedImages.push({
-      data: imgData,
-      filename: `${title || '公文'}_${i + 1}of${pages.length}.png`
-    });
     
     const itemDiv = document.createElement('div');
     itemDiv.className = 'result-wrapper';
+    itemDiv.style.marginBottom = '20px';
     
     const label = document.createElement('div');
     label.className = 'result-label';
@@ -549,32 +522,12 @@ async function captureAllPages(title) {
     const img = document.createElement('img');
     img.className = 'result-img';
     img.src = imgData;
-    
-    const downloadBtn = document.createElement('a');
-    downloadBtn.href = imgData;
-    downloadBtn.download = `${title || '公文'}_${i + 1}of${pages.length}.png`;
-    downloadBtn.className = 'download-btn';
-    downloadBtn.textContent = '下載此頁';
+    img.style.cursor = 'pointer';
     
     itemDiv.appendChild(label);
     itemDiv.appendChild(img);
-    itemDiv.appendChild(downloadBtn);
     listContainer.appendChild(itemDiv);
   }
-}
-
-// 下载所有图片
-function downloadAll() {
-  if (!window.generatedImages || window.generatedImages.length === 0) return;
-  
-  window.generatedImages.forEach((img, index) => {
-    setTimeout(() => {
-      const link = document.createElement('a');
-      link.href = img.data;
-      link.download = img.filename;
-      link.click();
-    }, index * 300); // 延迟下载避免浏览器拦截
-  });
 }
 
 // 记录到Google Sheets
