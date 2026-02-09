@@ -27,7 +27,7 @@
     }
     
     .input-group { margin-bottom: 15px; }
-    label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 20px; }
+    label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 14px; }
     input, textarea { 
       width: 100%; 
       padding: 10px; 
@@ -149,6 +149,16 @@
     .sig-date { 
       font-size: 20px; 
       white-space: nowrap;
+    }
+    
+    .page-number {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 16px;
+      color: #333;
     }
 
     /* 结果展示 */
@@ -321,7 +331,7 @@ function createClosingHTML(salutation, name, date) {
 }
 
 // 创建新页面
-function createPage(pageNum, title, recipient) {
+function createPage(pageNum, title, recipient, totalPages) {
   const page = document.createElement('div');
   page.className = 'a4-page';
   page.id = `page-${pageNum}`;
@@ -340,6 +350,7 @@ function createPage(pageNum, title, recipient) {
       <div class="body-container" id="body-p${pageNum}"></div>
       <div id="closing-p${pageNum}"></div>
     </div>
+    <div class="page-number">-${pageNum}-</div>
   `;
   
   return page;
@@ -377,6 +388,17 @@ function calculatePageTotalHeight(page) {
   return paperContent && paperContent.scrollHeight ? paperContent.scrollHeight : 0;
 }
 
+// 更新頁碼
+function updatePageNumbers(pages) {
+  const totalPages = pages.length;
+  pages.forEach((page, index) => {
+    const pageNumElement = page.querySelector('.page-number');
+    if (pageNumElement) {
+      pageNumElement.textContent = `-${index + 1}-`;
+    }
+  });
+}
+
 // 生成公文
 async function generateDocument() {
   const btn = document.getElementById('generateBtn');
@@ -408,7 +430,7 @@ async function generateDocument() {
     
     let pages = [];
     let currentPageNum = 1;
-    let currentPage = createPage(currentPageNum, title, recipient);
+    let currentPage = createPage(currentPageNum, title, recipient, 1);
     renderArea.appendChild(currentPage);
     pages.push(currentPage);
     
@@ -430,7 +452,7 @@ async function generateDocument() {
           
           // 创建新页面
           currentPageNum++;
-          currentPage = createPage(currentPageNum, title, recipient);
+          currentPage = createPage(currentPageNum, title, recipient, 1);
           renderArea.appendChild(currentPage);
           pages.push(currentPage);
           
@@ -452,13 +474,16 @@ async function generateDocument() {
       lastPageClosing.innerHTML = '';
       
       currentPageNum++;
-      const newPage = createPage(currentPageNum, title, recipient);
+      const newPage = createPage(currentPageNum, title, recipient, 1);
       renderArea.appendChild(newPage);
       pages.push(newPage);
       
       const newPageClosing = newPage.querySelector(`#closing-p${currentPageNum}`);
       newPageClosing.innerHTML = closingHTML;
     }
+    
+    // 更新所有页面的頁碼
+    updatePageNumbers(pages);
     
     // 等待渲染完成
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -543,17 +568,21 @@ async function captureAllPages(title, pages) {
 function logToGAS() {
   const gas_url = "https://script.google.com/macros/s/AKfycbwRu5P74s_0LMbIB8u6qo04bX-NGGsGa9l2pc32xz4o16DgDq7RxIYXAGlfTkqbzO_8/exec";
   
+  const data = {
+    timestamp: new Date().toLocaleString('zh-HK'),
+    signature: document.getElementById('input-name').value,
+    title: document.getElementById('input-title').value,
+    recipient: document.getElementById('input-recipient').value,
+    content: document.getElementById('input-content').value
+  };
+  
+  console.log('發送數據:', data);
+  
   fetch(gas_url, {
     method: "POST",
     mode: "no-cors",
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ 
-      title: document.getElementById('input-title').value, 
-      recipient: document.getElementById('input-recipient').value, 
-      user: document.getElementById('input-name').value, 
-      content: document.getElementById('input-content').value,
-      timestamp: new Date().toISOString()
-    })
+    body: JSON.stringify(data)
   }).catch(err => console.log('記錄日誌失敗:', err));
 }
 </script>
