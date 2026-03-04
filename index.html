@@ -2,10 +2,12 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>僑港順德龍山同鄉會 - 公文生成系統</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-text-size-adjust: none; } /* 禁用手機端字體自動放大 */
+    
     body { 
       font-family: "Microsoft YaHei", "SimSun", sans-serif; 
       background: #e0e0e0; 
@@ -34,33 +36,16 @@
       border: 1px solid #ccc; 
       border-radius: 4px; 
       font-size: 14px; 
-      font-family: "Microsoft YaHei", sans-serif;
     }
-    textarea { resize: vertical; }
     
     .btn-main { 
-      background: #c00; 
-      color: white; 
-      border: none; 
-      padding: 15px; 
-      border-radius: 4px; 
-      cursor: pointer; 
-      width: 100%; 
-      font-size: 16px; 
-      font-weight: bold; 
-      transition: background 0.3s;
-    }
-    .btn-main:hover { background: #a00; }
-    .btn-main:disabled { background: #999; cursor: not-allowed; }
-    
-    /* 隱藏的渲染區域 */
-    #render-area {
-      position: absolute;
-      left: -9999px;
-      top: 0;
+      background: #c00; color: white; border: none; padding: 15px; 
+      border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; 
     }
     
-    /* A4紙樣式 */
+    /* 核心渲染區 - 保持 A4 比例 */
+    #render-area { position: absolute; left: -9999px; top: 0; width: 794px; }
+    
     .a4-page { 
       background: white; 
       width: 794px; 
@@ -69,270 +54,124 @@
       flex-direction: column; 
       position: relative; 
       overflow: hidden;
+      margin-bottom: 0;
     }
 
+    /* 固定頁眉高度，避免加載延遲導致高度計算錯誤 */
     .header-wrapper { 
+      width: 100%; 
+      height: 162px; 
       border-bottom: 2px solid #c00; 
-      width: 100%; 
+      overflow: hidden;
     }
+    .header-img { width: 100%; height: auto; display: block; }
     
-    .header-img { 
-      width: 100%; 
-      display: block;
-    }
-    
+    /* 內容區 */
     .paper-content { 
       padding: 40px 80px; 
-      flex: 1; 
+      flex: 1; /* 這是為了視覺填滿，但測量時不測量它 */
       display: flex; 
       flex-direction: column;
-      overflow: hidden; /* 防止滾動條干擾高度計算 */
     }
     
-    .doc-title { 
-      font-size: 32px; 
-      font-weight: bold; 
-      text-align: center; 
-      margin-bottom: 30px; 
-      line-height: 1.5; 
-    }
+    /* 關鍵：測量層 - 不設置 flex:1，高度隨內容變化 */
+    .content-body { width: 100%; height: auto; }
     
-    .doc-recipient { 
-      font-size: 20px; 
-      line-height: 1.8; 
-      margin-bottom: 10px; 
-      text-align: left; 
-    }
-    
-    .body-paragraph { 
-      font-size: 20px; 
-      line-height: 1.8; 
-      text-indent: 2em; 
-      text-align: left; 
-      margin: 0 0 10px 0;
-    }
-    
-    .doc-salutation { 
-      font-size: 20px; 
-      padding-left: 2em; 
-      margin-top: 20px; 
-      margin-bottom: 20px; 
-      text-align: left; 
-    }
+    .doc-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 30px; line-height: 1.5; }
+    .doc-recipient { font-size: 20px; line-height: 1.8; margin-bottom: 15px; text-align: left; }
+    .body-paragraph { font-size: 20px; line-height: 1.8; text-indent: 2em; text-align: left; margin: 0 0 10px 0; }
+    .doc-salutation { font-size: 20px; padding-left: 2em; margin-top: 25px; text-align: left; }
     
     .signature-wrapper {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 10px;
-      margin-bottom: 40px;
-      padding-right: 20px;
+      display: flex; justify-content: flex-end; 
+      margin-top: 15px; padding-right: 20px;
     }
-    
-    .signature-container { 
-      display: inline-flex; 
-      flex-direction: column; 
-      align-items: center;
-      text-align: center;
-    }
-    
-    .sig-name { 
-      font-size: 24px; 
-      margin-bottom: 8px; 
-      white-space: nowrap;
-    }
-    
-    .sig-date { 
-      font-size: 20px; 
-      white-space: nowrap;
-    }
+    .signature-container { text-align: center; display: inline-block; }
+    .sig-name { font-size: 24px; margin-bottom: 8px; font-weight: bold; }
+    .sig-date { font-size: 20px; }
     
     .page-number {
-      position: absolute;
-      bottom: 25px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 16px;
-      color: #333;
+      position: absolute; bottom: 25px; left: 0; right: 0;
+      text-align: center; font-size: 16px; color: #333;
     }
 
-    /* 結果展示 */
-    #result-container { 
-      margin-top: 30px; 
-      text-align: center; 
-      display: none; 
-      width: 100%; 
-      max-width: 794px; 
-      padding-bottom: 50px;
-    }
-    
-    .result-wrapper {
-      background: #fff; 
-      padding: 20px; 
-      border-radius: 8px; 
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      margin-bottom: 20px;
-    }
-    
-    .result-label {
-      background: #c00;
-      color: white;
-      padding: 5px 15px;
-      border-radius: 20px;
-      display: inline-block;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-    
-    .result-img { 
-      width: 100%; 
-      border: 1px solid #ddd; 
-      margin-bottom: 15px;
-    }
-    
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid #fff;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-right: 10px;
-      vertical-align: middle;
-    }
-    
+    #result-container { margin-top: 30px; display: none; width: 100%; max-width: 794px; }
+    .result-wrapper { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    .result-img { width: 100%; border: 1px solid #ddd; }
+    .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
 <div class="control-panel">
-  <h2 style="margin-top:0;color:#c00;text-align:center;">僑港順德龍山同鄉會 公文生成</h2>
-  
-  <div class="input-group">
-    <label>公文標題</label>
-    <input type="text" id="input-title" placeholder="例如：關於舉辦慶祝活動的通知">
-  </div>
-  
-  <div class="input-group">
-    <label>送達單位</label>
-    <input type="text" id="input-recipient" placeholder="例如：各會員、各委員">
-  </div>
-  
-  <div class="input-group">
-    <label>正文內容</label>
-    <textarea id="input-content" rows="10" placeholder="請輸入正文內容..."></textarea>
-  </div>
-  
-  <div class="input-group">
-    <label>敬語</label>
-    <input type="text" id="input-salutation" value="此致">
-  </div>
-  
-  <div class="input-group">
-    <label>署名</label>
-    <input type="text" id="input-name" placeholder="例如：主席 某某某">
-  </div>
-  
-  <div class="input-group">
-    <label>日期</label>
-    <input type="text" id="input-date">
-  </div>
-  
-  <button class="btn-main" onclick="generateDocument()" id="generateBtn">
-    生成公文
-  </button>
+  <h2 style="color:#c00;text-align:center;">公文生成系統 (移動端優化版)</h2>
+  <div class="input-group"><label>公文標題</label><input type="text" id="input-title"></div>
+  <div class="input-group"><label>送達單位</label><input type="text" id="input-recipient"></div>
+  <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="8"></textarea></div>
+  <div class="input-group"><label>敬語</label><input type="text" id="input-salutation" value="此致"></div>
+  <div class="input-group"><label>署名</label><input type="text" id="input-name"></div>
+  <div class="input-group"><label>日期</label><input type="text" id="input-date"></div>
+  <button class="btn-main" onclick="generateDocument()" id="generateBtn">生成公文</button>
 </div>
 
-<!-- 渲染區域 -->
 <div id="render-area"></div>
 
-<!-- 結果展示 -->
 <div id="result-container">
-  <div style="background:#c00;color:white;padding:15px;border-radius:8px 8px 0 0;margin-bottom:10px;text-align:center;">
-    <strong>公文生成完成！</strong><br>
-    <small>長按圖片即可保存到相冊</small>
+  <div style="background:#c00;color:white;padding:15px;border-radius:8px 8px 0 0;text-align:center;">
+    <strong>生成完成！長按下方圖片保存</strong>
   </div>
   <div id="result-images-list"></div>
 </div>
 
 <script>
-// 初始化
 window.onload = function() {
   const now = new Date();
   document.getElementById('input-date').value = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
   loadFromStorage();
 };
 
-// 儲存與讀取草稿
-function saveToStorage() {
-  const data = {
-    title: document.getElementById('input-title').value,
-    recipient: document.getElementById('input-recipient').value,
-    content: document.getElementById('input-content').value,
-    salutation: document.getElementById('input-salutation').value,
-    name: document.getElementById('input-name').value,
-    date: document.getElementById('input-date').value
-  };
-  localStorage.setItem('documentData', JSON.stringify(data));
-}
-
 function loadFromStorage() {
   const saved = localStorage.getItem('documentData');
   if (saved) {
     const data = JSON.parse(saved);
-    document.getElementById('input-title').value = data.title || '';
-    document.getElementById('input-recipient').value = data.recipient || '';
-    document.getElementById('input-content').value = data.content || '';
-    document.getElementById('input-salutation').value = data.salutation || '此致';
-    document.getElementById('input-name').value = data.name || '';
-    document.getElementById('input-date').value = data.date || '';
+    Object.keys(data).forEach(key => {
+      const el = document.getElementById('input-' + key);
+      if (el) el.value = data[key];
+    });
   }
 }
 
-['input-title', 'input-recipient', 'input-content', 'input-salutation', 'input-name', 'input-date']
-  .forEach(id => document.getElementById(id).addEventListener('input', saveToStorage));
-
-// 創建落款HTML組件
-function createClosingElement(salutation, name, date) {
-  const div = document.createElement('div');
-  div.innerHTML = `
-    <div class="doc-salutation">${salutation}</div>
-    <div class="signature-wrapper">
-      <div class="signature-container">
-        <div class="sig-name">${name}</div>
-        <div class="sig-date">${date}</div>
-      </div>
-    </div>
-  `;
-  return div;
+function saveToStorage() {
+  const fields = ['title', 'recipient', 'content', 'salutation', 'name', 'date'];
+  const data = {};
+  fields.forEach(f => data[f] = document.getElementById('input-' + f).value);
+  localStorage.setItem('documentData', JSON.stringify(data));
 }
+document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', saveToStorage));
 
-// 創建空白頁
 function createNewPage(pageNum, title, recipient) {
   const page = document.createElement('div');
   page.className = 'a4-page';
   page.innerHTML = `
-    <div class="header-wrapper">
-      <img class="header-img" src="banner.jpg">
-    </div>
+    <div class="header-wrapper"><img class="header-img" src="banner.jpg"></div>
     <div class="paper-content">
-      ${pageNum === 1 ? `
-        <div class="doc-title">${title}</div>
-        <div class="doc-recipient">${recipient ? recipient + '：' : ''}</div>
-      ` : ''}
+      <div class="content-body" id="body-p${pageNum}">
+        ${pageNum === 1 ? `
+          <div class="doc-title">${title}</div>
+          <div class="doc-recipient">${recipient ? recipient + '：' : ''}</div>
+        ` : ''}
+      </div>
     </div>
     <div class="page-number">-${pageNum}-</div>
   `;
   return page;
 }
 
-// 主生成邏輯
 async function generateDocument() {
   const btn = document.getElementById('generateBtn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="loading"></span>生成中...';
+  btn.innerHTML = '<span class="loading"></span>處理中...';
   
   try {
     const title = document.getElementById('input-title').value;
@@ -345,112 +184,89 @@ async function generateDocument() {
     const renderArea = document.getElementById('render-area');
     renderArea.innerHTML = '';
     
-    // A4 可用高度約 960px (總高 1123 - 頁眉和邊距)
-    const MAX_HEIGHT = 960; 
+    // 安全高度計算：1123(A4) - 162(Header) - 50(Footer) - 80(Padding) = 大約 830px
+    const MAX_BODY_HEIGHT = 820; 
 
     let currentPageNum = 1;
     let currentPage = createNewPage(currentPageNum, title, recipient);
     renderArea.appendChild(currentPage);
-    let currentContainer = currentPage.querySelector('.paper-content');
+    let currentBody = currentPage.querySelector('.content-body');
 
-    // 1. 處理正文段落
+    // 1. 逐段添加正文
     const paragraphs = content.split('\n').filter(p => p.trim() !== '');
     for (let pText of paragraphs) {
       const p = document.createElement('p');
       p.className = 'body-paragraph';
       p.textContent = pText;
-      currentContainer.appendChild(p);
+      currentBody.appendChild(p);
 
-      // 檢測是否溢出
-      if (currentContainer.scrollHeight > MAX_HEIGHT) {
-        currentContainer.removeChild(p);
+      // 如果當前測量層高度超過安全範圍，則換頁
+      if (currentBody.scrollHeight > MAX_BODY_HEIGHT) {
+        currentBody.removeChild(p);
         currentPageNum++;
         currentPage = createNewPage(currentPageNum, title, recipient);
         renderArea.appendChild(currentPage);
-        currentContainer = currentPage.querySelector('.paper-content');
-        currentContainer.appendChild(p);
+        currentBody = currentPage.querySelector('.content-body');
+        currentBody.appendChild(p);
       }
     }
 
-    // 2. 處理落款 (緊跟在最後一個段落後)
-    const closingEl = createClosingElement(salutation, name, date);
-    currentContainer.appendChild(closingEl);
+    // 2. 添加落款
+    const closingEl = document.createElement('div');
+    closingEl.innerHTML = `
+      <div class="doc-salutation">${salutation}</div>
+      <div class="signature-wrapper">
+        <div class="signature-container">
+          <div class="sig-name">${name}</div>
+          <div class="sig-date">${date}</div>
+        </div>
+      </div>
+    `;
+    currentBody.appendChild(closingEl);
 
-    // 3. 再次檢測：如果加上落款後溢出了，把落款移到新頁面
-    if (currentContainer.scrollHeight > MAX_HEIGHT) {
-      currentContainer.removeChild(closingEl);
+    // 3. 落款溢出檢查
+    if (currentBody.scrollHeight > MAX_BODY_HEIGHT) {
+      currentBody.removeChild(closingEl);
       currentPageNum++;
       currentPage = createNewPage(currentPageNum, title, recipient);
       renderArea.appendChild(currentPage);
-      currentContainer = currentPage.querySelector('.paper-content');
-      currentContainer.appendChild(closingEl);
+      currentBody = currentPage.querySelector('.content-body');
+      currentBody.appendChild(closingEl);
     }
 
-    // 4. 更新頁碼總數
-    const pages = renderArea.querySelectorAll('.a4-page');
-    pages.forEach((page, idx) => {
-      page.querySelector('.page-number').textContent = `-${idx + 1}-`;
-    });
-
-    // 等待渲染和圖片加載
-    await new Promise(r => setTimeout(r, 500));
-
-    // 5. 生成圖片
+    // 渲染圖片
+    await new Promise(r => setTimeout(r, 600));
     const listContainer = document.getElementById('result-images-list');
     listContainer.innerHTML = '';
+    const pages = renderArea.querySelectorAll('.a4-page');
     
     for (let i = 0; i < pages.length; i++) {
       const canvas = await html2canvas(pages[i], {
         scale: 2,
         useCORS: true,
-        backgroundColor: '#ffffff'
+        width: 794,
+        height: 1123
       });
-      
       const img = document.createElement('img');
       img.className = 'result-img';
       img.src = canvas.toDataURL('image/png');
-      
-      const wrapper = document.createElement('div');
-      wrapper.className = 'result-wrapper';
-      const label = document.createElement('div');
-      label.className = 'result-label';
-      label.textContent = pages.length === 1 ? '公文預覽' : `第 ${i + 1} 頁 / 共 ${pages.length} 頁`;
-      
-      wrapper.appendChild(label);
-      wrapper.appendChild(img);
-      listContainer.appendChild(wrapper);
+      const wrap = document.createElement('div');
+      wrap.className = 'result-wrapper';
+      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">第 ${i+1} 頁</div>`;
+      wrap.appendChild(img);
+      listContainer.appendChild(wrap);
     }
     
     document.getElementById('result-container').style.display = 'block';
-    document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
-    
-    // 記錄日誌 (非阻塞)
-    logToGAS(title, recipient, name, content);
+    window.scrollTo({ top: document.getElementById('result-container').offsetTop, behavior: 'smooth' });
     
   } catch (e) {
-    console.error(e);
-    alert('生成失敗，請重試。');
+    alert('生成出錯');
   } finally {
     btn.disabled = false;
     btn.textContent = '生成公文';
   }
 }
-
-function logToGAS(title, recipient, name, content) {
-  const gas_url = "https://script.google.com/macros/s/AKfycbwRu5P74s_0LMbIB8u6qo04bX-NGGsGa9l2pc32xz4o16DgDq7RxIYXAGlfTkqbzO_8/exec";
-  fetch(gas_url, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify({
-      timestamp: new Date().toLocaleString('zh-HK'),
-      signature: name,
-      title: title,
-      recipient: recipient,
-      content: content
-    })
-  }).catch(e => console.log('Log error'));
-}
 </script>
-
 </body>
 </html>
