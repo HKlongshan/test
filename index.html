@@ -388,6 +388,32 @@ function calculatePageTotalHeight(page) {
   return paperContent && paperContent.scrollHeight ? paperContent.scrollHeight : 0;
 }
 
+// 获取当前页剩余可用高度
+function getRemainingHeight(page) {
+  if (!page) return 0;
+  const paperContent = page.querySelector('.paper-content');
+  if (!paperContent) return 0;
+  
+  const maxTotalHeight = 1050; // 与 maxTotalHeight 一致
+  const currentHeight = paperContent.scrollHeight || 0;
+  return maxTotalHeight - currentHeight;
+}
+
+// 估算落款高度（基于签名容器）
+function estimateClosingHeight(salutation, name, date) {
+  // 创建临时元素测量高度
+  const tempDiv = document.createElement('div');
+  tempDiv.style.visibility = 'hidden';
+  tempDiv.style.position = 'absolute';
+  tempDiv.innerHTML = createClosingHTML(salutation, name || '測試', date || '2024年1月1日');
+  document.body.appendChild(tempDiv);
+  
+  const height = tempDiv.scrollHeight || 120; // 默认约 120px
+  document.body.removeChild(tempDiv);
+  
+  return height + 40; // 加一点余量
+}
+
 // 更新頁碼
 function updatePageNumbers(pages) {
   const totalPages = pages.length;
@@ -462,31 +488,28 @@ async function generateDocument() {
       }
     }
     
-    // 在最后一页添加落款
+    // 在添加落款前，先检查当前页剩余空间是否足够
     const closingHTML = createClosingHTML(salutation, name, date);
+    const closingHeight = estimateClosingHeight(salutation, name, date);
+    const remainingHeight = getRemainingHeight(currentPage);
+    
+    // 如果剩余空间不够放落款，创建新页
+    if (remainingHeight < closingHeight) {
+      currentPageNum++;
+      currentPage = createPage(currentPageNum, title, recipient, 1);
+      renderArea.appendChild(currentPage);
+      pages.push(currentPage);
+    }
+    
+    // 在（可能的新）最后一页添加落款
     const lastPageClosing = currentPage.querySelector(`#closing-p${currentPageNum}`);
     lastPageClosing.innerHTML = closingHTML;
-    
-    // 检查最后一页是否超出总高度，如果是则移到新页面
-    const lastPageTotalHeight = calculatePageTotalHeight(currentPage);
-    if (lastPageTotalHeight > maxTotalHeight && pages.length === 1) {
-      // 只有一页且超出，需要移到第二页
-      lastPageClosing.innerHTML = '';
-      
-      currentPageNum++;
-      const newPage = createPage(currentPageNum, title, recipient, 1);
-      renderArea.appendChild(newPage);
-      pages.push(newPage);
-      
-      const newPageClosing = newPage.querySelector(`#closing-p${currentPageNum}`);
-      newPageClosing.innerHTML = closingHTML;
-    }
     
     // 更新所有页面的頁碼
     updatePageNumbers(pages);
     
     // 等待渲染完成
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     // 等待所有banner图片加载
     const bannerPromises = [];
@@ -496,11 +519,14 @@ async function generateDocument() {
         bannerPromises.push(new Promise((resolve) => {
           img.onload = resolve;
           img.onerror = resolve;
-          setTimeout(resolve, 2000);
+          setTimeout(resolve, 3000); // 移动端延长等待时间
         }));
       }
     }
     await Promise.all(bannerPromises);
+    
+    // 再次等待确保字体渲染完成（移动端关键）
+    await new Promise(resolve => setTimeout(resolve, 300));
     
     // 生成图片
     await captureAllPages(title, pages);
