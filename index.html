@@ -6,7 +6,6 @@
   <title>僑港順德龍山同鄉會 - 公文生成系統</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    /* 核心修復：禁用字體自動放大，保留空白字符 */
     * { 
       box-sizing: border-box; 
       -webkit-text-size-adjust: none; 
@@ -48,17 +47,14 @@
       background: #c00; color: white; border: none; padding: 15px; 
       border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; 
     }
-    .btn-main:hover { background: #a00; }
     
-    /* 渲染區樣式 */
     #render-area { position: absolute; left: -9999px; top: 0; width: 794px; }
     
     .a4-page { 
       background: white; 
       width: 794px; 
       height: 1123px; 
-      display: flex; 
-      flex-direction: column; 
+      display: block; 
       position: relative; 
       overflow: hidden;
     }
@@ -68,52 +64,54 @@
       height: 162px; 
       border-bottom: 2px solid #c00; 
     }
-    .header-img { width: 100%; height: 162px; display: block; object-fit: cover; }
+    .header-img { width: 100%; height: 162px; display: block; }
     
     .paper-content { 
-      padding: 40px 80px; 
-      flex: 1;
-      display: flex; 
-      flex-direction: column;
+      padding: 30px 80px 20px 80px; /* 壓縮上下內邊距 */
+      width: 100%;
+      height: auto; 
     }
     
-    /* 測量容器 */
-    .content-body { width: 100%; height: auto; }
+    .doc-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 25px; line-height: 1.4; }
+    .doc-recipient { font-size: 20px; line-height: 1.8; margin-bottom: 10px; text-align: left; }
     
-    .doc-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 30px; line-height: 1.5; }
-    .doc-recipient { font-size: 20px; line-height: 1.8; margin-bottom: 15px; text-align: left; }
-    
-    /* 關鍵優化：保留空格和換行 */
     .body-paragraph { 
       font-size: 20px; 
-      line-height: 1.8; 
+      line-height: 1.7; 
       text-align: left; 
       margin: 0; 
-      min-height: 1.8em; /* 確保空行也有高度 */
-      white-space: pre-wrap; /* 保留空格 */
-      word-wrap: break-word; /* 防止長單詞溢出 */
+      white-space: pre-wrap; 
+      word-wrap: break-word; 
       word-break: break-all;
+      min-height: 1em;
     }
     
-    .doc-salutation { font-size: 20px; padding-left: 2em; margin-top: 30px; text-align: left; }
+    /* 核心修改：落款區域極致壓縮，為正文騰空間 */
+    .doc-salutation { 
+      font-size: 20px; 
+      padding-left: 2em; 
+      margin-top: 20px; /* 從120px壓縮到20px */
+      text-align: left; 
+    }
     
     .signature-wrapper {
-      display: flex; justify-content: flex-end; 
-      margin-top: 15px; padding-right: 20px;
+      display: flex; 
+      justify-content: flex-end; 
+      margin-top: 5px; /* 極度緊湊 */
+      padding-right: 20px;
     }
     .signature-container { text-align: center; display: inline-block; }
-    .sig-name { font-size: 24px; margin-bottom: 8px; font-weight: bold; }
+    .sig-name { font-size: 24px; margin-bottom: 2px; font-weight: bold; }
     .sig-date { font-size: 20px; }
     
     .page-number {
-      position: absolute; bottom: 30px; left: 0; right: 0;
-      text-align: center; font-size: 16px; color: #666;
+      position: absolute; bottom: 15px; left: 0; right: 0;
+      text-align: center; font-size: 14px; color: #999;
     }
 
-    /* 結果預覽 */
     #result-container { margin-top: 30px; display: none; width: 100%; max-width: 794px; }
     .result-wrapper { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .result-img { width: 100%; border: 1px solid #ddd; }
+    .result-img { width: 100%; border: 1px solid #ddd; display: block;}
     .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
@@ -121,15 +119,12 @@
 <body>
 
 <div class="control-panel">
-  <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統</h2>
-  <div class="input-group"><label>公文標題</label><input type="text" id="input-title" placeholder="請輸入標題"></div>
-  <div class="input-group"><label>送達單位</label><input type="text" id="input-recipient" placeholder="例如：各位會員"></div>
-  <div class="input-group">
-    <label>正文內容 (支持粘貼空格和空行)</label>
-    <textarea id="input-content" rows="12" placeholder="請在此粘貼正文內容..."></textarea>
-  </div>
+  <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統 (容量最大化)</h2>
+  <div class="input-group"><label>公文標題</label><input type="text" id="input-title"></div>
+  <div class="input-group"><label>送達單位</label><input type="text" id="input-recipient"></div>
+  <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="10"></textarea></div>
   <div class="input-group"><label>敬語</label><input type="text" id="input-salutation" value="此致"></div>
-  <div class="input-group"><label>署名</label><input type="text" id="input-name" placeholder="署名"></div>
+  <div class="input-group"><label>署名</label><input type="text" id="input-name"></div>
   <div class="input-group"><label>日期</label><input type="text" id="input-date"></div>
   <button class="btn-main" onclick="generateDocument()" id="generateBtn">生成公文</button>
 </div>
@@ -138,7 +133,7 @@
 
 <div id="result-container">
   <div style="background:#c00;color:white;padding:15px;border-radius:8px 8px 0 0;text-align:center;">
-    <strong>生成完成！長按圖片保存</strong>
+    <strong>生成完成！正文空間已擴展到極限</strong>
   </div>
   <div id="result-images-list"></div>
 </div>
@@ -149,6 +144,14 @@ window.onload = function() {
   document.getElementById('input-date').value = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
   loadFromStorage();
 };
+
+function saveToStorage() {
+  const fields = ['title', 'recipient', 'content', 'salutation', 'name', 'date'];
+  const data = {};
+  fields.forEach(f => data[f] = document.getElementById('input-' + f).value);
+  localStorage.setItem('documentData', JSON.stringify(data));
+}
+document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', saveToStorage));
 
 function loadFromStorage() {
   const saved = localStorage.getItem('documentData');
@@ -161,26 +164,16 @@ function loadFromStorage() {
   }
 }
 
-function saveToStorage() {
-  const fields = ['title', 'recipient', 'content', 'salutation', 'name', 'date'];
-  const data = {};
-  fields.forEach(f => data[f] = document.getElementById('input-' + f).value);
-  localStorage.setItem('documentData', JSON.stringify(data));
-}
-document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', saveToStorage));
-
 function createNewPage(pageNum, title, recipient) {
   const page = document.createElement('div');
   page.className = 'a4-page';
   page.innerHTML = `
     <div class="header-wrapper"><img class="header-img" src="banner.jpg"></div>
     <div class="paper-content">
-      <div class="content-body">
-        ${pageNum === 1 ? `
-          <div class="doc-title">${title}</div>
-          <div class="doc-recipient">${recipient ? recipient + '：' : ''}</div>
-        ` : ''}
-      </div>
+      ${pageNum === 1 ? `
+        <div class="doc-title">${title}</div>
+        <div class="doc-recipient">${recipient ? recipient + '：' : ''}</div>
+      ` : ''}
     </div>
     <div class="page-number">-${pageNum}-</div>
   `;
@@ -195,7 +188,7 @@ async function generateDocument() {
   try {
     const title = document.getElementById('input-title').value;
     const recipient = document.getElementById('input-recipient').value;
-    const content = document.getElementById('input-content').value;
+    const content = document.getElementById('input-content').value.trimEnd();
     const salutation = document.getElementById('input-salutation').value;
     const name = document.getElementById('input-name').value;
     const date = document.getElementById('input-date').value;
@@ -203,38 +196,32 @@ async function generateDocument() {
     const renderArea = document.getElementById('render-area');
     renderArea.innerHTML = '';
     
-    // 安全高度：1123 - 頁眉 - 頁腳 - 上下Padding
-    const MAX_BODY_HEIGHT = 810; 
+    // 核心修改：將高度限制從 860 提高到 930px，允許正文寫得更深
+    const MAX_ALLOWED_HEIGHT = 930; 
 
     let currentPageNum = 1;
     let currentPage = createNewPage(currentPageNum, title, recipient);
     renderArea.appendChild(currentPage);
-    let currentBody = currentPage.querySelector('.content-body');
+    let currentContainer = currentPage.querySelector('.paper-content');
 
-    // 分割正文，但保留空行（不使用 filter）
     const lines = content.split('\n');
-    
     for (let lineText of lines) {
       const p = document.createElement('div');
       p.className = 'body-paragraph';
-      // 如果是完全的空行，需要一個空格字符來撐開高度
       p.textContent = lineText === "" ? " " : lineText;
-      currentBody.appendChild(p);
+      currentContainer.appendChild(p);
 
-      // 檢查是否超出一頁
-      if (currentBody.scrollHeight > MAX_BODY_HEIGHT) {
-        currentBody.removeChild(p);
+      if (currentContainer.offsetHeight > MAX_ALLOWED_HEIGHT) {
+        currentContainer.removeChild(p);
         currentPageNum++;
         currentPage = createNewPage(currentPageNum, title, recipient);
         renderArea.appendChild(currentPage);
-        currentBody = currentPage.querySelector('.content-body');
-        currentBody.appendChild(p);
+        currentContainer = currentPage.querySelector('.paper-content');
+        currentContainer.appendChild(p);
       }
     }
 
-    // 添加落款塊
     const closingEl = document.createElement('div');
-    closingEl.style.width = "100%";
     closingEl.innerHTML = `
       <div class="doc-salutation">${salutation}</div>
       <div class="signature-wrapper">
@@ -244,22 +231,19 @@ async function generateDocument() {
         </div>
       </div>
     `;
-    currentBody.appendChild(closingEl);
+    currentContainer.appendChild(closingEl);
 
-    // 檢查落款是否導致換頁
-    if (currentBody.scrollHeight > MAX_BODY_HEIGHT) {
-      currentBody.removeChild(closingEl);
+    if (currentContainer.offsetHeight > MAX_ALLOWED_HEIGHT) {
+      currentContainer.removeChild(closingEl);
       currentPageNum++;
       currentPage = createNewPage(currentPageNum, title, recipient);
       renderArea.appendChild(currentPage);
-      currentBody = currentPage.querySelector('.content-body');
-      currentBody.appendChild(closingEl);
+      currentContainer = currentPage.querySelector('.paper-content');
+      currentContainer.appendChild(closingEl);
     }
 
-    // 確保圖片加載完成
     await new Promise(r => setTimeout(r, 800));
 
-    // 生成圖片預覽
     const listContainer = document.getElementById('result-images-list');
     listContainer.innerHTML = '';
     const pages = renderArea.querySelectorAll('.a4-page');
@@ -269,15 +253,15 @@ async function generateDocument() {
         scale: 2,
         useCORS: true,
         width: 794,
-        height: 1123,
-        logging: false
+        height: 1123
       });
+      
+      const wrap = document.createElement('div');
+      wrap.className = 'result-wrapper';
+      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">第 ${i+1} 頁 (已優化內容容量)</div>`;
       const img = document.createElement('img');
       img.className = 'result-img';
       img.src = canvas.toDataURL('image/png');
-      const wrap = document.createElement('div');
-      wrap.className = 'result-wrapper';
-      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">第 ${i+1} 頁預覽</div>`;
       wrap.appendChild(img);
       listContainer.appendChild(wrap);
     }
@@ -285,12 +269,10 @@ async function generateDocument() {
     document.getElementById('result-container').style.display = 'block';
     window.scrollTo({ top: document.getElementById('result-container').offsetTop, behavior: 'smooth' });
     
-    // 記錄數據
     logToGAS(title, recipient, name, content);
     
   } catch (e) {
-    console.error(e);
-    alert('生成失敗，請重試');
+    alert('生成出錯');
   } finally {
     btn.disabled = false;
     btn.textContent = '生成公文';
