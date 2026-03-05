@@ -42,12 +42,37 @@
       font-size: 14px; 
       font-family: inherit;
     }
+
+    /* 字號選擇器樣式 */
+    .size-selector {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .size-btn {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    .size-btn.active {
+      background: #c00;
+      color: #fff;
+      border-color: #c00;
+    }
     
     .btn-main { 
       background: #c00; color: white; border: none; padding: 15px; 
       border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; 
+      margin-top: 10px;
     }
+    .btn-main:hover { background: #a00; }
     
+    /* 核心渲染區 */
     #render-area { position: absolute; left: -9999px; top: 0; width: 794px; }
     
     .a4-page { 
@@ -67,17 +92,20 @@
     .header-img { width: 100%; height: 162px; display: block; }
     
     .paper-content { 
-      padding: 30px 80px 20px 80px; /* 壓縮上下內邊距 */
+      padding: 40px 80px 20px 80px; 
       width: 100%;
       height: auto; 
     }
     
     .doc-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 25px; line-height: 1.4; }
-    .doc-recipient { font-size: 20px; line-height: 1.8; margin-bottom: 10px; text-align: left; }
-    
+
+    /* 不同字號的正文樣式 */
+    .font-large .doc-recipient, .font-large .body-paragraph, .font-large .doc-salutation { font-size: 24px; line-height: 1.8; }
+    .font-medium .doc-recipient, .font-medium .body-paragraph, .font-medium .doc-salutation { font-size: 20px; line-height: 1.7; }
+    .font-small .doc-recipient, .font-small .body-paragraph, .font-small .doc-salutation { font-size: 16px; line-height: 1.5; }
+
+    .doc-recipient { margin-bottom: 10px; text-align: left; }
     .body-paragraph { 
-      font-size: 20px; 
-      line-height: 1.7; 
       text-align: left; 
       margin: 0; 
       white-space: pre-wrap; 
@@ -86,18 +114,16 @@
       min-height: 1em;
     }
     
-    /* 核心修改：落款區域極致壓縮，為正文騰空間 */
     .doc-salutation { 
-      font-size: 20px; 
       padding-left: 2em; 
-      margin-top: 20px; /* 從120px壓縮到20px */
+      margin-top: 20px; 
       text-align: left; 
     }
     
     .signature-wrapper {
       display: flex; 
       justify-content: flex-end; 
-      margin-top: 5px; /* 極度緊湊 */
+      margin-top: 10px;
       padding-right: 20px;
     }
     .signature-container { text-align: center; display: inline-block; }
@@ -119,13 +145,23 @@
 <body>
 
 <div class="control-panel">
-  <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統 (容量最大化)</h2>
+  <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統</h2>
   <div class="input-group"><label>公文標題</label><input type="text" id="input-title"></div>
   <div class="input-group"><label>送達單位</label><input type="text" id="input-recipient"></div>
-  <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="10"></textarea></div>
+  <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="8"></textarea></div>
   <div class="input-group"><label>敬語</label><input type="text" id="input-salutation" value="此致"></div>
   <div class="input-group"><label>署名</label><input type="text" id="input-name"></div>
   <div class="input-group"><label>日期</label><input type="text" id="input-date"></div>
+  
+  <div class="input-group">
+    <label>選擇字號 (內容多時選"小"，內容少時選"大")</label>
+    <div class="size-selector">
+      <button class="size-btn" onclick="setSize('large')">大 (24px)</button>
+      <button class="size-btn active" onclick="setSize('medium')">中 (20px)</button>
+      <button class="size-btn" onclick="setSize('small')">小 (16px)</button>
+    </div>
+  </div>
+
   <button class="btn-main" onclick="generateDocument()" id="generateBtn">生成公文</button>
 </div>
 
@@ -133,40 +169,58 @@
 
 <div id="result-container">
   <div style="background:#c00;color:white;padding:15px;border-radius:8px 8px 0 0;text-align:center;">
-    <strong>生成完成！正文空間已擴展到極限</strong>
+    <strong>生成完成！請根據預覽效果調整字號</strong>
   </div>
   <div id="result-images-list"></div>
 </div>
 
 <script>
+let currentFontSize = 'medium';
+
 window.onload = function() {
   const now = new Date();
   document.getElementById('input-date').value = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
   loadFromStorage();
 };
 
+function setSize(size) {
+  currentFontSize = size;
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if(btn.innerText.includes(size === 'large' ? '大' : size === 'medium' ? '中' : '小')) {
+      btn.classList.add('active');
+    }
+  });
+  saveToStorage();
+}
+
 function saveToStorage() {
   const fields = ['title', 'recipient', 'content', 'salutation', 'name', 'date'];
-  const data = {};
+  const data = { fontSize: currentFontSize };
   fields.forEach(f => data[f] = document.getElementById('input-' + f).value);
   localStorage.setItem('documentData', JSON.stringify(data));
 }
-document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', saveToStorage));
 
 function loadFromStorage() {
   const saved = localStorage.getItem('documentData');
   if (saved) {
     const data = JSON.parse(saved);
     Object.keys(data).forEach(key => {
-      const el = document.getElementById('input-' + key);
-      if (el) el.value = data[key];
+      if(key === 'fontSize') {
+        setSize(data[key]);
+      } else {
+        const el = document.getElementById('input-' + key);
+        if (el) el.value = data[key];
+      }
     });
   }
 }
 
+document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', saveToStorage));
+
 function createNewPage(pageNum, title, recipient) {
   const page = document.createElement('div');
-  page.className = 'a4-page';
+  page.className = `a4-page font-${currentFontSize}`; // 套用字號類別
   page.innerHTML = `
     <div class="header-wrapper"><img class="header-img" src="banner.jpg"></div>
     <div class="paper-content">
@@ -196,14 +250,15 @@ async function generateDocument() {
     const renderArea = document.getElementById('render-area');
     renderArea.innerHTML = '';
     
-    // 核心修改：將高度限制從 860 提高到 930px，允許正文寫得更深
-    const MAX_ALLOWED_HEIGHT = 930; 
+    // 最大可用高度
+    const MAX_ALLOWED_HEIGHT = 940; 
 
     let currentPageNum = 1;
     let currentPage = createNewPage(currentPageNum, title, recipient);
     renderArea.appendChild(currentPage);
     let currentContainer = currentPage.querySelector('.paper-content');
 
+    // 1. 處理正文
     const lines = content.split('\n');
     for (let lineText of lines) {
       const p = document.createElement('div');
@@ -221,6 +276,7 @@ async function generateDocument() {
       }
     }
 
+    // 2. 添加落款
     const closingEl = document.createElement('div');
     closingEl.innerHTML = `
       <div class="doc-salutation">${salutation}</div>
@@ -258,7 +314,7 @@ async function generateDocument() {
       
       const wrap = document.createElement('div');
       wrap.className = 'result-wrapper';
-      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">第 ${i+1} 頁 (已優化內容容量)</div>`;
+      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">${pages.length === 1 ? '一頁完結' : '第 ' + (i+1) + ' 頁'} (字號：${currentFontSize === 'large' ? '大' : currentFontSize === 'medium' ? '中' : '小'})</div>`;
       const img = document.createElement('img');
       img.className = 'result-img';
       img.src = canvas.toDataURL('image/png');
@@ -289,7 +345,8 @@ function logToGAS(title, recipient, name, content) {
       signature: name,
       title: title,
       recipient: recipient,
-      content: content
+      content: content,
+      fontSize: currentFontSize
     })
   }).catch(e => {});
 }
