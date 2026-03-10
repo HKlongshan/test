@@ -43,7 +43,6 @@
       font-family: inherit;
     }
 
-    /* 字號選擇器樣式 */
     .size-selector {
       display: flex;
       gap: 10px;
@@ -72,7 +71,6 @@
     }
     .btn-main:hover { background: #a00; }
     
-    /* 核心渲染區 */
     #render-area { position: absolute; left: -9999px; top: 0; width: 794px; }
     
     .a4-page { 
@@ -99,7 +97,6 @@
     
     .doc-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 25px; line-height: 1.4; }
 
-    /* 不同字號的正文樣式 */
     .font-large .doc-recipient, .font-large .body-paragraph, .font-large .doc-salutation { font-size: 24px; line-height: 1.8; }
     .font-medium .doc-recipient, .font-medium .body-paragraph, .font-medium .doc-salutation { font-size: 20px; line-height: 1.7; }
     .font-small .doc-recipient, .font-small .body-paragraph, .font-small .doc-salutation { font-size: 16px; line-height: 1.5; }
@@ -137,7 +134,7 @@
 
     #result-container { margin-top: 30px; display: none; width: 100%; max-width: 794px; }
     .result-wrapper { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .result-img { width: 100%; border: 1px solid #ddd; display: block;}
+    .result-img { width: 100%; border: 1px solid #ddd; display: block; cursor: pointer; }
     .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
@@ -154,7 +151,7 @@
   <div class="input-group"><label>日期</label><input type="text" id="input-date"></div>
   
   <div class="input-group">
-    <label>選擇字號 (內容多時選"小"，內容少時選"大")</label>
+    <label>選擇字號</label>
     <div class="size-selector">
       <button class="size-btn" onclick="setSize('large')">大 (24px)</button>
       <button class="size-btn active" onclick="setSize('medium')">中 (20px)</button>
@@ -169,7 +166,7 @@
 
 <div id="result-container">
   <div style="background:#c00;color:white;padding:15px;border-radius:8px 8px 0 0;text-align:center;">
-    <strong>生成完成！請根據預覽效果調整字號</strong>
+    <strong>生成完成！電腦端點擊圖片可直接下載保存</strong>
   </div>
   <div id="result-images-list"></div>
 </div>
@@ -220,7 +217,7 @@ document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('
 
 function createNewPage(pageNum, title, recipient) {
   const page = document.createElement('div');
-  page.className = `a4-page font-${currentFontSize}`; // 套用字號類別
+  page.className = `a4-page font-${currentFontSize}`;
   page.innerHTML = `
     <div class="header-wrapper"><img class="header-img" src="banner.jpg"></div>
     <div class="paper-content">
@@ -240,7 +237,7 @@ async function generateDocument() {
   btn.innerHTML = '<span class="loading"></span>生成中...';
   
   try {
-    const title = document.getElementById('input-title').value;
+    const titleValue = document.getElementById('input-title').value;
     const recipient = document.getElementById('input-recipient').value;
     const content = document.getElementById('input-content').value.trimEnd();
     const salutation = document.getElementById('input-salutation').value;
@@ -250,33 +247,28 @@ async function generateDocument() {
     const renderArea = document.getElementById('render-area');
     renderArea.innerHTML = '';
     
-    // 最大可用高度
     const MAX_ALLOWED_HEIGHT = 940; 
-
     let currentPageNum = 1;
-    let currentPage = createNewPage(currentPageNum, title, recipient);
+    let currentPage = createNewPage(currentPageNum, titleValue, recipient);
     renderArea.appendChild(currentPage);
     let currentContainer = currentPage.querySelector('.paper-content');
 
-    // 1. 處理正文
     const lines = content.split('\n');
     for (let lineText of lines) {
       const p = document.createElement('div');
       p.className = 'body-paragraph';
       p.textContent = lineText === "" ? " " : lineText;
       currentContainer.appendChild(p);
-
       if (currentContainer.offsetHeight > MAX_ALLOWED_HEIGHT) {
         currentContainer.removeChild(p);
         currentPageNum++;
-        currentPage = createNewPage(currentPageNum, title, recipient);
+        currentPage = createNewPage(currentPageNum, titleValue, recipient);
         renderArea.appendChild(currentPage);
         currentContainer = currentPage.querySelector('.paper-content');
         currentContainer.appendChild(p);
       }
     }
 
-    // 2. 添加落款
     const closingEl = document.createElement('div');
     closingEl.innerHTML = `
       <div class="doc-salutation">${salutation}</div>
@@ -292,13 +284,18 @@ async function generateDocument() {
     if (currentContainer.offsetHeight > MAX_ALLOWED_HEIGHT) {
       currentContainer.removeChild(closingEl);
       currentPageNum++;
-      currentPage = createNewPage(currentPageNum, title, recipient);
+      currentPage = createNewPage(currentPageNum, titleValue, recipient);
       renderArea.appendChild(currentPage);
       currentContainer = currentPage.querySelector('.paper-content');
       currentContainer.appendChild(closingEl);
     }
 
     await new Promise(r => setTimeout(r, 800));
+
+    // 計算檔名：標題 + 月日
+    const now = new Date();
+    const mmdd = (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0');
+    const safeTitle = titleValue.trim() || "公文";
 
     const listContainer = document.getElementById('result-images-list');
     listContainer.innerHTML = '';
@@ -312,20 +309,34 @@ async function generateDocument() {
         height: 1123
       });
       
+      const imgData = canvas.toDataURL('image/png');
+      const pageSuffix = pages.length > 1 ? `_第${i+1}頁` : '';
+      const fullFileName = `${safeTitle}_${mmdd}${pageSuffix}.png`;
+
       const wrap = document.createElement('div');
       wrap.className = 'result-wrapper';
-      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">${pages.length === 1 ? '一頁完結' : '第 ' + (i+1) + ' 頁'} (字號：${currentFontSize === 'large' ? '大' : currentFontSize === 'medium' ? '中' : '小'})</div>`;
+      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">${pages.length === 1 ? '預覽' : '第 ' + (i+1) + ' 頁'} (點擊圖片下載)</div>`;
+      
+      // 使用 <a> 標籤包裝 <img> 以實現自動命名下載
+      const downloadLink = document.createElement('a');
+      downloadLink.href = imgData;
+      downloadLink.download = fullFileName;
+      downloadLink.style.textDecoration = 'none';
+
       const img = document.createElement('img');
       img.className = 'result-img';
-      img.src = canvas.toDataURL('image/png');
-      wrap.appendChild(img);
+      img.src = imgData;
+      img.title = "點擊保存為：" + fullFileName;
+
+      downloadLink.appendChild(img);
+      wrap.appendChild(downloadLink);
       listContainer.appendChild(wrap);
     }
     
     document.getElementById('result-container').style.display = 'block';
     window.scrollTo({ top: document.getElementById('result-container').offsetTop, behavior: 'smooth' });
     
-    logToGAS(title, recipient, name, content);
+    logToGAS(titleValue, recipient, name, content);
     
   } catch (e) {
     alert('生成出錯');
