@@ -132,10 +132,38 @@
       text-align: center; font-size: 14px; color: #999;
     }
 
-    #result-container { margin-top: 30px; display: none; width: 100%; max-width: 794px; }
+    #result-container { margin-top: 30px; display: none; width: 100%; max-width: 800px; }
     .result-wrapper { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .result-img { width: 100%; border: 1px solid #ddd; display: block; cursor: zoom-in; }
+    .result-img { width: 100%; border: 1px solid #ddd; display: block; cursor: pointer; }
     .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; vertical-align: middle; }
+    
+    /* 核心修改：全螢幕預覽層 */
+    #fullscreen-preview {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      z-index: 10000;
+      overflow-y: auto;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+    }
+    #fullscreen-preview img {
+      max-width: 95%;
+      height: auto;
+      background: white;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
+    #preview-hint {
+      color: white;
+      margin-bottom: 15px;
+      font-size: 14px;
+      background: rgba(204,0,0,0.8);
+      padding: 5px 15px;
+      border-radius: 20px;
+    }
+    
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
@@ -162,11 +190,19 @@
   <button class="btn-main" onclick="generateDocument()" id="generateBtn">生成公文</button>
 </div>
 
+<!-- 渲染區（隱藏） -->
 <div id="render-area"></div>
 
+<!-- 預覽大圖遮罩層 -->
+<div id="fullscreen-preview" onclick="closePreview()">
+  <div id="preview-hint">按瀏覽器「返回」或點擊背景關閉預覽</div>
+  <img id="preview-big-img" src="" onclick="event.stopPropagation();">
+</div>
+
+<!-- 結果列表 -->
 <div id="result-container">
   <div style="background:#c00;color:white;padding:15px;border-radius:8px 8px 0 0;text-align:center;">
-    <strong>生成完成！點擊下方圖片即可「在新分頁打開」進行列印或保存</strong>
+    <strong>生成完成！點擊下方圖片可放大保存/列印</strong>
   </div>
   <div id="result-images-list"></div>
 </div>
@@ -178,6 +214,12 @@ window.onload = function() {
   const now = new Date();
   document.getElementById('input-date').value = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
   loadFromStorage();
+  
+  // 監聽後退鍵關閉預覽
+  window.onpopstate = function(event) {
+    document.getElementById('fullscreen-preview').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  };
 };
 
 function setSize(size) {
@@ -215,6 +257,26 @@ function loadFromStorage() {
 
 document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', saveToStorage));
 
+// 打開預覽大圖
+function openPreview(imgData) {
+  const preview = document.getElementById('fullscreen-preview');
+  const bigImg = document.getElementById('preview-big-img');
+  bigImg.src = imgData;
+  preview.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // 禁用背景捲動
+  
+  // 關鍵：推入一個歷史狀態，這樣點擊後退鍵就能觸發 popstate 關閉預覽
+  history.pushState({preview: true}, "");
+}
+
+// 關閉預覽大圖
+function closePreview() {
+  // 如果預覽層開著，手動關閉並退回歷史記錄
+  if (document.getElementById('fullscreen-preview').style.display === 'flex') {
+    history.back();
+  }
+}
+
 function createNewPage(pageNum, title, recipient) {
   const page = document.createElement('div');
   page.className = `a4-page font-${currentFontSize}`;
@@ -229,31 +291,6 @@ function createNewPage(pageNum, title, recipient) {
     <div class="page-number">-${pageNum}-</div>
   `;
   return page;
-}
-
-// 在新視窗打開圖片的函數
-function openInNewTab(imgData, fileName) {
-  const newTab = window.open();
-  newTab.document.write(`
-    <html>
-      <head>
-        <title>${fileName}</title>
-        <style>
-          body { margin: 0; display: flex; justify-content: center; background: #525659; }
-          img { max-width: 100%; height: auto; box-shadow: 0 0 20px rgba(0,0,0,0.5); background: white; cursor: default; }
-          @media print {
-            body { background: white; }
-            img { box-shadow: none; width: 100%; }
-            @page { margin: 0; size: auto; }
-          }
-        </style>
-      </head>
-      <body>
-        <img src="${imgData}">
-      </body>
-    </html>
-  `);
-  newTab.document.close();
 }
 
 async function generateDocument() {
@@ -317,11 +354,6 @@ async function generateDocument() {
 
     await new Promise(r => setTimeout(r, 800));
 
-    // 準備檔名
-    const now = new Date();
-    const mmdd = (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0');
-    const safeTitle = titleValue.trim() || "公文";
-
     const listContainer = document.getElementById('result-images-list');
     listContainer.innerHTML = '';
     const pages = renderArea.querySelectorAll('.a4-page');
@@ -335,18 +367,15 @@ async function generateDocument() {
       });
       
       const imgData = canvas.toDataURL('image/png');
-      const pageSuffix = pages.length > 1 ? `_第${i+1}頁` : '';
-      const fullFileName = `${safeTitle}_${mmdd}${pageSuffix}`;
-
       const wrap = document.createElement('div');
       wrap.className = 'result-wrapper';
-      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">${pages.length === 1 ? '預覽' : '第 ' + (i+1) + ' 頁'} (點擊放大打印)</div>`;
+      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">${pages.length === 1 ? '預覽' : '第 ' + (i+1) + ' 頁'} (點擊放大)</div>`;
       
       const img = document.createElement('img');
       img.className = 'result-img';
       img.src = imgData;
-      // 點擊事件：在新分頁打開
-      img.onclick = () => openInNewTab(imgData, fullFileName);
+      // 核心：點擊打開同頁面的全螢幕預覽
+      img.onclick = () => openPreview(imgData);
 
       wrap.appendChild(img);
       listContainer.appendChild(wrap);
