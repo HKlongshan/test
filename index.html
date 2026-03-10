@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>僑港順德龍山同鄉會 - 公文生成系統</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
@@ -45,6 +45,51 @@
     .btn-main { 
       background: #c00; color: white; border: none; padding: 15px; 
       border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; margin-top: 10px;
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+      #main-ui {
+        padding: 10px;
+        width: 100%;
+      }
+      
+      .control-panel {
+        padding: 15px;
+      }
+      
+      input, textarea {
+        font-size: 16px;
+        padding: 10px;
+      }
+      
+      .size-selector {
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .size-btn {
+        padding: 12px;
+      }
+      
+      .btn-main {
+        padding: 12px;
+        font-size: 16px;
+      }
+      
+      .doc-title {
+        font-size: 24px;
+      }
+      
+      .body-paragraph, .doc-recipient, .doc-salutation {
+        font-size: 18px;
+      }
+      
+      /* 触摸目标优化 */
+      .size-btn, .btn-main {
+        min-height: 44px;
+        touch-action: manipulation;
+      }
     }
 
     /* 渲染區 (隱藏) */
@@ -97,35 +142,35 @@
 </head>
 <body>
 
-<!-- 主界面 -->
-<div id="main-ui">
-  <div class="control-panel">
-    <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統</h2>
-    <div class="input-group"><label>公文標題</label><input type="text" id="input-title"></div>
-    <div class="input-group"><label>送達單位</label><input type="text" id="input-recipient"></div>
-    <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="8"></textarea></div>
-    <div class="input-group"><label>敬語</label><input type="text" id="input-salutation" value="此致"></div>
-    <div class="input-group"><label>署名</label><input type="text" id="input-name"></div>
-    <div class="input-group"><label>日期</label><input type="text" id="input-date"></div>
-    <div class="input-group">
-      <label>字號選擇</label>
-      <div class="size-selector">
-        <button class="size-btn" onclick="setSize('large')">大</button>
-        <button class="size-btn active" onclick="setSize('medium')">中</button>
-        <button class="size-btn" onclick="setSize('small')">小</button>
+    <!-- 主界面 -->
+    <div id="main-ui">
+      <div class="control-panel">
+        <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統</h2>
+        <div class="input-group"><label>公文標題</label><input type="text" id="input-title" autocomplete="off"></div>
+        <div class="input-group"><label>送達單位</label><input type="text" id="input-recipient" autocomplete="off"></div>
+        <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="8" autocomplete="off"></textarea></div>
+        <div class="input-group"><label>敬語</label><input type="text" id="input-salutation" value="此致" autocomplete="off"></div>
+        <div class="input-group"><label>署名</label><input type="text" id="input-name" autocomplete="off"></div>
+        <div class="input-group"><label>日期</label><input type="text" id="input-date" autocomplete="off"></div>
+        <div class="input-group">
+          <label>字號選擇</label>
+          <div class="size-selector">
+            <button class="size-btn" onclick="setSize('large')">大</button>
+            <button class="size-btn active" onclick="setSize('medium')">中</button>
+            <button class="size-btn" onclick="setSize('small')">小</button>
+          </div>
+        </div>
+        <button class="btn-main" onclick="generateDocument()" id="generateBtn">生成公文</button>
+      </div>
+
+      <!-- 生成結果 -->
+      <div id="result-container">
+        <div style="color:#666;font-size:14px;margin:15px 0 10px;text-align:center;">
+          温馨提示：點擊下方圖片即可進入「打印/保存模式」
+        </div>
+        <div id="result-images-list"></div>
       </div>
     </div>
-    <button class="btn-main" onclick="generateDocument()" id="generateBtn">生成公文</button>
-  </div>
-
-  <!-- 生成結果 -->
-  <div id="result-container">
-    <div style="color:#666;font-size:14px;margin:15px 0 10px;text-align:center;">
-      温馨提示：點擊下方圖片即可進入「打印/保存模式」
-    </div>
-    <div id="result-images-list"></div>
-  </div>
-</div>
 
 <!-- 單頁視圖 (打印模式) -->
 <div id="single-page-viewer">
