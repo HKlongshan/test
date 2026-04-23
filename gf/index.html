@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>僑港順德龍山同鄉會 - 公文生成系統</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { 
+      box-sizing: border-box; 
+      -webkit-text-size-adjust: none; 
+      text-size-adjust: none;
+    }
+    
+    body { 
+      font-family: "Microsoft YaHei", "SimSun", sans-serif; 
+      background: #f0f0f0; 
+      margin: 0; 
+      padding: 20px; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+    }
+    
+    .control-panel { 
+      background: white; 
+      padding: 20px; 
+      border-radius: 8px; 
+      width: 100%; 
+      max-width: 800px; 
+      margin-bottom: 20px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+    }
+    
+    .input-group { margin-bottom: 15px; }
+    label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 14px; color: #333; }
+    input, textarea { 
+      width: 100%; 
+      padding: 12px; 
+      border: 1px solid #ccc; 
+      border-radius: 4px; 
+      font-size: 14px; 
+      font-family: inherit;
+    }
+
+    /* 字號選擇器樣式 */
+    .size-selector {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .size-btn {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    .size-btn.active {
+      background: #c00;
+      color: #fff;
+      border-color: #c00;
+    }
+    
+    .btn-main { 
+      background: #c00; color: white; border: none; padding: 15px; 
+      border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; 
+      margin-top: 10px;
+    }
+    .btn-main:hover { background: #a00; }
+    
+    /* 核心渲染區 */
+    #render-area { position: absolute; left: -9999px; top: 0; width: 794px; }
+    
+    .a4-page { 
+      background: white; 
+      width: 794px; 
+      height: 1123px; 
+      display: block; 
+      position: relative; 
+      overflow: hidden;
+    }
+
+    .header-wrapper { 
+      width: 100%; 
+      height: 162px; 
+      border-bottom: 2px solid #c00; 
+    }
+    .header-img { width: 100%; height: 162px; display: block; }
+    
+    .paper-content { 
+      padding: 40px 80px 20px 80px; 
+      width: 100%;
+      height: auto; 
+    }
+    
+    .doc-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 25px; line-height: 1.4; }
+
+    /* 不同字號的正文樣式 */
+    .font-large .doc-recipient, .font-large .body-paragraph, .font-large .doc-salutation { font-size: 24px; line-height: 1.8; }
+    .font-medium .doc-recipient, .font-medium .body-paragraph, .font-medium .doc-salutation { font-size: 20px; line-height: 1.7; }
+    .font-small .doc-recipient, .font-small .body-paragraph, .font-small .doc-salutation { font-size: 16px; line-height: 1.5; }
+
+    .doc-recipient { margin-bottom: 10px; text-align: left; }
+    .body-paragraph { 
+      text-align: left; 
+      margin: 0; 
+      white-space: pre-wrap; 
+      word-wrap: break-word; 
+      word-break: break-all;
+      min-height: 1em;
+    }
+    
+    .doc-salutation { 
+      padding-left: 2em; 
+      margin-top: 20px; 
+      text-align: left; 
+    }
+    
+    .signature-wrapper {
+      display: flex; 
+      justify-content: flex-end; 
+      margin-top: 10px;
+      padding-right: 20px;
+    }
+    .signature-container { text-align: center; display: inline-block; }
+    .sig-name { font-size: 24px; margin-bottom: 2px; font-weight: bold; }
+    .sig-date { font-size: 20px; }
+    
+    .page-number {
+      position: absolute; bottom: 15px; left: 0; right: 0;
+      text-align: center; font-size: 14px; color: #999;
+    }
+
+    #result-container { margin-top: 30px; display: none; width: 100%; max-width: 794px; }
+    .result-wrapper { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .result-img { width: 100%; border: 1px solid #ddd; display: block;}
+    .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="control-panel">
+  <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統</h2>
+  <div class="input-group"><label>公文標題</label><input type="text" id="input-title"></div>
+  <div class="input-group"><label>送達單位</label><input type="text" id="input-recipient"></div>
+  <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="8"></textarea></div>
+  <div class="input-group"><label>敬語</label><input type="text" id="input-salutation" value="此致"></div>
+  <div class="input-group"><label>署名</label><input type="text" id="input-name"></div>
+  <div class="input-group"><label>日期</label><input type="text" id="input-date"></div>
+  
+  <div class="input-group">
+    <label>選擇字號 (內容多時選"小"，內容少時選"大")</label>
+    <div class="size-selector">
+      <button class="size-btn" onclick="setSize('large')">大 (24px)</button>
+      <button class="size-btn active" onclick="setSize('medium')">中 (20px)</button>
+      <button class="size-btn" onclick="setSize('small')">小 (16px)</button>
+    </div>
+  </div>
+
+  <button class="btn-main" onclick="generateDocument()" id="generateBtn">生成公文</button>
+</div>
+
+<div id="render-area"></div>
+
+<div id="result-container">
+  <div style="background:#c00;color:white;padding:15px;border-radius:8px 8px 0 0;text-align:center;">
+    <strong>生成完成！請根據預覽效果調整字號</strong>
+  </div>
+  <div id="result-images-list"></div>
+</div>
+
+<script>
+let currentFontSize = 'medium';
+
+window.onload = function() {
+  const now = new Date();
+  document.getElementById('input-date').value = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
+  loadFromStorage();
+};
+
+function setSize(size) {
+  currentFontSize = size;
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if(btn.innerText.includes(size === 'large' ? '大' : size === 'medium' ? '中' : '小')) {
+      btn.classList.add('active');
+    }
+  });
+  saveToStorage();
+}
+
+function saveToStorage() {
+  const fields = ['title', 'recipient', 'content', 'salutation', 'name', 'date'];
+  const data = { fontSize: currentFontSize };
+  fields.forEach(f => data[f] = document.getElementById('input-' + f).value);
+  localStorage.setItem('documentData', JSON.stringify(data));
+}
+
+function loadFromStorage() {
+  const saved = localStorage.getItem('documentData');
+  if (saved) {
+    const data = JSON.parse(saved);
+    Object.keys(data).forEach(key => {
+      if(key === 'fontSize') {
+        setSize(data[key]);
+      } else {
+        const el = document.getElementById('input-' + key);
+        if (el) el.value = data[key];
+      }
+    });
+  }
+}
+
+document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', saveToStorage));
+
+function createNewPage(pageNum, title, recipient) {
+  const page = document.createElement('div');
+  page.className = `a4-page font-${currentFontSize}`; // 套用字號類別
+  page.innerHTML = `
+    <div class="header-wrapper"><img class="header-img" src="banner.jpg"></div>
+    <div class="paper-content">
+      ${pageNum === 1 ? `
+        <div class="doc-title">${title}</div>
+        <div class="doc-recipient">${recipient ? recipient + '：' : ''}</div>
+      ` : ''}
+    </div>
+    <div class="page-number">-${pageNum}-</div>
+  `;
+  return page;
+}
+
+async function generateDocument() {
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span>生成中...';
+  
+  try {
+    const title = document.getElementById('input-title').value;
+    const recipient = document.getElementById('input-recipient').value;
+    const content = document.getElementById('input-content').value.trimEnd();
+    const salutation = document.getElementById('input-salutation').value;
+    const name = document.getElementById('input-name').value;
+    const date = document.getElementById('input-date').value;
+    
+    const renderArea = document.getElementById('render-area');
+    renderArea.innerHTML = '';
+    
+    // 最大可用高度
+    const MAX_ALLOWED_HEIGHT = 940; 
+
+    let currentPageNum = 1;
+    let currentPage = createNewPage(currentPageNum, title, recipient);
+    renderArea.appendChild(currentPage);
+    let currentContainer = currentPage.querySelector('.paper-content');
+
+    // 1. 處理正文
+    const lines = content.split('\n');
+    for (let lineText of lines) {
+      const p = document.createElement('div');
+      p.className = 'body-paragraph';
+      p.textContent = lineText === "" ? " " : lineText;
+      currentContainer.appendChild(p);
+
+      if (currentContainer.offsetHeight > MAX_ALLOWED_HEIGHT) {
+        currentContainer.removeChild(p);
+        currentPageNum++;
+        currentPage = createNewPage(currentPageNum, title, recipient);
+        renderArea.appendChild(currentPage);
+        currentContainer = currentPage.querySelector('.paper-content');
+        currentContainer.appendChild(p);
+      }
+    }
+
+    // 2. 添加落款
+    const closingEl = document.createElement('div');
+    closingEl.innerHTML = `
+      <div class="doc-salutation">${salutation}</div>
+      <div class="signature-wrapper">
+        <div class="signature-container">
+          <div class="sig-name">${name}</div>
+          <div class="sig-date">${date}</div>
+        </div>
+      </div>
+    `;
+    currentContainer.appendChild(closingEl);
+
+    if (currentContainer.offsetHeight > MAX_ALLOWED_HEIGHT) {
+      currentContainer.removeChild(closingEl);
+      currentPageNum++;
+      currentPage = createNewPage(currentPageNum, title, recipient);
+      renderArea.appendChild(currentPage);
+      currentContainer = currentPage.querySelector('.paper-content');
+      currentContainer.appendChild(closingEl);
+    }
+
+    await new Promise(r => setTimeout(r, 800));
+
+    const listContainer = document.getElementById('result-images-list');
+    listContainer.innerHTML = '';
+    const pages = renderArea.querySelectorAll('.a4-page');
+    
+    for (let i = 0; i < pages.length; i++) {
+      const canvas = await html2canvas(pages[i], {
+        scale: 2,
+        useCORS: true,
+        width: 794,
+        height: 1123
+      });
+      
+      const wrap = document.createElement('div');
+      wrap.className = 'result-wrapper';
+      wrap.innerHTML = `<div style="color:#c00;font-weight:bold;margin-bottom:10px;">${pages.length === 1 ? '一頁完結' : '第 ' + (i+1) + ' 頁'} (字號：${currentFontSize === 'large' ? '大' : currentFontSize === 'medium' ? '中' : '小'})</div>`;
+      const img = document.createElement('img');
+      img.className = 'result-img';
+      img.src = canvas.toDataURL('image/png');
+      wrap.appendChild(img);
+      listContainer.appendChild(wrap);
+    }
+    
+    document.getElementById('result-container').style.display = 'block';
+    window.scrollTo({ top: document.getElementById('result-container').offsetTop, behavior: 'smooth' });
+    
+    logToGAS(title, recipient, name, content);
+    
+  } catch (e) {
+    alert('生成出錯');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '生成公文';
+  }
+}
+
+function logToGAS(title, recipient, name, content) {
+  const gas_url = "https://script.google.com/macros/s/AKfycbwRu5P74s_0LMbIB8u6qo04bX-NGGsGa9l2pc32xz4o16DgDq7RxIYXAGlfTkqbzO_8/exec";
+  fetch(gas_url, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({
+      timestamp: new Date().toLocaleString('zh-HK'),
+      signature: name,
+      title: title,
+      recipient: recipient,
+      content: content,
+      fontSize: currentFontSize
+    })
+  }).catch(e => {});
+}
+</script>
+</body>
+</html>
