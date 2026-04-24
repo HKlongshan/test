@@ -658,131 +658,134 @@ const SYSTEM_PROMPT = `
 不要編造或提供與同鄉會無關的資訊。
 `.trim();
 
-/* ====== DOM 元素 ====== */
-let chatModal = document.getElementById('chatModal');
-let chatToggle = document.getElementById('chatToggle');
-let chatClose = document.getElementById('chatClose');
-let chatMessages = document.getElementById('chatMessages');
-let chatForm = document.getElementById('chatForm');
-let chatInput = document.getElementById('chatInput');
+// Wait for DOM to be ready
+document.addEventListener('DOMContentLoaded', function() {
+    /* ====== DOM 元素 ====== */
+    let chatModal = document.getElementById('chatModal');
+    let chatToggle = document.getElementById('chatToggle');
+    let chatClose = document.getElementById('chatClose');
+    let chatMessages = document.getElementById('chatMessages');
+    let chatForm = document.getElementById('chatForm');
+    let chatInput = document.getElementById('chatInput');
 
-/* ====== 開啟聊天視窗 ====== */
-chatToggle.addEventListener('click', function() {
-    chatModal.classList.remove('hidden');
-    chatInput.focus();
-});
-
-/* ====== 關閉聊天視窗（X 按鈕） ====== */
-chatClose.addEventListener('click', function() {
-    chatModal.classList.add('hidden');
-});
-
-/* ====== 點擊彈窗外部關閉 ====== */
-chatModal.addEventListener('click', function(e) {
-    if (e.target === chatModal) {
-        chatModal.classList.add('hidden');
-    }
-});
-
-/* ====== 輔助函式 ====== */
-function addMessage(text, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = \`flex \${sender === 'user' ? 'justify-end' : 'justify-start'} mb-2\`;
-
-    const bubble = document.createElement('div');
-    bubble.className = \`max-w-xs px-4 py-2 rounded-lg \${sender === 'user' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800'}\`;
-    bubble.textContent = text;
-
-    messageDiv.appendChild(bubble);
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function showTypingIndicator() {
-    const typingDiv = document.createElement('div');
-    typingDiv.id = 'typingIndicator';
-    typingDiv.className = 'flex justify-start mb-2';
-
-    const bubble = document.createElement('div');
-    bubble.className = 'max-w-xs px-4 py-2 rounded-lg bg-gray-200 text-gray-800';
-    bubble.innerHTML = '<span class="animate-pulse">正在輸入...</span>';
-
-    typingDiv.appendChild(bubble);
-    chatMessages.appendChild(typingDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function hideTypingIndicator() {
-    const typingIndicator = document.getElementById('typingIndicator');
-    if (typingIndicator) {
-        typingIndicator.remove();
-    }
-}
-
-/* ====== 呼叫 NVIDIA API ====== */
-async function callNvidiaApi(userMessage) {
-    const payload = {
-        model: "qwen/qwen3-coder-480b-a35b-instruct",
-        messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            { role: "user", content: userMessage }
-        ],
-        temperature: 0.7,
-        top_p: 0.8,
-        max_tokens: 512,
-        stream: false
-    };
-
-    const resp = await fetch(NVIDIA_API_URL, {
-        method: "POST",
-        headers: {
-            "Authorization": \`Bearer \${NVIDIA_API_KEY}\`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
+    /* ====== 開啟聊天視窗 ====== */
+    chatToggle.addEventListener('click', function() {
+        chatModal.classList.remove('hidden');
+        chatInput.focus();
     });
 
-    if (!resp.ok) {
-        const errText = await resp.text();
-        throw new Error(\`NVIDIA API error \${resp.status}: \${errText}\`);
+    /* ====== 關閉聊天視窗（X 按鈕） ====== */
+    chatClose.addEventListener('click', function() {
+        chatModal.classList.add('hidden');
+    });
+
+    /* ====== 點擊彈窗外部關閉 ====== */
+    chatModal.addEventListener('click', function(e) {
+        if (e.target === chatModal) {
+            chatModal.classList.add('hidden');
+        }
+    });
+
+    /* ====== 輔助函式 ====== */
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = \`flex \${sender === 'user' ? 'justify-end' : 'justify-start'} mb-2\`;
+
+        const bubble = document.createElement('div');
+        bubble.className = \`max-w-xs px-4 py-2 rounded-lg \${sender === 'user' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800'}\`;
+        bubble.textContent = text;
+
+        messageDiv.appendChild(bubble);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    const data = await resp.json();
-    if (data.choices && data.choices.length > 0) {
-        const message = data.choices[0].message;
-        return (message.content || "").trim();
+    function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.id = 'typingIndicator';
+        typingDiv.className = 'flex justify-start mb-2';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'max-w-xs px-4 py-2 rounded-lg bg-gray-200 text-gray-800';
+        bubble.innerHTML = '<span class="animate-pulse">正在輸入...</span>';
+
+        typingDiv.appendChild(bubble);
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-    return "";
-}
 
-/* ====== 表單提交 ====== */
-chatForm.addEventListener('submit', async e => {
-    e.preventDefault();
-    const userMsg = chatInput.value.trim();
-    if (!userMsg) return;
-
-    // 顯示使用者訊息
-    addMessage(userMsg, 'user');
-    chatInput.value = '';
-
-    try {
-        showTypingIndicator();
-        const botReply = await callNvidiaApi(userMsg);
-        hideTypingIndicator();
-        const finalReply = botReply || "抱歉，我暫時無法理解您的問題，請再試一次。";
-        addMessage(finalReply, 'bot');
-    } catch (err) {
-        console.error(err);
-        hideTypingIndicator();
-        // 後備方案：若 API 呼叫失敗，退回到規則庫（若該函式仍存在）
-        if (typeof generateBotResponse === 'function') {
-            const fallback = generateBotResponse(userMsg);
-            addMessage(fallback, 'bot');
-        } else {
-            // 沒有規則庫時，給出一般錯誤訊息
-            addMessage('服務暫時不可用，請稍後再試。', 'bot');
+    function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) {
+            typingIndicator.remove();
         }
     }
+
+    /* ====== 呼叫 NVIDIA API ====== */
+    async function callNvidiaApi(userMessage) {
+        const payload = {
+            model: "qwen/qwen3-coder-480b-a35b-instruct",
+            messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                { role: "user", content: userMessage }
+            ],
+            temperature: 0.7,
+            top_p: 0.8,
+            max_tokens: 512,
+            stream: false
+        };
+
+        const resp = await fetch(NVIDIA_API_URL, {
+            method: "POST",
+            headers: {
+                "Authorization": \`Bearer \${NVIDIA_API_KEY}\`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!resp.ok) {
+            const errText = await resp.text();
+            throw new Error(\`NVIDIA API error \${resp.status}: \${errText}\`);
+        }
+
+        const data = await resp.json();
+        if (data.choices && data.choices.length > 0) {
+            const message = data.choices[0].message;
+            return (message.content || "").trim();
+        }
+        return "";
+    }
+
+    /* ====== 表單提交 ====== */
+    chatForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const userMsg = chatInput.value.trim();
+        if (!userMsg) return;
+
+        // 顯示使用者訊息
+        addMessage(userMsg, 'user');
+        chatInput.value = '';
+
+        try {
+            showTypingIndicator();
+            const botReply = await callNvidiaApi(userMsg);
+            hideTypingIndicator();
+            const finalReply = botReply || "抱歉，我暫時無法理解您的問題，請再試一次。";
+            addMessage(finalReply, 'bot');
+        } catch (err) {
+            console.error(err);
+            hideTypingIndicator();
+            // 後備方案：若 API 呼叫失敗，退回到規則庫（若該函式仍存在）
+            if (typeof generateBotResponse === 'function') {
+                const fallback = generateBotResponse(userMsg);
+                addMessage(fallback, 'bot');
+            } else {
+                // 沒有規則庫時，給出一般錯誤訊息
+                addMessage('服務暫時不可用，請稍後再試。', 'bot');
+            }
+        }
+    });
 });
 </script>
 </body>
