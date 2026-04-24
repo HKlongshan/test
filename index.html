@@ -639,157 +639,21 @@
         }
     
 });</script><script>
-console.log('Chatbot script loading...');
-/* ====== 設定 ====== */
-const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
-const NVIDIA_API_KEY = "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"; // ← 請自行替換為您的金鑰
-
-/* ====== 系統提示：限制模型只能回答同鄉會相關問題 ====== */
-const SYSTEM_PROMPT = `
-你是順德龍山同鄉會的AI客服。你的職責僅是回答關於順德龍山同鄉會的問題，包括但不限於：
-- 入會流程、條件、所需文件、會費等
-- 會員福利（活動優先參與權、商業折扣、法律諮詢、文化資源等）
-- 辦公時間、聯絡方式（地址、電話、傳真、電子郵件、辦公時間）
-- 會長及領導班子資訊（現任會長胡國光、副會長、名譽會長等）
-- 同鄉會的歷史、宗旨、組織架構、重要活動（花炮會、新春座談會、觀音開庫等）
-- 網站上現有的各個欄位（首頁、會長獻辭、本會動態、龍山風采、關於本會、會員專區、聯繫我們等）的說明
-
-如果使用者的問題與以上主題完全無關，請禮貌地回答：
-「抱歉，我只能回答有關順德龍山同鄉會的問題。請詢問入會、會員福利、辦公時間、聯絡方式、會長資訊或同鄉會活動等相關問題。」
-不要編造或提供與同鄉會無關的資訊。
-`.trim();
-
-// Wait for DOM to be ready
+console.log('Test script loaded');
+// Simple test: when chatToggle is clicked, show alert
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded fired');
-    /* ====== DOM 元素 ====== */
-    let chatModal = document.getElementById('chatModal');
-    let chatToggle = document.getElementById('chatToggle');
-    let chatClose = document.getElementById('chatClose');
-    let chatMessages = document.getElementById('chatMessages');
-    let chatForm = document.getElementById('chatForm');
-    let chatInput = document.getElementById('chatInput');
-    console.log('Elements found:', {chatModal, chatToggle, chatClose, chatMessages, chatForm, chatInput});
-
-    /* ====== 開啟聊天視窗 ====== */
-    chatToggle.addEventListener('click', function() {
-        console.log('chatToggle clicked');
-        chatModal.classList.remove('hidden');
-        chatInput.focus();
-    });
-
-    /* ====== 關閉聊天視窗（X 按鈕） ====== */
-    chatClose.addEventListener('click', function() {
-        chatModal.classList.add('hidden');
-    });
-
-    /* ====== 點擊彈窗外部關閉 ====== */
-    chatModal.addEventListener('click', function(e) {
-        if (e.target === chatModal) {
-            chatModal.classList.add('hidden');
-        }
-    });
-
-    /* ====== 輔助函式 ====== */
-    function addMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = \`flex \${sender === 'user' ? 'justify-end' : 'justify-start'} mb-2\`;
-
-        const bubble = document.createElement('div');
-        bubble.className = \`max-w-xs px-4 py-2 rounded-lg \${sender === 'user' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800'}\`;
-        bubble.textContent = text;
-
-        messageDiv.appendChild(bubble);
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function showTypingIndicator() {
-        const typingDiv = document.createElement('div');
-        typingDiv.id = 'typingIndicator';
-        typingDiv.className = 'flex justify-start mb-2';
-
-        const bubble = document.createElement('div');
-        bubble.className = 'max-w-xs px-4 py-2 rounded-lg bg-gray-200 text-gray-800';
-        bubble.innerHTML = '<span class="animate-pulse">正在輸入...</span>';
-
-        typingDiv.appendChild(bubble);
-        chatMessages.appendChild(typingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function hideTypingIndicator() {
-        const typingIndicator = document.getElementById('typingIndicator');
-        if (typingIndicator) {
-            typingIndicator.remove();
-        }
-    }
-
-    /* ====== 呼叫 NVIDIA API ====== */
-    async function callNvidiaApi(userMessage) {
-        const payload = {
-            model: "qwen/qwen3-coder-480b-a35b-instruct",
-            messages: [
-                { role: "system", content: SYSTEM_PROMPT },
-                { role: "user", content: userMessage }
-            ],
-            temperature: 0.7,
-            top_p: 0.8,
-            max_tokens: 512,
-            stream: false
-        };
-
-        const resp = await fetch(NVIDIA_API_URL, {
-            method: "POST",
-            headers: {
-                "Authorization": \`Bearer \${NVIDIA_API_KEY}\`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
+    const chatToggle = document.getElementById('chatToggle');
+    const chatModal = document.getElementById('chatModal');
+    if (chatToggle && chatModal) {
+        console.log('Elements found');
+        chatToggle.addEventListener('click', function() {
+            console.log('chatToggle clicked');
+            chatModal.classList.remove('hidden');
+            alert('Chatbot UI works!');
         });
-
-        if (!resp.ok) {
-            const errText = await resp.text();
-            throw new Error(\`NVIDIA API error \${resp.status}: \${errText}\`);
-        }
-
-        const data = await resp.json();
-        if (data.choices && data.choices.length > 0) {
-            const message = data.choices[0].message;
-            return (message.content || "").trim();
-        }
-        return "";
+    } else {
+        console.log('Elements not found:', {chatToggle, chatModal});
     }
-
-    /* ====== 表單提交 ====== */
-    chatForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        const userMsg = chatInput.value.trim();
-        if (!userMsg) return;
-
-        // 顯示使用者訊息
-        addMessage(userMsg, 'user');
-        chatInput.value = '';
-
-        try {
-            showTypingIndicator();
-            const botReply = await callNvidiaApi(userMsg);
-            hideTypingIndicator();
-            const finalReply = botReply || "抱歉，我暫時無法理解您的問題，請再試一次。";
-            addMessage(finalReply, 'bot');
-        } catch (err) {
-            console.error(err);
-            hideTypingIndicator();
-            // 後備方案：若 API 呼叫失敗，退回到規則庫（若該函式仍存在）
-            if (typeof generateBotResponse === 'function') {
-                const fallback = generateBotResponse(userMsg);
-                addMessage(fallback, 'bot');
-            } else {
-                // 沒有規則庫時，給出一般錯誤訊息
-                addMessage('服務暫時不可用，請稍後再試。', 'bot');
-            }
-        }
-    });
 });
 </script>
 </body>
