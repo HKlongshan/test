@@ -592,7 +592,33 @@
     </script>
 
     <!-- AI Chatbot Functionality -->
-    <script>
+    
+<!-- AI Chatbot Button -->
+<div class="fixed bottom-6 right-6 z-50">
+  <button id="chatToggle" class="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-opacity-90 transition">
+    <i class="fas fa-robot text-xl"></i>
+  </button>
+</div>
+
+<!-- Chat Modal -->
+<div id="chatModal" class="fixed inset-0 hidden z-60 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white rounded-lg w-96 max-w-full p-6 relative">
+    <div class="flex justify-between items-start mb-4">
+      <h3 class="text-xl font-bold text-primary">龍山同鄉會 AI 客服</h3>
+      <button id="chatClose" class="text-gray-500 hover:text-primary">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div id="chatMessages" class="h-64 overflow-y-auto mb-4 space-y-2">
+      <!-- Messages will be appended here -->
+    </div>
+    <form id="chatForm" class="flex">
+      <input id="chatInput" type="text" placeholder="請輸入您的問題..." class="flex-1 px-4 py-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" />
+      <button type="submit" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-opacity-90 transition">發送</button>
+    </form>
+  </div>
+</div>
+<script>
         // Chatbot state
         let chatModal = document.getElementById('chatModal');
         let chatToggle = document.getElementById('chatToggle');
@@ -699,32 +725,6 @@
                 return `您好！我是順德龍山同鄉會的AI客服，可以幫您解答關於入會、活動、會員福利、聯繫方式等常見問題。\n\n您可以詢問：\n- 如何入會同鄉會？\n- 入會需要什麼條件？\n- 會員有哪些福利？\n- 本會有什麼活動？\n- 聯繫方式是什麼？\n- 員工時間是什麼時候？\n\n如果您的問題較為複雜，建議使用網頁底部的在線留言功能，我們的工作人員會盡快回覆您。`;
             }
         }
-    </script>
-<!-- AI Chatbot Button -->
-<div class="fixed bottom-6 right-6 z-50">
-  <button id="chatToggle" class="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-opacity-90 transition">
-    <i class="fas fa-robot text-xl"></i>
-  </button>
-</div>
-
-<!-- Chat Modal -->
-<div id="chatModal" class="fixed inset-0 hidden z-60 flex items-center justify-center bg-black bg-opacity-50">
-  <div class="bg-white rounded-lg w-96 max-w-full p-6 relative">
-    <div class="flex justify-between items-start mb-4">
-      <h3 class="text-xl font-bold text-primary">龍山同鄉會 AI 客服</h3>
-      <button id="chatClose" class="text-gray-500 hover:text-primary">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div id="chatMessages" class="h-64 overflow-y-auto mb-4 space-y-2">
-      <!-- Messages will be appended here -->
-    </div>
-    <form id="chatForm" class="flex">
-      <input id="chatInput" type="text" placeholder="請輸入您的問題..." class="flex-1 px-4 py-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" />
-      <button type="submit" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-opacity-90 transition">發送</button>
-    </form>
-  </div>
-</div>
-</body>
+    </script></body>
 </html>
 
