@@ -639,21 +639,65 @@
         }
     
 });</script><script>
-console.log('Test script loaded');
-// Simple test: when chatToggle is clicked, show alert
+console.log('Simple chatbot script loaded');
+// Wait for DOM
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded');
     const chatToggle = document.getElementById('chatToggle');
     const chatModal = document.getElementById('chatModal');
-    if (chatToggle && chatModal) {
-        console.log('Elements found');
-        chatToggle.addEventListener('click', function() {
-            console.log('chatToggle clicked');
-            chatModal.classList.remove('hidden');
-            alert('Chatbot UI works!');
-        });
-    } else {
-        console.log('Elements not found:', {chatToggle, chatModal});
+    const chatClose = document.getElementById('chatClose');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+    console.log('Elements:', !!chatToggle, !!chatModal, !!chatClose, !!chatForm, !!chatInput, !!chatMessages);
+    if (!chatToggle || !chatModal) {
+        console.error('Missing essential elements');
+        return;
     }
+    // Open chat
+    chatToggle.addEventListener('click', function() {
+        console.log('chatToggle clicked');
+        chatModal.classList.remove('hidden');
+        chatInput.focus();
+    });
+    // Close chat
+    chatClose.addEventListener('click', function() {
+        chatModal.classList.add('hidden');
+    });
+    // Close on backdrop click
+    chatModal.addEventListener('click', function(e) {
+        if (e.target === chatModal) {
+            chatModal.classList.add('hidden');
+        }
+    });
+    // Handle form submit
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const msg = chatInput.value.trim();
+        if (!msg) return;
+        // Add user message
+        const userDiv = document.createElement('div');
+        userDiv.className = 'flex justify-end mb-2';
+        const userBubble = document.createElement('div');
+        userBubble.className = 'max-w-xs px-4 py-2 rounded-lg bg-primary text-white';
+        userBubble.textContent = msg;
+        userDiv.appendChild(userBubble);
+        chatMessages.appendChild(userDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Clear input
+        chatInput.value = '';
+        // Simulate bot response after short delay
+        setTimeout(function() {
+            const botDiv = document.createElement('div');
+            botDiv.className = 'flex justify-start mb-2';
+            const botBubble = document.createElement('div');
+            botBubble.className = 'max-w-xs px-4 py-2 rounded-lg bg-gray-200 text-gray-800';
+            botBubble.textContent = '这是一个测试回复。聊天机器人 UI 正常工作！';
+            botDiv.appendChild(botBubble);
+            chatMessages.appendChild(botDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 500);
+    });
 });
 </script>
 </body>
