@@ -736,7 +736,7 @@ async function callNvidiaApi(userMessage) {
     const resp = await fetch(NVIDIA_API_URL, {
         method: "POST",
         headers: {
-            "Authorization": `Bearer ${NVIDIA_API_KEY}`,
+            "Authorization": \`Bearer \${NVIDIA_API_KEY}\`,
             "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
@@ -744,7 +744,7 @@ async function callNvidiaApi(userMessage) {
 
     if (!resp.ok) {
         const errText = await resp.text();
-        throw new Error(`NVIDIA API error ${resp.status}: ${errText}`);
+        throw new Error(\`NVIDIA API error \${resp.status}: \${errText}\`);
     }
 
     const data = await resp.json();
