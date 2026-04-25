@@ -591,214 +591,46 @@
         });
     </script>
 
-    <!-- AI Chatbot Functionality -->
-    
-<!-- AI Chatbot Button -->
-<div class="fixed bottom-6 right-6 z-50">
-  <button id="chatToggle" class="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-opacity-90 transition hidden">
-    <i class="fas fa-robot text-xl"></i>
-  </button>
-</div>
+        <!-- AI Chatbot -->
+    <style>
+      @media(max-width:480px){
+        #chatbot-panel{width:calc(100vw - 24px)!important;right:12px!important;bottom:80px!important;height:70vh!important;}
+      }
+    </style>
 
-<!-- Chat Modal -->
-<div id="chatModal" class="fixed bottom-6 right-6 z-50 w-[20vw] h-[20vh] max-w-[20vw] max-h-[20vh]">
-  <div class="bg-white rounded-lg w-full h-full p-6 flex flex-col">
-    <div class="flex justify-between items-start mb-4">
-      <h3 class="text-xl font-bold text-primary">龍山同鄉會 AI 客服</h3>
-      <button id="chatClose" class="text-gray-500 hover:text-primary">
-        <i class="fas fa-times"></i>
-      </button>
+    <div class="fixed bottom-6 right-6 z-50 cursor-pointer" onclick="toggleChat()">
+      <div class="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        <i class="fas fa-comments text-lg" id="chat-btn-icon"></i>
+      </div>
     </div>
-    <div id="chatMessages" class="flex-1 overflow-y-auto mb-4 space-y-2">
-      <!-- Messages will be appended here -->
+
+    <div id="chatbot-panel" class="fixed bottom-24 right-6 z-50 w-[380px] h-[520px] bg-white rounded-2xl shadow-2xl flex-col overflow-hidden" style="display:none;">
+      <div class="bg-primary text-white p-4 flex justify-between items-center flex-shrink-0">
+        <div>
+          <h3 class="font-bold text-base">龍山同鄉會 AI 客服</h3>
+          <p class="text-xs opacity-80">有任何問題都可以問我</p>
+        </div>
+        <button onclick="toggleChat()" class="text-white hover:text-secondary transition ml-2">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="chatbot-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+        <div style="display:flex;justify-content:flex-start;">
+          <div style="background:#fff;color:#333;border:1px solid #e5e7eb;border-radius:16px 16px 16px 4px;padding:10px 14px;max-width:80%;font-size:14px;line-height:1.6;">您好！我是順德龍山同鄉會的AI客服，可以幫您了解入會、活動、聯絡方式等問題。請問有什麼可以幫您？</div>
+        </div>
+      </div>
+      <div class="p-3 border-t bg-white flex-shrink-0">
+        <form id="chatbot-form" class="flex gap-2">
+          <input id="chatbot-input" type="text" placeholder="請輸入您的問題..." class="flex-1 px-4 py-2.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm" autocomplete="off">
+          <button type="submit" class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-90 transition flex-shrink-0">
+            <i class="fas fa-paper-plane text-sm"></i>
+          </button>
+        </form>
+      </div>
     </div>
-    <form id="chatForm" class="flex">
-      <input id="chatInput" type="text" placeholder="請輸入您的問題..." class="flex-1 px-4 py-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" />
-      <button type="submit" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-opacity-90 transition">發送</button>
-    </form>
-  </div>
-</div>
-<script>        document.addEventListener('DOMContentLoaded', function() {\n1. 年齡滿18周歲\n2. 本人或直系親屬為龍山籍\n3. 認同本會章程\n\n入會流程：\n1. 填寫入會申請表\n2. 繳納會費\n3. 理事會審核通過\n\n您可以點擊頁面上的「入會申請表」下載表格，或掃描聯繫我們區域的微信公眾號二維碼。`;
-            } else if (message.includes('會費') || message.includes('費用')) {
-                return `會員會費具體金額請參考入會申請表或聯絡會務顧問。一般來說，會費用於支持同鄉會的各項活動和服務，包括文化傳承、鄉親聯誼、法律諮詢等。`;
-            } else if (message.includes('活動') || message.includes('聯誼') || message.includes('文化')) {
-                return `本會定期舉辦各類文化聯誼活動，包括節日慶典、文化體驗、公益項目等。會員可優先參與活動。具體活動信息請查看「本會動態」或「龍山風采」章節。`;
-            } else if (message.includes('法律') || message.includes('諮詢')) {
-                return `本會為會員提供免費專業法律顧問的基礎法律諮詢服務。如需法律諮詢，請聯繫會務顧問或通過在線留言功能提出您的問題。`;
-            } else if (message.includes('地址') || message.includes('位置') || message.includes('聯繫')) {
-                return `本會聯繫資訊：\n地址：香港九龍旺角彌敦道580號恆隆大廈12樓\n電話：+852 2770 8156\n傳真：+852 2770 8156\n郵箱：admin@longshan.xin\n辦公時間：週一至週五 9:00-12:00\n\n您也可以掃描頁面底部的微信公眾號二維碼進行聯繫。`;
-            } else if (message.includes('會長') || message.includes('胡國光')) {
-                return `現任會長是胡國光。會長獻辭可在網站首頁的「會長獻辭」章節查看。`;
-            } else if (message.includes('照片') || message.includes('相冊') || message.includes('風采')) {
-                return `網站的「龍山風采」章節展示了眾多活動照片，您可以直接瀏覽。同時，每則本會動態也包含詳細的活動照片畫廊。`;
-            } else if (message.includes('時間') || message.includes('小時')) {
-                return `本會辦公時間為：週一至週五 9:00-12:00。如需Outside辦公時間聯繫，請通過在線留言或電子郵箱 admin@longshan.xin，我們會盡快回覆。`;
-            } else {
-                return `您好！我是順德龍山同鄉會的AI客服，可以幫您解答關於入會、活動、會員福利、聯繫方式等常見問題。\n\n您可以詢問：\n- 如何入會同鄉會？\n- 入會需要什麼條件？\n- 會員有哪些福利？\n- 本會有什麼活動？\n- 聯繫方式是什麼？\n- 員工時間是什麼時候？\n\n如果您的問題較為複雜，建議使用網頁底部的在線留言功能，我們的工作人員會盡快回覆您。`;
-            }
-        }
-    
-});</script><script>
-/* ====== 設定 ====== */
-const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
-const NVIDIA_API_KEY = "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"; // ← 請自行替換為您的金鑰
 
-/* ====== 系統提示：限制模型只能回答同鄉會相關問題 ====== */
-const SYSTEM_PROMPT = `
-你是順德龍山同鄉會的AI客服。你的職責僅是回答關於順德龍山同鄉會的問題，包括但不限於：
-- 入會流程、條件、所需文件、會費等
-- 會員福利（活動優先參與權、商業折扣、法律諮詢、文化資源等）
-- 辦公時間、聯絡方式（地址、電話、傳真、電子郵件、辦公時間）
-- 會長及領導班子資訊（現任會長胡國光、副會長、名譽會長等）
-- 同鄉會的歷史、宗旨、組織架構、重要活動（花炮會、新春座談會、觀音開庫等）
-- 網站上現有的各個欄位（首頁、會長獻辭、本會動態、龍山風采、關於本會、會員專區、聯繫我們等）的說明
-
-如果使用者的問題與以上主題完全無關，請禮貌地回答：
-「抱歉，我只能回答有關順德龍山同鄉會的問題。請詢問入會、會員福利、辦公時間、聯絡方式、會長資訊或同鄉會活動等相關問題。」
-不要編造或提供與同鄉會無關的資訊。
-`.trim();
-
-// Wait for DOM to be ready
-document.addEventListener('DOMContentLoaded', function() {
-    /* ====== DOM 元素 ====== */
-    let chatModal = document.getElementById('chatModal');
-    let chatToggle = document.getElementById('chatToggle');
-    let chatClose = document.getElementById('chatClose');
-    let chatMessages = document.getElementById('chatMessages');
-    let chatForm = document.getElementById('chatForm');
-    let chatInput = document.getElementById('chatInput');
-
-    // Safety check
-    if (!chatToggle || !chatModal) {
-        console.error('Chatbot elements not found');
-        return;
-    }
-
-    // Auto-open chat modal on page load
-    chatModal.classList.remove('hidden');
-    chatInput.focus();
-
-    /* ====== 開啟聊天視窗 ====== */
-    chatToggle.addEventListener('click', function() {
-        chatModal.classList.remove('hidden');
-        chatInput.focus();
-    });
-
-    /* ====== 關閉聊天視窗（X 按鈕） ====== */
-    chatClose.addEventListener('click', function() {
-        chatModal.classList.add('hidden');
-    });
-
-    /* ====== 點擊彈窗外部關閉 ====== */
-    chatModal.addEventListener('click', function(e) {
-        if (e.target === chatModal) {
-            chatModal.classList.add('hidden');
-        }
-    });
-
-    /* ====== 輔助函式 ====== */
-    function addMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = \`flex \${sender === 'user' ? 'justify-end' : 'justify-start'} mb-2\`;
-
-        const bubble = document.createElement('div');
-        bubble.className = \`max-w-xs px-4 py-2 rounded-lg \${sender === 'user' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800'}\`;
-        bubble.textContent = text;
-
-        messageDiv.appendChild(bubble);
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function showTypingIndicator() {
-        const typingDiv = document.createElement('div');
-        typingDiv.id = 'typingIndicator';
-        typingDiv.className = 'flex justify-start mb-2';
-
-        const bubble = document.createElement('div');
-        bubble.className = 'max-w-xs px-4 py-2 rounded-lg bg-gray-200 text-gray-800';
-        bubble.innerHTML = '<span class="animate-pulse">正在輸入...</span>';
-
-        typingDiv.appendChild(bubble);
-        chatMessages.appendChild(typingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function hideTypingIndicator() {
-        const typingIndicator = document.getElementById('typingIndicator');
-        if (typingIndicator) {
-            typingIndicator.remove();
-        }
-    }
-
-    /* ====== 呼叫 NVIDIA API ====== */
-    async function callNvidiaApi(userMessage) {
-        const payload = {
-            model: "qwen/qwen3-coder-480b-a35b-instruct",
-            messages: [
-                { role: "system", content: SYSTEM_PROMPT },
-                { role: "user", content: userMessage }
-            ],
-            temperature: 0.7,
-            top_p: 0.8,
-            max_tokens: 512,
-            stream: false
-        };
-
-        try {
-            const resp = await fetch(NVIDIA_API_URL, {
-                method: "POST",
-                headers: {
-                    "Authorization": \`Bearer \${NVIDIA_API_KEY}\`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!resp.ok) {
-                const errText = await resp.text();
-                throw new Error(\`NVIDIA API error \${resp.status}: \${errText}\`);
-            }
-
-            const data = await resp.json();
-            if (data.choices && data.choices.length > 0) {
-                const message = data.choices[0].message;
-                return (message.content || "").trim();
-            }
-            return "";
-        } catch (err) {
-            console.error('NVIDIA API call failed:', err);
-            throw err; // Re-throw to be caught by the form handler
-        }
-    }
-
-    /* ====== 表單提交 ====== */
-    chatForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        const userMsg = chatInput.value.trim();
-        if (!userMsg) return;
-
-        // 顯示使用者訊息
-        addMessage(userMsg, 'user');
-        chatInput.value = '';
-
-        try {
-            showTypingIndicator();
-            const botReply = await callNvidiaApi(userMsg);
-            hideTypingIndicator();
-            const finalReply = botReply || "抱歉，我暫時無法理解您的問題，請再試一次。";
-            addMessage(finalReply, 'bot');
-        } catch (err) {
-            console.error(err);
-            hideTypingIndicator();
-            // 後備方案：若 API 呼叫失敗，給出友好訊息
-            addMessage('服務暫時不可用，請稍後再試。', 'bot');
-        }
-    });
-});
-</script>
+    <script src="chatbot.js"></script>
 </body>
 </html>
-
 
 <!-- Trigger rebuild: 2026-04-24 03:10:28 -->
