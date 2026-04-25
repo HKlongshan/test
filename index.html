@@ -595,21 +595,21 @@
     
 <!-- AI Chatbot Button -->
 <div class="fixed bottom-6 right-6 z-50">
-  <button id="chatToggle" class="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-opacity-90 transition">
+  <button id="chatToggle" class="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-opacity-90 transition hidden">
     <i class="fas fa-robot text-xl"></i>
   </button>
 </div>
 
 <!-- Chat Modal -->
-<div id="chatModal" class="fixed inset-0 hidden z-60 flex items-center justify-center bg-black bg-opacity-50">
-  <div class="bg-white rounded-lg w-96 max-w-full p-6 relative">
+<div id="chatModal" class="fixed bottom-6 right-6 z-50 w-[20vw] h-[20vh] max-w-[20vw] max-h-[20vh]">
+  <div class="bg-white rounded-lg w-full h-full p-6 flex flex-col">
     <div class="flex justify-between items-start mb-4">
       <h3 class="text-xl font-bold text-primary">龍山同鄉會 AI 客服</h3>
       <button id="chatClose" class="text-gray-500 hover:text-primary">
         <i class="fas fa-times"></i>
       </button>
     </div>
-    <div id="chatMessages" class="h-64 overflow-y-auto mb-4 space-y-2">
+    <div id="chatMessages" class="flex-1 overflow-y-auto mb-4 space-y-2">
       <!-- Messages will be appended here -->
     </div>
     <form id="chatForm" class="flex">
@@ -673,6 +673,10 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Chatbot elements not found');
         return;
     }
+
+    // Auto-open chat modal on page load
+    chatModal.classList.remove('hidden');
+    chatInput.focus();
 
     /* ====== 開啟聊天視窗 ====== */
     chatToggle.addEventListener('click', function() {
