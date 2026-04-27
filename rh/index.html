@@ -39,6 +39,104 @@
       animation: flash-red 0.5s 3;
       border: 2px solid red !important;
     }
+
+    /* ── 成功彈出 Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Roboto', 'Google Sans', 'Microsoft JhengHei', Helvetica, Arial, sans-serif;
+    }
+    .modal-overlay.show { display: flex; }
+
+    .modal-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 36px 32px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.7); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .modal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, #f55f41, #9b3d2a, #f55f41);
+    }
+    .modal-icon {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, #f55f41, #9b3d2a);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 6px 20px rgba(200,60,30,0.35);
+    }
+    .modal-icon i {
+      color: #fff;
+      font-size: 34px;
+    }
+    .modal-card h2 {
+      color: #9b3d2a;
+      font-size: 26px;
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+    .modal-card p {
+      color: #555;
+      font-size: 15px;
+      line-height: 1.65;
+      margin: 0 0 16px;
+    }
+    .modal-id {
+      background: #fff5f2;
+      border: 1.5px dashed #f55f41;
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin: 0 auto 20px;
+      max-width: 260px;
+    }
+    .modal-id .label { font-size: 12px; color: #999; margin-bottom: 4px; }
+    .modal-id .value { font-size: 18px; color: #9b3d2a; font-weight: 700; letter-spacing: 2px; }
+    .modal-card .tip {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .modal-btn {
+      background: linear-gradient(135deg, #f55f41, #9b3d2a);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 14px 36px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(200,60,30,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(200,60,30,0.4); }
+    .modal-btn:active { transform: translateY(0); }
+
+    /* ── Mobile responsive ── */
+    @media (max-width: 600px) {
+      .modal-card { padding: 32px 24px 28px; }
+      .modal-card h2 { font-size: 22px; }
+      .modal-id .value { font-size: 16px; }
+    }
   </style>
 </head>
 <body>
@@ -124,6 +222,21 @@
   </form>
 </div>
 
+<!-- 成功彈出 Modal -->
+<div id="successModal" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-icon"><i class="fa-solid fa-check"></i></div>
+    <h2>歡迎加入龍山同鄉會！</h2>
+    <p>您的入會申請已成功提交<br>我們將盡快與您聯繫</p>
+    <div class="modal-id">
+      <div class="label">您的臨時會員號碼</div>
+      <div class="value" id="modalMemberId">—</div>
+    </div>
+    <div class="tip">請携同此號碼，盡快前往秘書處<br>繳交 HK$100 永遠會費，激活會員資格</div>
+    <button class="modal-btn" onclick="closeModal()">完成 ✓</button>
+  </div>
+</div>
+
 <script>
   const canvas = document.getElementById('sig-canvas');
   const signaturePad = new SignaturePad(canvas);
@@ -137,6 +250,18 @@
   }
   window.addEventListener("resize", resizeCanvas);
   setTimeout(resizeCanvas, 500);
+
+  function showSuccessModal(memberId) {
+    document.getElementById('modalMemberId').textContent = memberId;
+    document.getElementById('successModal').classList.add('show');
+  }
+  function closeModal() {
+    document.getElementById('successModal').classList.remove('show');
+  }
+  // 點擊遮罩層也可關閉
+  document.getElementById('successModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
 
   function handleError(element, message) {
     alert(message);
@@ -270,10 +395,10 @@
             mode: 'no-cors' 
         });
 
-        alert("歡迎加入龍山同鄉會\n\n您的會員號碼為：" + memberId + "\n\n數據已完成備份，請及時前往秘書處繳費激活會員身份。");
+        showSuccessModal(memberId);
         form.reset();
         signaturePad.clear();
-        msg.innerText = "提交成功。";
+        msg.innerText = "";
     } catch (e) {
         alert("提交出現異常，請聯絡秘書處。錯誤資訊：" + e);
         msg.innerText = "發生錯誤。";

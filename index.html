@@ -137,6 +137,38 @@
             height: auto;
             object-fit: cover;
         }
+
+        /* ── 手機端微調 ── */
+        @media (max-width: 640px) {
+            /* Hero 文字 */
+            .hero-slide { height: 280px !important; }
+            #hero-title { font-size: 1.75rem !important; }
+            #hero-subtitle { font-size: 0.95rem !important; }
+            /* 頂部 Logo 文字 */
+            header h1 { font-size: 1rem !important; }
+            /* 區塊標題 */
+            h2.text-3xl { font-size: 1.5rem !important; }
+            h3.text-2xl { font-size: 1.2rem !important; }
+            /* 動態卡片 */
+            .news-card h3 { font-size: 1rem !important; }
+            .news-card p  { font-size: 0.8rem !important; }
+            /* 會長區 */
+            .president-section { padding: 1rem !important; }
+            /* 入會流程卡片 */
+            #membership .flex-wrap > div { min-width: 100% !important; margin-bottom: 0.75rem; }
+            /* 聯絡資訊 */
+            #contact .text-xl { font-size: 1rem !important; }
+            /* 聯絡按鈕 */
+            .contact-btn { font-size: 0.85rem !important; padding: 0.6rem 1rem !important; }
+            /* 底部版權 */
+            footer .text-sm { font-size: 0.75rem !important; }
+        }
+
+        /* 相册網格：手機上每行顯示 2 張 */
+        @media (max-width: 480px) {
+            #gallery .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.5rem !important; }
+            .gallery-item { height: 120px !important; }
+        }
     </style>
 </head>
 <body>
@@ -187,7 +219,7 @@
         <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-3" id="hero-indicators"></div>
     </section>
 
-    <section class="bg-white py-12">
+    <section class="bg-white py-12 president-section">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-primary mb-8 text-center">會長獻辭</h2>
             
@@ -326,7 +358,7 @@
                         <div class="mb-4"><input type="email" placeholder="電子郵箱" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
                         <div class="mb-4"><input type="tel" placeholder="電話號碼" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
                         <div class="mb-4"><textarea placeholder="您的留言" rows="3" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></textarea></div>
-                        <button type="submit" class="bg-secondary text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition">提交留言</button>
+                        <button type="submit" class="bg-secondary text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition contact-btn">提交留言</button>
                     </form>
                 </div>
             </div>
@@ -511,7 +543,7 @@
         const newsGrid = document.getElementById('news-grid');
         siteData.news.forEach(item => {
             const card = document.createElement('div');
-            card.className = 'bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer'; 
+            card.className = 'bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer news-card'; 
             
             // 綁定點擊事件，點擊後打開彈窗
             card.setAttribute('onclick', `openNewsModal(${item.id})`); 
