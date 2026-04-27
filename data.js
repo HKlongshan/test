@@ -3,7 +3,7 @@ const siteData = {
     // 1. 網站基本信息 
     basic: {
         name: "順德龍山同鄉會",
-        copyrightYear: "2025",
+        copyrightYear: "2026",
         logo: "pict/icon.jpg" 
     },
 
