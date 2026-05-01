@@ -169,6 +169,26 @@
             #gallery .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.5rem !important; }
             .gallery-item { height: 120px !important; }
         }
+
+        /* 「更多照片」按鈕樣式 */
+        #modal-more-photos a {
+            transition: all 0.3s ease;
+        }
+        #modal-more-photos a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 16, 46, 0.3);
+        }
+        #modal-more-photos a:active {
+            transform: translateY(0);
+        }
+        /* 手機端按鈕自適應 */
+        @media (max-width: 480px) {
+            #modal-more-photos a {
+                width: 100%;
+                justify-content: center;
+                padding: 0.75rem 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -394,8 +414,9 @@
 
             <h3 class="text-xl font-semibold text-primary mb-3">活動照片</h3>
             
-            <div id="modal-gallery" class="grid gap-4">
-                </div>
+            <div id="modal-gallery" class="grid gap-4"></div>
+            
+            <div id="modal-more-photos" class="mt-4 text-center"></div>
         </div>
     </div>
     <script src="data.js"></script>
@@ -500,8 +521,17 @@
                     img.className = 'w-full h-auto rounded-lg shadow-md'; // 確保圖片響應式
                     modalGallery.appendChild(img);
                 });
+                // 添加「更多照片」按鈕
+                document.getElementById('modal-more-photos').innerHTML = `
+                    <a href="https://longshan.xin/photos/" target="_blank" 
+                       class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition font-medium shadow-md">
+                        <i class="fas fa-images"></i>
+                        更多照片
+                    </a>
+                `;
             } else {
                  modalGallery.innerHTML = '<p class="text-gray-500">暫無相關活動照片。</p>';
+                 document.getElementById('modal-more-photos').innerHTML = '';
             }
 
             // 3. 顯示彈窗
