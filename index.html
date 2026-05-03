@@ -189,7 +189,49 @@
                 padding: 0.75rem 1rem;
             }
         }
+
+        /* 優化手機版排版 */
+        @media (max-width: 480px) {
+            body { font-size: 14px; line-height: 1.6; }
+            h1 { font-size: 1.5rem !important; }
+            h2 { font-size: 1.25rem !important; }
+            h3 { font-size: 1.1rem !important; }
+            p { font-size: 0.9rem !important; }
+            button, .btn { min-height: 44px; min-width: 44px; } /* 最小觸控區域 */
+            a { min-height: 44px; display: inline-flex; align-items: center; }
+        }
+        @media (max-width: 360px) {
+            body { font-size: 13px; }
+            h1 { font-size: 1.3rem !important; }
+        }
     </style>
+    <!-- Schema.org 結構化數據 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "僑港順德龍山同鄉會",
+      "alternateName": "Hong Kong Shunde Long Shan Association",
+      "url": "https://longshan.xin",
+      "logo": "https://longshan.xin/pict/banner1.jpg",
+      "description": "僑港順德龍山同鄉會成立於1985年，秉承「團結鄉親、服務鄉親、造福鄉親」宗旨，聯繫全球龍山鄉親，傳承非遺文化。",
+      "foundingDate": "1985",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "彌敦道580號恆隆大廈12樓",
+        "addressLocality": "旺角",
+        "addressRegion": "九龍",
+        "postalCode": "",
+        "addressCountry": "HK"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+852-2770-8156",
+        "contactType": "customer service",
+        "availableLanguage": ["Cantonese", "Mandarin"]
+      }
+    }
+    </script>
 </head>
 <body>
     <header class="bg-primary text-white shadow-md">
@@ -710,6 +752,31 @@
     </div>
 
     <script src="chatbot.js"></script>
+
+    <!-- 回到頂部按鈕 -->
+    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" 
+        style="display:none;position:fixed;bottom:100px;right:24px;z-index:40;width:56px;height:56px;
+               background:linear-gradient(135deg,#C8102E,#E8304A);color:white;border:none;border-radius:50%;
+               box-shadow:0 4px 12px rgba(200,16,46,0.4);cursor:pointer;font-size:20px;
+               transition:all 0.3s ease;opacity:0;transform:translateY(20px);"
+        onmouseover="this.style.transform='translateY(0) scale(1.1)';this.style.boxShadow='0 6px 20px rgba(200,16,46,0.5)'"
+        onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 4px 12px rgba(200,16,46,0.4)'">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    <script>
+        window.addEventListener('scroll', function() {
+            var btn = document.getElementById('backToTop');
+            if (!btn) return;
+            if (window.scrollY > 400) {
+                btn.style.display = 'block';
+                setTimeout(function() { btn.style.opacity = '1'; btn.style.transform = 'translateY(0)'; }, 10);
+            } else {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(20px)';
+                setTimeout(function() { if (window.scrollY <= 400) btn.style.display = 'none'; }, 300);
+            }
+        });
+    </script>
 </body>
 </html>
 

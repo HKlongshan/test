@@ -455,5 +455,29 @@
   })();
 </script>
 
+    <!-- 回到頂部按鈕 -->
+    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" 
+        style="display:none;position:fixed;bottom:100px;right:24px;z-index:40;width:56px;height:56px;
+               background:linear-gradient(135deg,#C8102E,#E8304A);color:white;border:none;border-radius:50%;
+               box-shadow:0 4px 12px rgba(200,16,46,0.4);cursor:pointer;font-size:20px;
+               transition:all 0.3s ease;opacity:0;transform:translateY(20px);"
+        onmouseover="this.style.transform='translateY(0) scale(1.1)';this.style.boxShadow='0 6px 20px rgba(200,16,46,0.5)'"
+        onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 4px 12px rgba(200,16,46,0.4)'">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    <script>
+        window.addEventListener('scroll', function() {
+            var btn = document.getElementById('backToTop');
+            if (!btn) return;
+            if (window.scrollY > 400) {
+                btn.style.display = 'block';
+                setTimeout(function() { btn.style.opacity = '1'; btn.style.transform = 'translateY(0)'; }, 10);
+            } else {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(20px)';
+                setTimeout(function() { if (window.scrollY <= 400) btn.style.display = 'none'; }, 300);
+            }
+        });
+    </script>
 </body>
 </html>
