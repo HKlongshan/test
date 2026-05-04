@@ -107,8 +107,7 @@ const siteData = {
                 "P1/P2.jpeg",
                 "P1/P3.jpeg",
                 "P1/P4.jpeg",
-                "P1/P5.jpeg",
-
+                "P1/P5.jpeg"
             ]
         },
         {
@@ -123,13 +122,12 @@ const siteData = {
                 "P2/P2.jpeg",
                 "P2/P3.jpeg",
                 "P2/P4.jpeg",
-                "P2/P5.jpeg",
-               
+                "P2/P5.jpeg"
             ]
         },
          {
             id: 6,
-            date: "2024-03-6",
+            date: "2024-03-06",
             title: "第一屆僑港順德龍山同鄉花炮會燃情启幕",
             summary: "鑼鼓喧天慶盛世，煙花璀璨映龍山。順德龍山花炮會在龍山金紫公園隆重舉行。",
             image: "P6/P1.jpeg",
