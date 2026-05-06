@@ -140,6 +140,34 @@
     .result-img { width: 100%; border: 1px solid #ddd; display: block;}
     .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* 居中開關 */
+    .toggle-switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      background: #ccc;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.25s;
+      flex-shrink: 0;
+    }
+    .toggle-switch.on { background: #c00; }
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: left 0.25s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .toggle-switch.on .toggle-knob { left: 21px; }
+
+    /* 正文居中模式 */
+    .body-center .body-paragraph { text-align: center !important; }
   </style>
 </head>
 <body>
@@ -148,7 +176,18 @@
   <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統</h2>
   <div class="input-group"><label>公文標題</label><textarea id="input-title" rows="2"></textarea></div>
   <div class="input-group"><label>送達單位</label><textarea id="input-recipient" rows="2"></textarea></div>
-  <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="8"></textarea></div>
+  <div class="input-group">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+      <label style="margin-bottom:0;">正文內容</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:bold;color:#333;cursor:pointer;margin-bottom:0;">
+        <span>居中</span>
+        <div class="toggle-switch" id="toggle-center" onclick="toggleCenter()" title="開啟後正文全部居中">
+          <div class="toggle-knob"></div>
+        </div>
+      </label>
+    </div>
+    <textarea id="input-content" rows="8"></textarea>
+  </div>
   <div class="input-group"><label>敬語</label><textarea id="input-salutation" rows="2">此致</textarea></div>
   <div class="input-group"><label>署名</label><textarea id="input-name" rows="2"></textarea></div>
   <div class="input-group"><label>日期</label><input type="text" id="input-date"></div>
@@ -176,6 +215,18 @@
 
 <script>
 let currentFontSize = 'medium';
+let contentCenter = false;
+
+function toggleCenter() {
+  contentCenter = !contentCenter;
+  const toggle = document.getElementById('toggle-center');
+  if (contentCenter) {
+    toggle.classList.add('on');
+  } else {
+    toggle.classList.remove('on');
+  }
+  saveToStorage();
+}
 
 // 將換行符轉換為 HTML <br>
 function nl2br(str) {
@@ -201,7 +252,7 @@ function setSize(size) {
 
 function saveToStorage() {
   const fields = ['title', 'recipient', 'content', 'salutation', 'name', 'date'];
-  const data = { fontSize: currentFontSize };
+  const data = { fontSize: currentFontSize, contentCenter: contentCenter };
   fields.forEach(f => data[f] = document.getElementById('input-' + f).value);
   localStorage.setItem('documentData', JSON.stringify(data));
 }
@@ -213,6 +264,11 @@ function loadFromStorage() {
     Object.keys(data).forEach(key => {
       if(key === 'fontSize') {
         setSize(data[key]);
+      } else if(key === 'contentCenter') {
+        if(data[key]) {
+          contentCenter = false; // 先設 false 再 toggle 以觸發狀態更新
+          toggleCenter();
+        }
       } else {
         const el = document.getElementById('input-' + key);
         if (el) el.value = data[key];
@@ -225,7 +281,7 @@ document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('
 
 function createNewPage(pageNum, title, recipient) {
   const page = document.createElement('div');
-  page.className = `a4-page font-${currentFontSize}`; // 套用字號類別
+  page.className = `a4-page font-${currentFontSize}${contentCenter ? ' body-center' : ''}`; // 套用字號類別及居中
     page.innerHTML = `
     <div class="header-wrapper"><img class="header-img" src="banner.jpg"></div>
     <div class="paper-content">
