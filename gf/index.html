@@ -146,11 +146,11 @@
 
 <div class="control-panel">
   <h2 style="color:#c00;text-align:center;margin-top:0;">公文生成系統</h2>
-  <div class="input-group"><label>公文標題</label><input type="text" id="input-title"></div>
-  <div class="input-group"><label>送達單位</label><input type="text" id="input-recipient"></div>
+  <div class="input-group"><label>公文標題</label><textarea id="input-title" rows="2"></textarea></div>
+  <div class="input-group"><label>送達單位</label><textarea id="input-recipient" rows="2"></textarea></div>
   <div class="input-group"><label>正文內容</label><textarea id="input-content" rows="8"></textarea></div>
-  <div class="input-group"><label>敬語</label><input type="text" id="input-salutation" value="此致"></div>
-  <div class="input-group"><label>署名</label><input type="text" id="input-name"></div>
+  <div class="input-group"><label>敬語</label><textarea id="input-salutation" rows="2">此致</textarea></div>
+  <div class="input-group"><label>署名</label><textarea id="input-name" rows="2"></textarea></div>
   <div class="input-group"><label>日期</label><input type="text" id="input-date"></div>
   
   <div class="input-group">
@@ -176,6 +176,11 @@
 
 <script>
 let currentFontSize = 'medium';
+
+// 將換行符轉換為 HTML <br>
+function nl2br(str) {
+  return str.replace(/\n/g, '<br>');
+}
 
 window.onload = function() {
   const now = new Date();
@@ -221,12 +226,12 @@ document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('
 function createNewPage(pageNum, title, recipient) {
   const page = document.createElement('div');
   page.className = `a4-page font-${currentFontSize}`; // 套用字號類別
-  page.innerHTML = `
+    page.innerHTML = `
     <div class="header-wrapper"><img class="header-img" src="banner.jpg"></div>
     <div class="paper-content">
       ${pageNum === 1 ? `
-        <div class="doc-title">${title}</div>
-        <div class="doc-recipient">${recipient ? recipient + '：' : ''}</div>
+        <div class="doc-title">${nl2br(title)}</div>
+        <div class="doc-recipient">${nl2br(recipient)}</div>
       ` : ''}
     </div>
     <div class="page-number">-${pageNum}-</div>
@@ -279,10 +284,10 @@ async function generateDocument() {
     // 2. 添加落款
     const closingEl = document.createElement('div');
     closingEl.innerHTML = `
-      <div class="doc-salutation">${salutation}</div>
+      <div class="doc-salutation">${nl2br(salutation)}</div>
       <div class="signature-wrapper">
         <div class="signature-container">
-          <div class="sig-name">${name}</div>
+          <div class="sig-name">${nl2br(name)}</div>
           <div class="sig-date">${date}</div>
         </div>
       </div>
