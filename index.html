@@ -3,153 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>�S��혵���ɽͬ�l�� | �ٷ��Wվ</title>
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="�S��혵���ɽͬ�l���ٷ��Wվ��1985����������ЈF�Y�l�H�������l�H���츣�l�H��ּ������������ɽ�Ļ������M���l�lչ���gӭ���롣">
-    <meta name="keywords" content="혵���ɽͬ�l��,�S����ɽͬ�l��,��ɽ�Ļ�,혵�,��ɽ,���ͬ�l��,�����Ո,���ͬ�l">
-    <meta name="author" content="�S��혵���ɽͬ�l��">
-    <!-- Open Graph -->
+    <title>僑港順德龍山同鄉會 | 官方網站</title>
+    <meta name="description" content="僑港順德龍山同鄉會官方網站。1985年成立，秉承團結鄉親、服務鄉親、造福鄉親宗旨，致力傳承龍山文化，促進家鄉發展。">
+    <meta name="keywords" content="順德龍山同鄉會,僑港龍山同鄉會,龍山文化,順德,龍山,香港同鄉會,入會申請">
+    <meta name="author" content="僑港順德龍山同鄉會">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://longshan.xin/">
-    <meta property="og:title" content="�S��혵���ɽͬ�l�� | �ٷ��Wվ">
-    <meta property="og:description" content="1985����������ЈF�Y�l�H�������l�H���츣�l�H��ּ������������ɽ�Ļ������M���l�lչ��">
+    <meta property="og:title" content="僑港順德龍山同鄉會 | 官方網站">
+    <meta property="og:description" content="1985年成立，秉承團結鄉親、服務鄉親、造福鄉親宗旨，致力傳承龍山文化。">
     <meta property="og:image" content="https://longshan.xin/pict/banner1.jpg">
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="�S��혵���ɽͬ�l�� | �ٷ��Wվ">
-    <meta name="twitter:description" content="1985����������ЈF�Y�l�H�������l�H���츣�l�H��ּ������������ɽ�Ļ������M���l�lչ��">
+    <meta name="twitter:title" content="僑港順德龍山同鄉會 | 官方網站">
+    <meta name="twitter:description" content="1985年成立，秉承團結鄉親、服務鄉親、造福鄉親宗旨。">
     <meta name="twitter:image" content="https://longshan.xin/pict/banner1.jpg">
-    <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="pict/icon.jpg">
     <link rel="apple-touch-icon" href="pict/icon.jpg">
     <script src="https://cdn.tailwindcss.com/3.3.3"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-        
-        body {
-            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
-            background-color: #F5F5F5;
-            color: #333333;
-        }
-        
+        body { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; background-color: #F5F5F5; color: #333333; }
         .text-primary { color: #C8102E; }
-        /* �^�c�Ԅӕr���ⱻ�̶�픙��ړ� */
-        section[id] {
-            scroll-margin-top: 80px;
-        }
-
-        /* �м��d����Ч�� */
-        img[loading="lazy"] {
-            opacity: 0;
-            transition: opacity 0.3s ease-in;
-        }
-        img[loading="lazy"].loaded {
-            opacity: 1;
-        }
-
+        section[id] { scroll-margin-top: 80px; }
+        img[loading="lazy"] { opacity: 0; transition: opacity 0.3s ease-in; }
+        img[loading="lazy"].loaded { opacity: 1; }
         .bg-primary { background-color: #C8102E; }
         .text-secondary { color: #DAA520; }
         .bg-secondary { background-color: #DAA520; }
-        
-        .hero-slide {
-            height: 500px;
-            background-size: cover;
-            background-position: center;
-            transition: background-image 1.0s ease-in-out;
-        }
-        
-        /* ���ֵ��뵭��Ч�� */
-        .hero-text {
-            opacity: 1;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .hero-text.fade-out {
-            opacity: 0;
-            transition: opacity 0.1s;
-        }
-        
-        /* ݆��ָʾ����ʽ */
-        .indicator {
-            width: 10px;
-            height: 10px;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s, width 0.3s, border-radius 0.3s;
-        }
-        .indicator.active {
-            background-color: #DAA520;
-            width: 30px;
-            border-radius: 5px;
-        }
-
+        .hero-slide { height: 500px; background-size: cover; background-position: center; transition: background-image 1.0s ease-in-out; }
+        .hero-text { opacity: 1; transition: opacity 0.5s ease-in-out; }
+        .hero-text.fade-out { opacity: 0; transition: opacity 0.1s; }
+        .indicator { width: 10px; height: 10px; background-color: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: background-color 0.3s, width 0.3s, border-radius 0.3s; }
+        .indicator.active { background-color: #DAA520; width: 30px; border-radius: 5px; }
         .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-        
-        .gallery-item {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); cursor: pointer; }
+        .gallery-item { height: 200px; background-size: cover; background-position: center; }
+        .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
         .mobile-menu.active { max-height: 500px; }
-
-        /* ���Ԕ�鏗����ʽ */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .modal-content {
-            background-color: white;
-            color: #333;
-            padding: 2rem;
-            border-radius: 8px;
-            max-width: 90%;
-            width: 700px;
-            max-height: 90vh; 
-            overflow-y: auto; 
-            padding-bottom: 3rem; 
-            position: relative;
-            transform: scale(0.95) translateY(20px);
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-        .modal-overlay.active .modal-content {
-            transform: scale(1) translateY(0);
-        }
-        
-        /* �������ԈDƬ�םM���� */
-        #modal-gallery img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-
-        /* �֙C��푑�ʽ */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; opacity: 0; transition: opacity 0.3s; }
+        .modal-content { background-color: white; color: #333; padding: 2rem; border-radius: 8px; max-width: 90%; width: 700px; max-height: 90vh; overflow-y: auto; padding-bottom: 3rem; position: relative; transform: scale(0.95) translateY(20px); transition: transform 0.3s, opacity 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        #modal-gallery img { width: 100%; height: auto; object-fit: cover; }
         @media (max-width: 640px) {
             .hero-slide { height: 280px !important; }
             #hero-title { font-size: 1.75rem !important; }
@@ -158,41 +53,22 @@
             h2.text-3xl { font-size: 1.5rem !important; }
             h3.text-2xl { font-size: 1.2rem !important; }
             .news-card h3 { font-size: 1rem !important; }
-            .news-card p  { font-size: 0.8rem !important; }
+            .news-card p { font-size: 0.8rem !important; }
             .president-section { padding: 1rem !important; }
             #membership .flex-wrap > div { min-width: 100% !important; margin-bottom: 0.75rem; }
             #contact .text-xl { font-size: 1rem !important; }
             .contact-btn { font-size: 0.85rem !important; padding: 0.6rem 1rem !important; }
             footer .text-sm { font-size: 0.75rem !important; }
         }
-
-        /* ���Ը�֣��֙Cÿ�� 2 �� */
         @media (max-width: 480px) {
             #gallery .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.5rem !important; }
             .gallery-item { height: 120px !important; }
         }
-
-        /* ���鿴������Ƭ�����o��ʽ */
-        #modal-more-photos a {
-            transition: all 0.3s ease;
-        }
-        #modal-more-photos a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(200, 16, 46, 0.3);
-        }
-        #modal-more-photos a:active {
-            transform: translateY(0);
-        }
-        /* �֙C�水�o���m�� */
+        #modal-more-photos a { transition: all 0.3s ease; }
+        #modal-more-photos a:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(200,16,46,0.3); }
         @media (max-width: 480px) {
-            #modal-more-photos a {
-                width: 100%;
-                justify-content: center;
-                padding: 0.75rem 1rem;
-            }
+            #modal-more-photos a { width: 100%; justify-content: center; padding: 0.75rem 1rem; }
         }
-
-        /* ȫ����A���w���� */
         @media (max-width: 480px) {
             body { font-size: 14px; line-height: 1.6; }
             h1 { font-size: 1.5rem !important; }
@@ -207,31 +83,14 @@
             h1 { font-size: 1.3rem !important; }
         }
     </style>
-    <!-- Schema.org �Y�������� -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "�S��혵���ɽͬ�l��",
+      "name": "僑港順德龍山同鄉會",
       "alternateName": "Hong Kong Shunde Long Shan Association",
       "url": "https://longshan.xin",
-      "logo": "https://longshan.xin/pict/banner1.jpg",
-      "description": "�S��혵���ɽͬ�l�������1985�꣬���ЈF�Y�l�H�������l�H���츣�l�H��ּ������������ɽ�Ļ������M���l�lչ��",
-      "foundingDate": "1985",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "���Ǐ��ص�580̖�a¡��B12��",
-        "addressLocality": "���",
-        "addressRegion": "����",
-        "postalCode": "",
-        "addressCountry": "HK"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+852-2770-8156",
-        "contactType": "customer service",
-        "availableLanguage": ["Cantonese", "Mandarin"]
-      }
+      "description": "僑港順德龍山同鄉會成立於1985年，秉承團結鄉親、服務鄉親、造福鄉親宗旨，致力傳承龍山文化，促進家鄉發展。"
     }
     </script>
 </head>
@@ -242,31 +101,28 @@
                 <div id="logo-container" class="w-12 h-12 rounded-full bg-white flex items-center justify-center mr-3 overflow-hidden">
                     <i class="fas fa-landmark text-primary text-xl"></i>
                 </div>
-                <h1 class="text-xl font-bold">혵���ɽͬ�l��</h1>
+                <h1 class="text-xl font-bold">順德龍山同鄉會</h1>
             </div>
-            
             <nav class="hidden md:flex space-x-6">
-                <a href="#home" class="hover:text-secondary">���</a>
-                <a href="#about" class="hover:text-secondary">�P춱���</a>
-                <a href="#news" class="hover:text-secondary">�����ӑB</a>
-                <a href="#membership" class="hover:text-secondary">������^</a>
-                <a href="#gallery" class="hover:text-secondary">��ɽ�L��</a>
-                <a href="#contact" class="hover:text-secondary">�j�҂�</a>
+                <a href="#home" class="hover:text-secondary">首頁</a>
+                <a href="#about" class="hover:text-secondary">關於本會</a>
+                <a href="#news" class="hover:text-secondary">本會動態</a>
+                <a href="#membership" class="hover:text-secondary">入會專區</a>
+                <a href="#gallery" class="hover:text-secondary">龍山風采</a>
+                <a href="#contact" class="hover:text-secondary">聯絡我們</a>
             </nav>
-            
             <button id="mobileMenuButton" class="md:hidden text-white focus:outline-none">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
-        
         <div id="mobileMenu" class="mobile-menu bg-primary md:hidden">
             <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
-                <a href="#home" class="hover:text-secondary py-2">���</a>
-                <a href="#about" class="hover:text-secondary py-2">�P춱���</a>
-                <a href="#news" class="hover:text-secondary py-2">�����ӑB</a>
-                <a href="#membership" class="hover:text-secondary py-2">������^</a>
-                <a href="#gallery" class="hover:text-secondary py-2">��ɽ�L��</a>
-                <a href="#contact" class="hover:text-secondary py-2">�j�҂�</a>
+                <a href="#home" class="hover:text-secondary py-2">首頁</a>
+                <a href="#about" class="hover:text-secondary py-2">關於本會</a>
+                <a href="#news" class="hover:text-secondary py-2">本會動態</a>
+                <a href="#membership" class="hover:text-secondary py-2">入會專區</a>
+                <a href="#gallery" class="hover:text-secondary py-2">龍山風采</a>
+                <a href="#contact" class="hover:text-secondary py-2">聯絡我們</a>
             </div>
         </div>
     </header>
@@ -285,15 +141,13 @@
 
     <section class="bg-white py-12 president-section">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-primary mb-8 text-center">���L�I�o</h2>
-            
+            <h2 class="text-3xl font-bold text-primary mb-8 text-center">會長獻辭</h2>
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/3 mb-6 md:mb-0">
-                    <img id="president-photo" src="" alt="���L��Ƭ" class="rounded-lg shadow-lg w-full">
+                    <img id="president-photo" src="" alt="會長相片" class="rounded-lg shadow-lg w-full">
                 </div>
-                
                 <div class="md:w-2/3 md:pl-8">
-                    <h3 class="text-2xl font-semibold text-primary mb-4">�𾴵ĸ�λ�l�H</h3>
+                    <h3 class="text-2xl font-semibold text-primary mb-4">尊敬的各位鄉親</h3>
                     <div id="president-text"></div>
                     <p id="president-sign" class="text-primary mt-6"></p>
                 </div>
@@ -303,51 +157,51 @@
 
     <section id="news" class="py-12 bg-gray-50">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-primary mb-8 text-center">�����ӑB</h2>
+            <h2 class="text-3xl font-bold text-primary mb-8 text-center">本會動態</h2>
             <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             <div class="text-center mt-8">
-                <a href="https://longshan.xin/photos" class="inline-block bg-primary text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition">�鿴�����ӑB</a>
+                <a href="https://longshan.xin/photos" class="inline-block bg-primary text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition">查看更多動態</a>
             </div>
         </div>
     </section>
 
     <section id="gallery" class="py-12 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-primary mb-8 text-center">��ɽ�L��</h2>
+            <h2 class="text-3xl font-bold text-primary mb-8 text-center">龍山風采</h2>
             <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
             <div class="text-center mt-8">
-                <a href="https://longshan.xin/photos" class="inline-block bg-primary text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition">�g�[�����L��</a>
+                <a href="https://longshan.xin/photos" class="inline-block bg-primary text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition">瀏覽更多風采</a>
             </div>
         </div>
     </section>
 
     <section id="about" class="py-12 bg-gray-50">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-primary mb-8 text-center">�P춱���</h2>
+            <h2 class="text-3xl font-bold text-primary mb-8 text-center">關於本會</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                     <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-2xl font-semibold text-primary mb-4">��������</h3>
-                       <p class="text-gray-700 mb-4 leading-relaxed">혵���ɽͬ�l������� 1985 �꣬����ɽ���ؼ�����lչ�l�H�԰l�M�����������l�x�������Ļ��鼺�Σ��v���� 40 �dн��������������۳��L����ЏV��Ӱ����ăS����F��������𲽰lչ����з����ܘ����l�H�M�����K���m��չ�I�򡢉Ѵ���顣</p>
-                       <p class="text-gray-700 mb-4 leading-relaxed">����ʼ�K�ԡ��F�Y�l�H�������l�H���츣�l�H�������ʹ����һ����e�O������ɽ���صĂ��y�ʳ���ס������ƹʡ����z�L����ڵ��Ļ�����һ����Ҳ�o�N�r���e�OͶ����۱��ص���^���O������M������ƹ��桢�t���x�\���Ļ���ӣ�׌�l�H��Փ���ں�̎�����ܳ��С�������ɽ���Ĝ�ů�w�١�</p>
-                       <p class="text-gray-700 leading-relaxed">��񣬱�����ɢ�Ӹ��ص���ɽ�l�H����A��o�ܵĽ�������ƽ̨ �������ڰl�����l�YӍ�c����YӍ���M�����c�����c�h�}�����������l�H�������ǧ�Ҳ�ܳ��ۡ���̎���lҲ����ɽ�ˡ��Ěw�ٸС�</p>
+                    <h3 class="text-2xl font-semibold text-primary mb-4">本會簡介</h3>
+                       <p class="text-gray-700 mb-4 leading-relaxed">順德龍山同鄉會成立於 1985 年，由龍山本地及在外發展鄉親自發組建，以凝聚鄉誼、傳承文化為己任，歷經近 40 載薪火相傳，紮根香港成長為具有廣泛影響力的僑港社團。</p>
+                       <p class="text-gray-700 mb-4 leading-relaxed">本會始終以「團結鄉親、服務鄉親、造福鄉親」為核心使命；一方面積極傳承龍山本地的傳統飲食習俗、人文掌故、非遺風情等在地文化，另一方面也緊貼時代積極投身香港本地的社區建設，常年組織各類慈善公益、醫療義診、文化活動。</p>
+                       <p class="text-gray-700 leading-relaxed">如今，本會以散居各地的龍山鄉親為基礎搭建緊密的交流互助平台，定期發布家鄉資訊與活動資訊、組織節慶互動與議題分享，讓鄉親不論身在何處，都能常感「家在龍山」的溫暖歸屬。</p>
                     </div>
                 </div>
                 <div>
                     <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-2xl font-semibold text-primary mb-4">�M���ܘ�</h3>
+                    <h3 class="text-2xl font-semibold text-primary mb-4">組織架構</h3>
                         <div class="mb-4">
-                            <h4 class="text-lg font-medium text-primary mb-2">�����T</h4>
-                            <p class="text-gray-600">���L��������</p>
-                            <p class="text-gray-600">�����L����¼ѡ��蟨�s��ꐴ�ꡢ��¸�����־�s����־��</p>
-                            <p class="text-gray-600">�O���L����־�������ϗ����ܵs����¸�������������־������־�塢��Т�����肥��</p>
-                            <p class="text-gray-600">�x���ؕ����ܿɾ����肥�ɡ������ġ��蟨�s����־â����־�ɡ��󷸰����󷸰�</p>
+                            <h4 class="text-lg font-medium text-primary mb-2">本屆職員</h4>
+                            <p class="text-gray-600">會長：胡國光</p>
+                            <p class="text-gray-600">副會長：左德佳、黎煥榮、陳大宏、黎德福、李志榮、劉志峰</p>
+                            <p class="text-gray-600">監事會長：黎志寶、李紫楓、周德榮、黎德福、周永豪、劉志良、黎志叔、李孝生、黎偉峰</p>
+                            <p class="text-gray-600">義務秘書：周可敬、黎偉可、梁衣文、黎煥榮、伍志芒、伍志可</p>
                         </div>
                         <div class="mb-4">
-                            <h4 class="text-lg font-medium text-primary mb-2">��F</h4>
-                            <p class="text-gray-600">���h�����</p>
-                            <p class="text-gray-600">������������������´�</p>
-                            <p class="text-gray-600">�������С����</p>
+                            <h4 class="text-lg font-medium text-primary mb-2">顧問團</h4>
+                            <p class="text-gray-600">永遠顧問：左偉</p>
+                            <p class="text-gray-600">本屆顧問：龍偉偉、黎衣搭</p>
+                            <p class="text-gray-600">法律顧問：小代表</p>
                         </div>
                     </div>
                 </div>
@@ -357,42 +211,42 @@
 
     <section id="membership" class="py-12 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-primary mb-8 text-center">������^</h2>
+            <h2 class="text-3xl font-bold text-primary mb-8 text-center">入會專區</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-gray-50 p-6 rounded-lg">
-                    <h3 class="text-2xl font-semibold text-primary mb-4">����l��</h3>
-                    <p class="text-gray-700 mb-4">���������l���߾�����Ո���뱾����</p>
+                    <h3 class="text-2xl font-semibold text-primary mb-4">入會條件</h3>
+                    <p class="text-gray-700 mb-4">凡符合以下條件者均可申請加入本會：</p>
                     <ul class="list-disc pl-5 text-gray-700 mb-4 space-y-2">
-                        <li>��M18�q����</li>
-                        <li>���˻�ֱϵ�H�ٞ���ɽ��</li>
-                        <li>�Jͬ�K�����³�</li>
+                        <li>年滿18歲以上</li>
+                        <li>本人或直系親屬為龍山籍</li>
+                        <li>認同並遵守章程</li>
                     </ul>
-                    <p class="text-gray-700 mb-4">������̣�</p>
+                    <p class="text-gray-700 mb-4">入會流程：</p>
                     <ol class="list-decimal pl-5 text-gray-700 mb-6 space-y-2">
-                        <li>������Ո��</li>
-                        <li>�U�����M</li>
-                        <li>��������ͨ�^</li>
+                        <li>填寫入會申請表</li>
+                        <li>繳交會費</li>
+                        <li>理事會通過審批</li>
                     </ol>
-                    <a href="https://longshan.xin/rh/" target="_blank" class="inline-block bg-primary text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition">���d�����Ո����</a>
+                    <a href="https://longshan.xin/rh/" target="_blank" class="inline-block bg-primary text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition">下載入會申請表格</a>
                 </div>
                 <div class="bg-gray-50 p-6 rounded-lg">
-                    <h3 class="text-2xl font-semibold text-primary mb-4">���T����</h3>
+                    <h3 class="text-2xl font-semibold text-primary mb-4">會員福利</h3>
                     <div class="space-y-4">
                         <div class="flex items-start">
                             <div class="bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3"><i class="fas fa-ticket-alt"></i></div>
-                            <div><h4 class="font-medium text-gray-800">��Ӄ��ȅ��c</h4><p class="text-gray-600 text-sm">���ȫ@�ø���Ļ��������x��Ӽ����[���^�����~��</p></div>
+                            <div><h4 class="font-medium text-gray-800">活動優先參與</h4><p class="text-gray-600 text-sm">優先獲得各類文化交流、聯誼活動及旅遊參觀的名額。</p></div>
                         </div>
                         <div class="flex items-start">
                             <div class="bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3"><i class="fas fa-percent"></i></div>
-                            <div><h4 class="font-medium text-gray-800">�̑􃞻�</h4><p class="text-gray-600 text-sm">���Е��T��I�ṩ�ĸ�����ۿۡ�</p></div>
+                            <div><h4 class="font-medium text-gray-800">商戶優惠</h4><p class="text-gray-600 text-sm">享有會員企業提供的各類優惠折扣。</p></div>
                         </div>
                         <div class="flex items-start">
                             <div class="bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3"><i class="fas fa-gavel"></i></div>
-                            <div><h4 class="font-medium text-gray-800">�����Jԃ</h4><p class="text-gray-600 text-sm">�ṩ�Ɍ��I������ṩ�Ļ��A�����Jԃ���ա�</p></div>
+                            <div><h4 class="font-medium text-gray-800">法律諮詢</h4><p class="text-gray-600 text-sm">提供由專業法律顧問提供的基礎法律諮詢服務。</p></div>
                         </div>
                         <div class="flex items-start">
                             <div class="bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3"><i class="fas fa-book"></i></div>
-                            <div><h4 class="font-medium text-gray-800">�Ļ��о�</h4><p class="text-gray-600 text-sm">���c��ɽ�Ļ��о���ӁK���濯�</p></div>
+                            <div><h4 class="font-medium text-gray-800">文化研究</h4><p class="text-gray-600 text-sm">參與龍山文化研究活動並出版刊物。</p></div>
                         </div>
                     </div>
                 </div>
@@ -402,27 +256,27 @@
 
     <section id="contact" class="py-12 bg-primary text-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-8 text-center">�j�҂�</h2>
+            <h2 class="text-3xl font-bold mb-8 text-center">聯絡我們</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">�j�YӍ</h3>
+                    <h3 class="text-xl font-semibold mb-4">聯絡資訊</h3>
                     <div class="space-y-3" id="contact-info-list"></div>
                 </div>
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">�����Ո��</h3>
+                    <h3 class="text-xl font-semibold mb-4">入會申請表</h3>
                     <div class="bg-white p-4 rounded-lg inline-block">
-                        <img id="contact-qrcode" src="" alt="΢�Ŷ��S�a" class="w-32 h-32">
+                        <img id="contact-qrcode" src="" alt="微信二維碼" class="w-32 h-32">
                     </div>
-                    <p class="mt-3">������S�a��Ո���</p>
+                    <p class="mt-3">掃描二維碼申請入會</p>
                 </div>
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">�ھ�����</h3>
+                    <h3 class="text-xl font-semibold mb-4">在線留言</h3>
                     <form id="contact-form">
-                        <div class="mb-4"><input type="text" name="name" placeholder="��������" required class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
-                        <div class="mb-4"><input type="email" name="email" placeholder="��]��ַ" required class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
-                        <div class="mb-4"><input type="tel" name="phone" placeholder="�j�Ԓ���x�" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
-                        <div class="mb-4"><textarea name="message" placeholder="�ھ�����" rows="3" required class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></textarea></div>
-                        <button type="submit" class="bg-secondary text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition contact-btn">�ύ����</button>
+                        <div class="mb-4"><input type="text" name="name" placeholder="您的姓名" required class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
+                        <div class="mb-4"><input type="email" name="email" placeholder="電郵地址" required class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
+                        <div class="mb-4"><input type="tel" name="phone" placeholder="聯絡電話（選填）" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
+                        <div class="mb-4"><textarea name="message" placeholder="在線留言" rows="3" required class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></textarea></div>
+                        <button type="submit" class="bg-secondary text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition contact-btn">提交留言</button>
                         <p id="form-status" class="mt-3 text-sm"></p>
                     </form>
                 </div>
@@ -434,7 +288,7 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
-                    <p>? <span id="copyright-year"></span> <span id="footer-name"></span> �������</p>
+                    <p>© <span id="copyright-year"></span> <span id="footer-name"></span> 版權所有</p>
                 </div>
             </div>
         </div>
@@ -445,29 +299,22 @@
             <button id="closeModalButton" class="absolute top-4 right-4 text-gray-500 hover:text-primary transition" aria-label="Close">
                 <i class="fas fa-times text-2xl"></i>
             </button>
-
             <h2 id="modal-title" class="text-3xl font-bold text-primary mb-2"></h2>
             <div class="flex items-center space-x-2 text-secondary text-sm mb-4">
                 <i class="far fa-calendar-alt"></i>
                 <span id="modal-date"></span>
             </div>
-            
             <p id="modal-summary" class="text-gray-700 mb-6 border-b pb-4 italic"></p>
-            
-            <h3 class="text-xl font-semibold text-primary mb-3">���Ԕ��</h3>
+            <h3 class="text-xl font-semibold text-primary mb-3">活動詳情</h3>
             <p id="modal-content" class="text-gray-700 mb-6 leading-relaxed whitespace-pre-wrap"></p>
-
-            <h3 class="text-xl font-semibold text-primary mb-3">�����Ƭ</h3>
-
+            <h3 class="text-xl font-semibold text-primary mb-3">活動相片</h3>
             <div id="modal-gallery" class="grid gap-4"></div>
-
             <div id="modal-more-photos" class="mt-4 text-center"></div>
         </div>
     </div>
+
     <script src="data.js"></script>
     <script>
-        
-        // --- 0. ݆����ʼ�� ---
         const hero = document.getElementById('hero-slide');
         const heroTextContainer = document.getElementById('hero-text-container');
         const heroTitle = document.getElementById('hero-title');
@@ -476,49 +323,29 @@
         const slides = siteData.hero.slides;
         let currentSlide = 0;
         let slideInterval;
-        const intervalTime = 5200; 
-        
-        // --- ���Ԕ�鏗����ʼ�� ---
+        const intervalTime = 5200;
+
         const newsModalOverlay = document.getElementById('newsModalOverlay');
         const closeModalButton = document.getElementById('closeModalButton');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDate = document.getElementById('modal-date');
-        const modalSummary = document.getElementById('modal-summary'); 
-        const modalContent = document.getElementById('modal-content');
-        const modalGallery = document.getElementById('modal-gallery');
 
-
-        // --- �ГQ�ß�Ƭ ---
         function switchSlide(index) {
             clearInterval(slideInterval);
             currentSlide = index;
             const currentData = slides[currentSlide];
             heroTextContainer.classList.add('fade-out');
-
-            setTimeout(() => {
-                hero.style.backgroundImage = `url('${currentData.image}')`;
-            }, 100);
-            
+            setTimeout(() => { hero.style.backgroundImage = `url('${currentData.image}')`; }, 100);
             setTimeout(() => {
                 heroTitle.innerText = currentData.title;
                 heroSubtitle.innerText = currentData.subtitle;
                 heroTextContainer.classList.remove('fade-out');
                 updateIndicators();
             }, 300);
-
-            slideInterval = setInterval(() => {
-                let nextSlide = (currentSlide + 1) % slides.length;
-                switchSlide(nextSlide);
-            }, intervalTime);
+            slideInterval = setInterval(() => { switchSlide((currentSlide + 1) % slides.length); }, intervalTime);
         }
 
         function updateIndicators() {
             document.querySelectorAll('.indicator').forEach((dot, index) => {
-                if (index === currentSlide) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
+                dot.classList.toggle('active', index === currentSlide);
             });
         }
 
@@ -527,73 +354,54 @@
             slides.forEach((_, index) => {
                 const dot = document.createElement('div');
                 dot.className = 'indicator';
-                dot.addEventListener('click', () => switchSlide(index)); 
+                dot.addEventListener('click', () => switchSlide(index));
                 indicatorContainer.appendChild(dot);
             });
         }
 
-        // --- �P�]���� ---
         function closeNewsModal() {
             newsModalOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto'; 
+            document.body.style.overflow = 'auto';
         }
 
-        // ���� ID �_������
         function openNewsModal(newsId) {
             const item = siteData.news.find(n => n.id === newsId);
             if (!item) return;
-
-            modalTitle.textContent = item.title;
-            modalDate.textContent = item.date;
-            modalSummary.textContent = item.summary;
-            modalContent.textContent = item.content;
-            
+            document.getElementById('modal-title').textContent = item.title;
+            document.getElementById('modal-date').textContent = item.date;
+            document.getElementById('modal-summary').textContent = item.summary;
+            document.getElementById('modal-content').textContent = item.content;
+            const modalGallery = document.getElementById('modal-gallery');
             modalGallery.innerHTML = '';
-            modalGallery.className = `grid gap-4 grid-cols-1 sm:grid-cols-2`;
-
+            modalGallery.className = 'grid gap-4 grid-cols-1 sm:grid-cols-2';
             if (item.detailImages && item.detailImages.length > 0) {
                 item.detailImages.forEach(imgUrl => {
                     const img = document.createElement('img');
-                    img.src = imgUrl;
-                    img.loading = 'lazy';
+                    img.src = imgUrl; img.loading = 'lazy';
                     img.alt = item.title;
                     img.className = 'w-full h-auto rounded-lg shadow-md';
                     modalGallery.appendChild(img);
                 });
-                document.getElementById('modal-more-photos').innerHTML = `
-                    <a href="https://longshan.xin/photos/" target="_blank"
-                       class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition font-medium shadow-md">
-                        <i class="fas fa-images"></i>
-                        �鿴������Ƭ
-                    </a>
-                `;
+                document.getElementById('modal-more-photos').innerHTML = '<a href="https://longshan.xin/photos/" target="_blank" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition font-medium shadow-md"><i class="fas fa-images"></i>查看更多相片</a>';
             } else {
-                 modalGallery.innerHTML = '<p class="text-gray-500">���o�˻����Ƭ</p>';
-                 document.getElementById('modal-more-photos').innerHTML = '';
+                modalGallery.innerHTML = '<p class="text-gray-500">暫無此活動相片</p>';
+                document.getElementById('modal-more-photos').innerHTML = '';
             }
-
             newsModalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
         }
-        
-        // --- ��������Ⱦ ---
 
-        // 0. ��Ⱦ Logo
         if (siteData.basic.logo) {
-            const logoContainer = document.getElementById('logo-container');
-            logoContainer.innerHTML = `<img src="${siteData.basic.logo}" alt="Logo" class="w-full h-full object-cover">`;
+            document.getElementById('logo-container').innerHTML = `<img src="${siteData.basic.logo}" alt="Logo" class="w-full h-full object-cover">`;
         }
 
-        // 1. ��ʼ��݆��
-        createIndicators(); 
-        switchSlide(0);     
+        createIndicators();
+        switchSlide(0);
 
-        // 2. ��Ⱦ���L�I�o
         document.getElementById('president-photo').src = siteData.president.photo;
-        
         const presidentSignElement = document.getElementById('president-sign');
         presidentSignElement.innerHTML = `<span class="${siteData.president.nameClass}">${siteData.president.name}</span><br><span class="font-semibold text-xl">${siteData.president.title}</span>`;
-        
+
         const presidentTextContainer = document.getElementById('president-text');
         siteData.president.paragraphs.forEach(para => {
             const p = document.createElement('p');
@@ -602,26 +410,15 @@
             presidentTextContainer.appendChild(p);
         });
 
-        // 3. ��Ⱦ�����ӑB
         const newsGrid = document.getElementById('news-grid');
         siteData.news.forEach(item => {
             const card = document.createElement('div');
-            card.className = 'bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer news-card'; 
-            card.setAttribute('onclick', `openNewsModal(${item.id})`); 
-
-            card.innerHTML = `
-                <div class="h-48 bg-cover bg-center" style="background-image: url('${item.image}')"></div>
-                <div class="p-6">
-                    <div class="text-secondary text-sm mb-2">${item.date}</div>
-                    <h3 class="text-xl font-semibold text-primary mb-3">${item.title}</h3>
-                    <p class="text-gray-600 mb-4">${item.summary}</p>
-                    <span class="text-primary font-medium hover:underline">�鿴Ԕ�� &rarr;</span>
-                </div>
-            `;
+            card.className = 'bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer news-card';
+            card.setAttribute('onclick', `openNewsModal(${item.id})`);
+            card.innerHTML = `<div class="h-48 bg-cover bg-center" style="background-image: url('${item.image}')"></div><div class="p-6"><div class="text-secondary text-sm mb-2">${item.date}</div><h3 class="text-xl font-semibold text-primary mb-3">${item.title}</h3><p class="text-gray-600 mb-4">${item.summary}</p><span class="text-primary font-medium hover:underline">查看詳情 →</span></div>`;
             newsGrid.appendChild(card);
         });
 
-        // 4. ��Ⱦ����
         const galleryGrid = document.getElementById('gallery-grid');
         siteData.gallery.forEach(imgUrl => {
             const item = document.createElement('div');
@@ -630,42 +427,23 @@
             galleryGrid.appendChild(item);
         });
 
-        // 5. ��Ⱦ�j�YӍ�б�
+        const contactIcons = { address:'map-marker-alt', phone:'phone-alt', fax:'fax', email:'envelope', hours:'clock' };
         const contactList = document.getElementById('contact-info-list');
-        const contactIcons = {
-            address: 'map-marker-alt',
-            phone: 'phone-alt',
-            fax: 'fax',
-            email: 'envelope',
-            hours: 'clock'
-        };
-        const keys = ['address', 'phone', 'fax', 'email', 'hours'];
-        keys.forEach(key => {
-            if(siteData.contact[key]) {
+        ['address','phone','fax','email','hours'].forEach(key => {
+            if (siteData.contact[key]) {
                 const div = document.createElement('div');
                 div.className = 'flex items-start';
-                div.innerHTML = `
-                    <i class="fas fa-${contactIcons[key]} mt-1 mr-3 text-secondary"></i>
-                    <p>${siteData.contact[key]}</p>
-                `;
+                div.innerHTML = `<i class="fas fa-${contactIcons[key]} mt-1 mr-3 text-secondary"></i><p>${siteData.contact[key]}</p>`;
                 contactList.appendChild(div);
             }
         });
         document.getElementById('contact-qrcode').src = siteData.contact.qrCode;
-
-        // 6. ��Ⱦ��_
         document.getElementById('copyright-year').innerText = new Date().getFullYear();
         document.getElementById('footer-name').innerText = siteData.basic.name;
 
-        // 7. �����¼��O 
         closeModalButton.addEventListener('click', closeNewsModal);
-        newsModalOverlay.addEventListener('click', function(e) {
-            if (e.target === newsModalOverlay) {
-                closeNewsModal();
-            }
-        });
-        
-        // 8. �֙C���x���ГQ
+        newsModalOverlay.addEventListener('click', e => { if (e.target === newsModalOverlay) closeNewsModal(); });
+
         document.getElementById('mobileMenuButton').addEventListener('click', function() {
             document.getElementById('mobileMenu').classList.toggle('active');
             this.querySelector('i').classList.toggle('fa-bars');
@@ -675,82 +453,55 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    if (document.getElementById('mobileMenu').classList.contains('active')) {
-                        document.getElementById('mobileMenu').classList.remove('active');
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+                    const mm = document.getElementById('mobileMenu');
+                    if (mm.classList.contains('active')) {
+                        mm.classList.remove('active');
                         document.getElementById('mobileMenuButton').querySelector('i').classList.remove('fa-times');
                         document.getElementById('mobileMenuButton').querySelector('i').classList.add('fa-bars');
                     }
                 }
             });
         });
-        
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.classList.add('shadow-lg');
-            } else {
-                header.classList.remove('shadow-lg');
-            }
+
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('shadow-lg', window.scrollY > 100);
         });
     </script>
 
-    <!-- AI Chatbot -->
     <style>
-      @media(max-width:480px){
-        #chatbot-panel{width:calc(100vw - 24px)!important;right:12px!important;bottom:80px!important;height:70vh!important;}
-      }
+      @media(max-width:480px){ #chatbot-panel{width:calc(100vw - 24px)!important;right:12px!important;bottom:80px!important;height:70vh!important;} }
     </style>
-
     <div class="fixed bottom-6 right-6 z-50 cursor-pointer" onclick="toggleChat()">
       <div class="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-xl transition-all hover:scale-105">
         <i class="fas fa-comments text-lg" id="chat-btn-icon"></i>
       </div>
     </div>
-
     <div id="chatbot-panel" class="fixed bottom-24 right-6 z-50 w-[380px] h-[520px] bg-white rounded-2xl shadow-2xl flex-col overflow-hidden" style="display:none;">
       <div class="bg-primary text-white p-4 flex justify-between items-center flex-shrink-0">
         <div>
-          <h3 class="font-bold text-base">��ɽͬ�l�� AI �ͷ�</h3>
-          <p class="text-xs opacity-80">���κΆ��}�����Ԇ���</p>
+          <h3 class="font-bold text-base">龍山同鄉會 AI 客服</h3>
+          <p class="text-xs opacity-80">有任何問題都可以問我</p>
         </div>
-        <button onclick="toggleChat()" class="text-white hover:text-secondary transition ml-2">
-          <i class="fas fa-times"></i>
-        </button>
+        <button onclick="toggleChat()" class="text-white hover:text-secondary transition ml-2"><i class="fas fa-times"></i></button>
       </div>
       <div id="chatbot-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
         <div style="display:flex;justify-content:flex-start;">
-          <div style="background:#fff;color:#333;border:1px solid #e5e7eb;border-radius:16px 16px 16px 4px;padding:10px 14px;max-width:80%;font-size:14px;line-height:1.6;">���ã�������ɽͬ�l���� AI С���֣����P�������ӡ��YӍ���κΆ��}���S�r���Ԇ��ң�</div>
+          <div style="background:#fff;color:#333;border:1px solid #e5e7eb;border-radius:16px 16px 16px 4px;padding:10px 14px;max-width:80%;font-size:14px;line-height:1.6;">您好！我是龍山同鄉會的 AI 小助手，有關入會、活動、資訊等任何問題，隨時可以問我！</div>
         </div>
       </div>
       <div class="p-3 border-t bg-white flex-shrink-0">
         <form id="chatbot-form" class="flex gap-2">
-          <input id="chatbot-input" type="text" placeholder="Ոݔ�����Ć��}..." class="flex-1 px-4 py-2.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm" autocomplete="off">
-          <button type="submit" class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-90 transition flex-shrink-0">
-            <i class="fas fa-paper-plane text-sm"></i>
-          </button>
+          <input id="chatbot-input" type="text" placeholder="請輸入您的問題..." class="flex-1 px-4 py-2.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm" autocomplete="off">
+          <button type="submit" class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-90 transition flex-shrink-0"><i class="fas fa-paper-plane text-sm"></i></button>
         </form>
       </div>
     </div>
-
     <script src="chatbot.js"></script>
 
-    <!-- �ص�픲����o -->
-    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" 
-        style="display:none;position:fixed;bottom:100px;right:24px;z-index:40;width:56px;height:56px;
-               background:linear-gradient(135deg,#C8102E,#E8304A);color:white;border:none;border-radius:50%;
-               box-shadow:0 4px 12px rgba(200,16,46,0.4);cursor:pointer;font-size:20px;
-               transition:all 0.3s ease;opacity:0;transform:translateY(20px);"
-        onmouseover="this.style.transform='translateY(0) scale(1.1)';this.style.boxShadow='0 6px 20px rgba(200,16,46,0.5)'"
-        onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 4px 12px rgba(200,16,46,0.4)'">
-        <i class="fas fa-chevron-up"></i>
-    </button>
+    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;bottom:100px;right:24px;z-index:40;width:56px;height:56px;background:linear-gradient(135deg,#C8102E,#E8304A);color:white;border:none;border-radius:50%;box-shadow:0 4px 12px rgba(200,16,46,0.4);cursor:pointer;font-size:20px;transition:all 0.3s ease;opacity:0;transform:translateY(20px);" onmouseover="this.style.transform='translateY(0) scale(1.1)';this.style.boxShadow='0 6px 20px rgba(200,16,46,0.5)'" onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 4px 12px rgba(200,16,46,0.4)'"><i class="fas fa-chevron-up"></i></button>
     <script>
         window.addEventListener('scroll', function() {
             var btn = document.getElementById('backToTop');
@@ -767,7 +518,6 @@
     </script>
 
     <script>
-        // Contact Form Handler - Uses Formspree (free service)
         (function() {
             const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
             const contactForm = document.getElementById('contact-form');
@@ -777,29 +527,21 @@
                     const form = this;
                     const statusEl = document.getElementById('form-status');
                     const submitBtn = form.querySelector('button[type="submit"]');
-                    statusEl.textContent = '�ύ��...';
+                    statusEl.textContent = '提交中...';
                     statusEl.style.color = '#FCD34D';
                     submitBtn.disabled = true;
                     const formData = new FormData(form);
                     try {
-                        const response = await fetch(FORMSPREE_ENDPOINT, {
-                            method: 'POST',
-                            body: formData,
-                            headers: { 'Accept': 'application/json' }
-                        });
+                        const response = await fetch(FORMSPREE_ENDPOINT, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
                         if (response.ok) {
-                            statusEl.textContent = '�����ѳɹ��ύ��';
+                            statusEl.textContent = '留言已成功提交！';
                             statusEl.style.color = '#34D399';
                             form.reset();
-                        } else {
-                            throw new Error('Submission failed');
-                        }
+                        } else { throw new Error('Submission failed'); }
                     } catch (err) {
-                        statusEl.textContent = '�ύʧ����Ո��� +852 2770 8156��';
+                        statusEl.textContent = '提交失敗，請致電 +852 2770 8156。';
                         statusEl.style.color = '#F87171';
-                    } finally {
-                        submitBtn.disabled = false;
-                    }
+                    } finally { submitBtn.disabled = false; }
                 });
             }
         })();
