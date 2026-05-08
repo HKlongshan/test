@@ -4,114 +4,259 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>僑港順德龍山同鄉會 | 官方網站</title>
-    <meta name="description" content="僑港順德龍山同鄉會官方網站。1985年成立，秉承團結鄉親、服務鄉親、造福鄉親宗旨，致力傳承龍山文化，促進家鄉發展。">
-    <meta name="keywords" content="順德龍山同鄉會,僑港龍山同鄉會,龍山文化,順德,龍山,香港同鄉會,入會申請">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="僑港順德龍山同鄉會官方網站。1985年成立，秉承「團結鄉親、服務鄉親、造福鄉親」宗旨，聯繫全球龍山鄉親，傳承非遺文化。歡迎入會。">
+    <meta name="keywords" content="順德龍山同鄉會,僑港龍山同鄉會,龍山鄉親,順德,龍山,花炮會,觀音開庫,入會申請,香港同鄉會">
     <meta name="author" content="僑港順德龍山同鄉會">
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://longshan.xin/">
     <meta property="og:title" content="僑港順德龍山同鄉會 | 官方網站">
-    <meta property="og:description" content="1985年成立，秉承團結鄉親、服務鄉親、造福鄉親宗旨，致力傳承龍山文化，促進家鄉發展。">
+    <meta property="og:description" content="1985年成立，秉承「團結鄉親、服務鄉親、造福鄉親」宗旨，聯繫全球龍山鄉親，傳承非遺花炮文化。">
     <meta property="og:image" content="https://longshan.xin/pict/banner1.jpg">
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="僑港順德龍山同鄉會 | 官方網站">
-    <meta name="twitter:description" content="1985年成立，秉承團結鄉親、服務鄉親、造福鄉親宗旨，致力傳承龍山文化，促進家鄉發展。">
+    <meta name="twitter:description" content="1985年成立，秉承「團結鄉親、服務鄉親、造福鄉親」宗旨，聯繫全球龍山鄉親，傳承非遺花炮文化。">
     <meta name="twitter:image" content="https://longshan.xin/pict/banner1.jpg">
+    <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="pict/icon.jpg">
     <link rel="apple-touch-icon" href="pict/icon.jpg">
     <script src="https://cdn.tailwindcss.com/3.3.3"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-        body{font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;background-color:#F5F5F5;color:#333}
-        .text-primary{color:#C8102E}
-        .bg-primary{background-color:#C8102E}
-        .text-secondary{color:#DAA520}
-        .bg-secondary{background-color:#DAA520}
-        section[id]{scroll-margin-top:80px}
-        img[loading=lazy]{opacity:0;transition:opacity .3s}
-        img[loading=lazy].loaded{opacity:1}
-        .hero-slide{height:500px;background-size:cover;background-position:center;transition:background-image 1s ease-in-out}
-        .hero-text{opacity:1;transition:opacity .5s}
-        .hero-text.fade-out{opacity:0;transition:opacity .1s}
-        .indicator{width:10px;height:10px;background-color:rgba(255,255,255,.5);border-radius:50%;cursor:pointer;transition:background-color .3s,width .3s,border-radius .3s}
-        .indicator.active{background-color:#DAA520;width:30px;border-radius:5px}
-        .card-hover{transition:all .3s}
-        .card-hover:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,.1);cursor:pointer}
-        .gallery-item{height:200px;background-size:cover;background-position:center}
-        .mobile-menu{max-height:0;overflow:hidden;transition:max-height .3s}
-        .mobile-menu.active{max-height:500px}
-        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.8);display:none;justify-content:center;align-items:center;z-index:1000;opacity:0;transition:opacity .3s}
-        .modal-content{background:#fff;color:#333;padding:2rem;border-radius:8px;max-width:90%;width:700px;max-height:90vh;overflow-y:auto;padding-bottom:3rem;position:relative;transform:scale(.95) translateY(20px);transition:transform .3s,opacity .3s;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-        .modal-overlay.active{display:flex;opacity:1}
-        .modal-overlay.active .modal-content{transform:scale(1) translateY(0)}
-        #modal-gallery img{width:100%;height:auto;object-fit:cover}
-        .image-error{background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;min-height:200px}
-        @media(max-width:640px){.hero-slide{height:280px!important}#hero-title{font-size:1.75rem!important}#hero-subtitle{font-size:.95rem!important}header h1{font-size:1rem!important}h2.text-3xl{font-size:1.5rem!important}h3.text-2xl{font-size:1.2rem!important}.news-card h3{font-size:1rem!important}.news-card p{font-size:.8rem!important}.president-section{padding:1rem!important}#membership .flex-wrap>div{min-width:100%!important;margin-bottom:.75rem}#contact .text-xl{font-size:1rem!important}.contact-btn{font-size:.85rem!important;padding:.6rem 1rem!important}footer .text-sm{font-size:.75rem!important}}
-        @media(max-width:480px){#gallery .grid{grid-template-columns:repeat(2,1fr)!important;gap:.5rem!important}.gallery-item{height:120px!important}}
-        #modal-more-photos a{transition:all .3s}
-        #modal-more-photos a:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,16,46,.3)}
-        @media(max-width:480px){#modal-more-photos a{width:100%;justify-content:center;padding:.75rem 1rem}}
-        @media(max-width:480px){body{font-size:14px;line-height:1.6}h1{font-size:1.5rem!important}h2{font-size:1.25rem!important}h3{font-size:1.1rem!important}p{font-size:.9rem!important}button,.btn{min-height:44px;min-width:44px}a{min-height:44px;display:inline-flex;align-items:center}}
-        @media(max-width:360px){body{font-size:13px}h1{font-size:1.3rem!important}}
+        
+        body {
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #F5F5F5;
+            color: #333333;
+        }
+        
+        .text-primary { color: #C8102E; }
+        .bg-primary { background-color: #C8102E; }
+        .text-secondary { color: #DAA520; }
+        .bg-secondary { background-color: #DAA520; }
+        
+        .hero-slide {
+            height: 500px;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1.0s ease-in-out;
+        }
+        
+        /* 文字淡入淡出效果 */
+        .hero-text {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .hero-text.fade-out {
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+        
+        /* 輪播指示器樣式 */
+        .indicator {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.5); /* 半透明白色 */
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s, width 0.3s, border-radius 0.3s;
+        }
+        .indicator.active {
+            background-color: #DAA520; /* 活躍時變成金色 */
+            width: 30px; /* 變長 */
+            border-radius: 5px; /* 變成橫槓 */
+        }
+
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            cursor: pointer; /* 增加手型指標 */
+        }
+        
+        .gallery-item {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .mobile-menu.active { max-height: 500px; }
+
+        /* --- 活動詳情彈窗樣式 (優化內部滾動) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none; /* 預設隱藏 */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            background-color: white;
+            color: #333;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 90%;
+            width: 700px; /* 彈窗的最大寬度 */
+            
+            /* 【關鍵優化點】：限制高度為視窗的 90%，並允許內部滾動 */
+            max-height: 90vh; 
+            overflow-y: auto; 
+            
+            padding-bottom: 3rem; 
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+        
+        /* 確保圖片在彈窗內能佔滿寬度 */
+        #modal-gallery img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* ── 手機端微調 ── */
+        @media (max-width: 640px) {
+            /* Hero 文字 */
+            .hero-slide { height: 280px !important; }
+            #hero-title { font-size: 1.75rem !important; }
+            #hero-subtitle { font-size: 0.95rem !important; }
+            /* 頂部 Logo 文字 */
+            header h1 { font-size: 1rem !important; }
+            /* 區塊標題 */
+            h2.text-3xl { font-size: 1.5rem !important; }
+            h3.text-2xl { font-size: 1.2rem !important; }
+            /* 動態卡片 */
+            .news-card h3 { font-size: 1rem !important; }
+            .news-card p  { font-size: 0.8rem !important; }
+            /* 會長區 */
+            .president-section { padding: 1rem !important; }
+            /* 入會流程卡片 */
+            #membership .flex-wrap > div { min-width: 100% !important; margin-bottom: 0.75rem; }
+            /* 聯絡資訊 */
+            #contact .text-xl { font-size: 1rem !important; }
+            /* 聯絡按鈕 */
+            .contact-btn { font-size: 0.85rem !important; padding: 0.6rem 1rem !important; }
+            /* 底部版權 */
+            footer .text-sm { font-size: 0.75rem !important; }
+        }
+
+        /* 相册網格：手機上每行顯示 2 張 */
+        @media (max-width: 480px) {
+            #gallery .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.5rem !important; }
+            .gallery-item { height: 120px !important; }
+        }
+
+        /* 「更多照片」按鈕樣式 */
+        #modal-more-photos a {
+            transition: all 0.3s ease;
+        }
+        #modal-more-photos a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 16, 46, 0.3);
+        }
+        #modal-more-photos a:active {
+            transform: translateY(0);
+        }
+        /* 手機端按鈕自適應 */
+        @media (max-width: 480px) {
+            #modal-more-photos a {
+                width: 100%;
+                justify-content: center;
+                padding: 0.75rem 1rem;
+            }
+        }
     </style>
-    <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Organization","name":"僑港順德龍山同鄉會","url":"https://longshan.xin","description":"僑港順德龍山同鄉會成立於1985年，秉承團結鄉親、服務鄉親、造福鄉親宗旨，致力傳承龍山文化，促進家鄉發展。"}
-    </script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="bg-white shadow-md fixed top-0 left-0 w-full z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center space-x-4">
-                    <img src="pict/icon.jpg" alt="會徽" class="h-12 w-12 rounded-full" loading="lazy" onload="this.classList.add('loaded')">
-                    <h1 class="text-xl font-bold text-primary">僑港順德龍山同鄉會</h1>
+    <header class="bg-primary text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <div id="logo-container" class="w-12 h-12 rounded-full bg-white flex items-center justify-center mr-3 overflow-hidden">
+                    <i class="fas fa-landmark text-primary text-xl"></i>
                 </div>
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="#home" class="text-gray-700 hover:text-primary transition">首頁</a>
-                    <a href="#about" class="text-gray-700 hover:text-primary transition">關於本會</a>
-                    <a href="#news" class="text-gray-700 hover:text-primary transition">本會動態</a>
-                    <a href="#gallery" class="text-gray-700 hover:text-primary transition">龍山風采</a>
-                    <a href="#membership" class="text-gray-700 hover:text-primary transition">入會專區</a>
-                    <a href="#contact" class="text-gray-700 hover:text-primary transition">聯繫我們</a>
-                </nav>
-                <button id="mobile-menu-button" class="md:hidden text-primary text-2xl"><i class="fas fa-bars"></i></button>
+                <h1 class="text-xl font-bold">順德龍山同鄉會</h1>
             </div>
-            <div id="mobile-menu" class="mobile-menu md:hidden">
-                <nav class="flex flex-col space-y-4 py-4">
-                    <a href="#home" class="text-gray-700 hover:text-primary transition">首頁</a>
-                    <a href="#about" class="text-gray-700 hover:text-primary transition">關於本會</a>
-                    <a href="#news" class="text-gray-700 hover:text-primary transition">本會動態</a>
-                    <a href="#gallery" class="text-gray-700 hover:text-primary transition">龍山風采</a>
-                    <a href="#membership" class="text-gray-700 hover:text-primary transition">入會專區</a>
-                    <a href="#contact" class="text-gray-700 hover:text-primary transition">聯繫我們</a>
-                </nav>
+            
+            <nav class="hidden md:flex space-x-6">
+                <a href="#home" class="hover:text-secondary">首頁</a>
+                <a href="#about" class="hover:text-secondary">關於本會</a>
+                <a href="#news" class="hover:text-secondary">本會動態</a>
+                <a href="#membership" class="hover:text-secondary">會員專區</a>
+                <a href="#gallery" class="hover:text-secondary">龍山風采</a>
+                <a href="#contact" class="hover:text-secondary">聯繫我們</a>
+            </nav>
+            
+            <button id="mobileMenuButton" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <div id="mobileMenu" class="mobile-menu bg-primary md:hidden">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#home" class="hover:text-secondary py-2">首頁</a>
+                <a href="#about" class="hover:text-secondary py-2">關於本會</a>
+                <a href="#news" class="hover:text-secondary py-2">本會動態</a>
+                <a href="#membership" class="hover:text-secondary py-2">會員專區</a>
+                <a href="#gallery" class="hover:text-secondary py-2">龍山風采</a>
+                <a href="#contact" class="hover:text-secondary py-2">聯繫我們</a>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-slide pt-20 flex items-center justify-center" style="background-image:url('pict/banner1.jpg')">
-        <div class="text-center text-white hero-text" id="hero-text">
-            <h2 id="hero-title" class="text-4xl md:text-5xl font-bold mb-4">僑港順德龍山同鄉會</h2>
-            <p id="hero-subtitle" class="text-xl md:text-2xl">團結鄉親 · 傳承文化 · 服務社群</p>
+    <section id="home" class="relative">
+        <div id="hero-slide" class="hero-slide">
+            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div id="hero-text-container" class="text-center text-white px-4 hero-text">
+                    <h2 id="hero-title" class="text-4xl md:text-5xl font-bold mb-4"></h2>
+                    <p id="hero-subtitle" class="text-xl"></p>
+                </div>
+            </div>
         </div>
-        <div id="hero-indicators" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2"></div>
+        <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-3" id="hero-indicators"></div>
     </section>
 
-    <!-- President's Message -->
-    <section id="president" class="py-16 bg-white">
+    <section class="bg-white py-12 president-section">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-primary mb-8 text-center">會長獻辭</h2>
-            <div class="flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
-                <img id="president-photo" src="pict/president.jpg" alt="何文熙會長" class="w-48 h-48 rounded-full shadow-lg object-cover" loading="lazy" onload="this.classList.add('loaded')">
-                <div id="president-text" class="flex-1 text-gray-700 leading-relaxed"></div>
+            
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/3 mb-6 md:mb-0">
+                    <img id="president-photo" src="" alt="會長照片" class="rounded-lg shadow-lg w-full">
+                </div>
+                
+                <div class="md:w-2/3 md:pl-8">
+                    <h3 class="text-2xl font-semibold text-primary mb-4">尊敬的各位鄉親：</h3>
+                    <div id="president-text"></div>
+                    <p id="president-sign" class="text-primary mt-6"></p> </div>
+                </div>
             </div>
-            <div id="president-sign" class="text-right mt-6 text-primary"></div>
         </div>
     </section>
 
-    <!-- News Section -->
     <section id="news" class="py-12 bg-gray-50">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-primary mb-8 text-center">本會動態</h2>
@@ -122,42 +267,43 @@
         </div>
     </section>
 
-    <!-- Gallery Section -->
     <section id="gallery" class="py-12 bg-white">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-primary mb-8 text-center">龍山風采</h2>
-            <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+            <div class="text-center mt-8">
+                <a href="#" class="inline-block bg-primary text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition">瀏覽更多風采</a>
+            </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-16 bg-gray-50">
+    <section id="about" class="py-12 bg-gray-50">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-primary mb-8 text-center">關於本會</h2>
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h3 class="text-2xl font-semibold text-primary mb-4">本會簡介</h3>
-                    <p class="text-gray-700 leading-relaxed mb-4">順德龍山同鄉會成立於 1985 年，由龍山本地及在外發展鄉親自發組建，以凝聚鄉誼、傳承文化為己任，歷經近 40 載薪火相傳，紮根香港成長為具有廣泛影響力的僑港社團。</p>
-                    <p class="text-gray-700 leading-relaxed mb-4">本會始終以「團結鄉親、服務鄉親、造福鄉親」為核心使命；一方面積極傳承龍山本地的傳統飲食習俗、人文掌故、非遺風情等在地文化，另一方面也緊貼時代積極投身香港本地的社區建設，常年組織各類慈善公益、醫療義診、文化活動。</p>
-                    <p class="text-gray-700 leading-relaxed">如今，本會以散居各地的龍山鄉親為基礎搭建緊密的交流互助平臺，定期發布家鄉資訊與活動資訊、組織節慶互動與議題分享，讓鄉親不論身在何處，都能常感「家在龍山」的溫暖歸屬。</p>
+                       <p class="text-gray-700 mb-4 leading-relaxed">順德龍山同鄉會始創於 1985 年，是由龍山當地及在外發展的鄉親們自發牽頭組建的非營利性社會團體。從最初幾十位鄉親的小聚會起步，經過近 40 載的細心經營與情感凝聚，如今已逐漸成長為聯繫各地龍山鄉親、牽繫桑梓情懷的溫暖紐帶。</p>
+                       <p class="text-gray-700 mb-4 leading-relaxed">本會始終以 “團結鄉親、服務鄉親、造福鄉親” 為核心宗旨：一方面致力於挖掘與傳承龍山當地的傳統民俗、美食技藝、人文故事等特色文化，讓鄉親們時刻銘記故土根脈；另一方面也積極關注家鄉的建設與發展動態，時常組織鄉親們參與家鄉公益項目，為家鄉的點滴進步添力。</p>
+                       <p class="text-gray-700 leading-relaxed">同時，我們也為散居各地的龍山鄉親搭建起親密的交流平台 —— 無論是節日裡的鄉情聯誼宴、閒時的文化體驗活動，還是日常的互助幫扶資訊分享，都讓鄉親們即便相隔遠近，也能時常感受到來自 “龍山家人” 的牽掛與溫暖。</p>
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-8">
-                    <h3 class="text-2xl font-semibold text-primary mb-6">組織架構</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="text-center">
-                            <div class="w-24 h-24 rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mx-auto mb-4">1</div>
-                            <h4 class="text-xl font-semibold text-gray-800 mb-2">會長</h4>
-                            <p class="text-gray-600">何文熙</p>
+                <div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-semibold text-primary mb-4">組織架構</h3>
+                        <div class="mb-4">
+                            <h4 class="text-lg font-medium text-primary mb-2">理事會</h4>
+                            <p class="text-gray-600">會長：胡國光</p>
+                            <p class="text-gray-600">副會長：左倩武、賴寶捷、左擴源、陳偉文、何志偉</p>
+                            <p class="text-gray-600">名譽會長：陳志祥、童紹洪、周偉成、陳偉恒、周永盛、鄧志良、陳志、譚學忠、黎智寧、</p>
+                            <p class="text-gray-600">黎經偉、周友華、黎偉明、梅衍輝、賴榮光、朱志華、盧惠卿、左惠卿</p>
                         </div>
-                        <div class="text-center">
-                            <div class="w-24 h-24 rounded-full bg-secondary text-white flex items-center justify-center text-3xl font-bold mx-auto mb-4">2</div>
-                            <h4 class="text-xl font-semibold text-gray-800 mb-2">副會長</h4>
-                            <p class="text-gray-600">若干名</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-24 h-24 rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mx-auto mb-4">3</div>
-                            <h4 class="text-xl font-semibold text-gray-800 mb-2">理事會</h4>
-                            <p class="text-gray-600">15名理事</p>
+                        <div class="mb-4">
+                            <h4 class="text-lg font-medium text-primary mb-2">監事會</h4>
+                            <p class="text-gray-600">會務顧問：左匯雄</p>
+                            <p class="text-gray-600">理事長：鄧錦慶、黎衍強</p>
+                            <p class="text-gray-600">監事長：周廣琰</p>
                         </div>
                     </div>
                 </div>
@@ -165,446 +311,405 @@
         </div>
     </section>
 
-    <!-- Membership Section -->
-    <section id="membership" class="py-16 bg-white">
+    <section id="membership" class="py-12 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-primary mb-8 text-center">入會專區</h2>
-            <div class="max-w-3xl mx-auto">
-                <div class="bg-gray-50 rounded-lg p-8 shadow-md">
-                    <h3 class="text-2xl font-semibold text-primary mb-6">加入我們</h3>
-                    <p class="text-gray-700 mb-6">歡迎龍山鄉親加入我們的大家庭！請下載入會申請表，填寫後提交至本會辦事處。</p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="path/to/application_form.pdf" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition font-medium shadow-md">
-                            <i class="fas fa-download"></i> 下載入會申請表
-                        </a>
-                        <a href="#contact" class="inline-flex items-center gap-2 bg-secondary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition font-medium shadow-md">
-                            <i class="fas fa-phone"></i> 聯繫我們
-                        </a>
-                    </div>
-                    <div class="mt-8 pt-6 border-t border-gray-300">
-                        <h4 class="text-xl font-semibold text-gray-800 mb-4">入會資格</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-2">
-                            <li>年滿 18 歲</li>
-                            <li>認同本會宗旨</li>
-                            <li>龍山籍貫或與龍山有淵源</li>
-                            <li>願意履行會員義務</li>
-                        </ul>
+            <h2 class="text-3xl font-bold text-primary mb-8 text-center">會員專區</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-primary mb-4">入會指南</h3>
+                    <p class="text-gray-700 mb-4">歡迎符合以下條件的鄉親加入本會：</p>
+                    <ul class="list-disc pl-5 text-gray-700 mb-4 space-y-2">
+                        <li>年滿18周歲</li>
+                        <li>本人或直系親屬為龍山籍</li>
+                        <li>認同本會章程</li>
+                    </ul>
+                    <p class="text-gray-700 mb-4">入會流程：</p>
+                    <ol class="list-decimal pl-5 text-gray-700 mb-6 space-y-2">
+                        <li>填寫入會申請表</li>
+                        <li>繳納會費</li>
+                        <li>理事會審核通過</li>
+                    </ol>
+                    <a href="https://longshan.xin/rh/" target="_blank" class="inline-block bg-primary text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition">下載申請表格</a>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-primary mb-4">會員福利</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3"><i class="fas fa-ticket-alt"></i></div>
+                            <div><h4 class="font-medium text-gray-800">活動優先參與權</h4><p class="text-gray-600 text-sm">可優先報名參加同鄉會舉辦的各類文化、聯誼活動</p></div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3"><i class="fas fa-percent"></i></div>
+                            <div><h4 class="font-medium text-gray-800">商業折扣</h4><p class="text-gray-600 text-sm">享受會員企業提供的專屬折扣和優惠</p></div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3"><i class="fas fa-gavel"></i></div>
+                            <div><h4 class="font-medium text-gray-800">法律諮詢服務</h4><p class="text-gray-600 text-sm">免費享受專業法律顧問提供的基礎法律諮詢</p></div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3"><i class="fas fa-book"></i></div>
+                            <div><h4 class="font-medium text-gray-800">文化資源</h4><p class="text-gray-600 text-sm">免費獲取龍山文化研究資料和出版物</p></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 bg-gray-50">
+    <section id="contact" class="py-12 bg-primary text-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-primary mb-8 text-center">聯繫我們</h2>
-            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-lg shadow-md p-8">
-                    <h3 class="text-2xl font-semibold text-primary mb-6">聯繫資訊</h3>
-                    <div id="contact-info-list" class="space-y-4"></div>
-                    <div class="mt-8">
-                        <img id="contact-qrcode" src="pict/qrcode.png" alt="微信二維碼" class="w-32 h-32 mx-auto">
-                        <p class="text-center text-gray-600 mt-2">掃碼添加微信</p>
-                    </div>
+            <h2 class="text-3xl font-bold mb-8 text-center">聯繫我們</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">聯繫資訊</h3>
+                    <div class="space-y-3" id="contact-info-list"></div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-8">
-                    <h3 class="text-2xl font-semibold text-primary mb-6">留言給我們</h3>
-                    <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-                        <div class="mb-4">
-                            <label for="name" class="block text-gray-700 mb-2">姓名</label>
-                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="phone" class="block text-gray-700 mb-2">電話</label>
-                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="message" class="block text-gray-700 mb-2">留言</label>
-                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" required></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-primary text-white py-3 rounded-md hover:bg-opacity-90 transition font-medium">提交留言</button>
-                        <p id="form-status" class="mt-4 text-center"></p>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">入會申請表</h3>
+                    <div class="bg-white p-4 rounded-lg inline-block">
+                        <img id="contact-qrcode" src="" alt="微信公眾號" class="w-32 h-32">
+                    </div>
+                    <p class="mt-3">掃描二維碼加入我們</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">在線留言</h3>
+                    <form>
+                        <div class="mb-4"><input type="text" placeholder="您的姓名" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
+                        <div class="mb-4"><input type="email" placeholder="電子郵箱" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
+                        <div class="mb-4"><input type="tel" placeholder="電話號碼" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></div>
+                        <div class="mb-4"><textarea placeholder="您的留言" rows="3" class="w-full px-4 py-2 rounded-md bg-white bg-opacity-20 border border-white border-opacity-30 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-secondary"></textarea></div>
+                        <button type="submit" class="bg-secondary text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition contact-btn">提交留言</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-sm mb-2">© <span id="copyright-year"></span> <span id="footer-name"></span>. All rights reserved.</p>
-            <p class="text-sm">網站設計：僑港順德龍山同鄉會</p>
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p>© <span id="copyright-year"></span> <span id="footer-name"></span> 版權所有</p>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- News Modal -->
     <div id="newsModalOverlay" class="modal-overlay">
         <div id="newsModalContent" class="modal-content">
             <button id="closeModalButton" class="absolute top-4 right-4 text-gray-500 hover:text-primary transition" aria-label="Close">
                 <i class="fas fa-times text-2xl"></i>
             </button>
+
             <h2 id="modal-title" class="text-3xl font-bold text-primary mb-2"></h2>
             <div class="flex items-center space-x-2 text-secondary text-sm mb-4">
                 <i class="far fa-calendar-alt"></i>
                 <span id="modal-date"></span>
             </div>
+            
             <p id="modal-summary" class="text-gray-700 mb-6 border-b pb-4 italic"></p>
+            
             <h3 class="text-xl font-semibold text-primary mb-3">活動詳情</h3>
             <p id="modal-content" class="text-gray-700 mb-6 leading-relaxed whitespace-pre-wrap"></p>
-            <h3 class="text-xl font-semibold text-primary mb-3">活動相片</h3>
+
+            <h3 class="text-xl font-semibold text-primary mb-3">活動照片</h3>
+
             <div id="modal-gallery" class="grid gap-4"></div>
+
             <div id="modal-more-photos" class="mt-4 text-center"></div>
         </div>
     </div>
-
-    <!-- Back to Top Button -->
-    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"
-      style="display:none;position:fixed;bottom:100px;right:24px;z-index:40;
-             width:56px;height:56px;
-             background:linear-gradient(135deg,#C8102E,#E8304A);
-             color:white;border:none;border-radius:50%;
-             box-shadow:0 4px 12px rgba(200,16,46,.4);
-             cursor:pointer;font-size:20px;transition:all .3s;
-             opacity:0;transform:translateY(20px)"
-      onmouseover="this.style.transform='translateY(0) scale(1.1)';this.style.boxShadow='0 6px 20px rgba(200,16,46,.5)'"
-      onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 4px 12px rgba(200,16,46,.4)'">
-      <i class="fas fa-chevron-up"></i>
-    </button>
-
-    <!-- Scripts -->
     <script src="data.js"></script>
     <script>
-        // Wait for data.js to load
-        window.addEventListener('DOMContentLoaded', function() {
-            if (typeof siteData === 'undefined') {
-                console.error('siteData is not loaded! Check data.js');
-                return;
-            }
+        
+        // --- 0. 全局變量 ---
+        const hero = document.getElementById('hero-slide');
+        const heroTextContainer = document.getElementById('hero-text-container');
+        const heroTitle = document.getElementById('hero-title');
+        const heroSubtitle = document.getElementById('hero-subtitle');
+        const indicatorContainer = document.getElementById('hero-indicators');
+        const slides = siteData.hero.slides;
+        let currentSlide = 0;
+        let slideInterval;
+        const intervalTime = 5200; 
+        
+        // --- 活動彈窗相關變量 ---
+        const newsModalOverlay = document.getElementById('newsModalOverlay');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDate = document.getElementById('modal-date');
+        const modalSummary = document.getElementById('modal-summary'); 
+        const modalContent = document.getElementById('modal-content');
+        const modalGallery = document.getElementById('modal-gallery');
 
-            // Initialize hero slides
-            if (siteData.heroImages && siteData.heroImages.length > 0) {
-                let currentSlide = 0;
-                const heroSlide = document.querySelector('.hero-slide');
-                const heroTitle = document.getElementById('hero-title');
-                const heroSubtitle = document.getElementById('hero-subtitle');
-                const heroIndicators = document.getElementById('hero-indicators');
-                
-                // Create indicators
-                siteData.heroImages.forEach((img, index) => {
-                    const indicator = document.createElement('div');
-                    indicator.className = 'indicator' + (index === 0 ? ' active' : '');
-                    indicator.onclick = () => switchSlide(index);
-                    heroIndicators.appendChild(indicator);
-                });
-                
-                function switchSlide(index) {
-                    if (index === currentSlide) return;
-                    
-                    const heroText = document.getElementById('hero-text');
-                    heroText.classList.add('fade-out');
-                    
-                    setTimeout(() => {
-                        currentSlide = index;
-                        heroSlide.style.backgroundImage = `url('${siteData.heroImages[index]}')`;
-                        heroText.classList.remove('fade-out');
-                    }, 100);
-                    
-                    // Update indicators
-                    document.querySelectorAll('.indicator').forEach((ind, i) => {
-                        ind.classList.toggle('active', i === index);
-                    });
-                }
-                
-                // Auto switch slides
-                setInterval(() => {
-                    const next = (currentSlide + 1) % siteData.heroImages.length;
-                    switchSlide(next);
-                }, 5000);
-            }
 
-            // Initialize president section
-            if (siteData.president) {
-                const presidentPhoto = document.getElementById('president-photo');
-                if (presidentPhoto && siteData.president.photo) {
-                    presidentPhoto.src = siteData.president.photo;
-                }
-                
-                const presidentSign = document.getElementById('president-sign');
-                if (presidentSign && siteData.president.name) {
-                    presidentSign.innerHTML = `<span>${siteData.president.name}</span><br><span class="font-semibold text-xl">${siteData.president.title}</span>`;
-                }
-                
-                const presidentText = document.getElementById('president-text');
-                if (presidentText && siteData.president.message) {
-                    const paragraphs = siteData.president.message.split('\n\n');
-                    paragraphs.forEach(para => {
-                        if (para.trim()) {
-                            const p = document.createElement('p');
-                            p.className = 'mb-4 leading-relaxed';
-                            p.textContent = para;
-                            presidentText.appendChild(p);
-                        }
-                    });
-                }
-            }
+        // --- 核心函數：切換幻燈片 ---
+        function switchSlide(index) {
+            clearInterval(slideInterval);
+            currentSlide = index;
+            const currentData = slides[currentSlide];
+            heroTextContainer.classList.add('fade-out');
 
-            // Initialize news grid
-            if (siteData.news && Array.isArray(siteData.news)) {
-                const newsGrid = document.getElementById('news-grid');
-                if (newsGrid) {
-                    siteData.news.forEach(item => {
-                        const card = document.createElement('div');
-                        card.className = 'bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer news-card';
-                        card.setAttribute('onclick', `openNewsModal(${item.id})`);
-                        
-                        card.innerHTML = `
-                            <div class="h-48 bg-cover bg-center" style="background-image:url('${item.image}')"></div>
-                            <div class="p-6">
-                                <div class="text-secondary text-sm mb-2">${item.date}</div>
-                                <h3 class="text-xl font-semibold text-primary mb-3">${item.title}</h3>
-                                <p class="text-gray-600 mb-4 line-clamp-3">${item.summary}</p>
-                                <span class="text-primary font-medium hover:underline">查看詳情</span>
-                            </div>
-                        `;
-                        
-                        newsGrid.appendChild(card);
-                    });
-                }
-            }
-
-            // Initialize gallery
-            if (siteData.gallery && Array.isArray(siteData.gallery)) {
-                const galleryGrid = document.getElementById('gallery-grid');
-                if (galleryGrid) {
-                    siteData.gallery.forEach(item => {
-                        const div = document.createElement('div');
-                        div.className = 'gallery-item rounded-lg shadow-md';
-                        div.style.backgroundImage = `url('${item.image}')`;
-                        div.title = item.title || '';
-                        galleryGrid.appendChild(div);
-                    });
-                }
-            }
-
-            // Initialize contact info
-            if (siteData.contact) {
-                const contactList = document.getElementById('contact-info-list');
-                if (contactList) {
-                    const icons = {
-                        address: 'map-marker-alt',
-                        phone: 'phone-alt',
-                        fax: 'fax',
-                        email: 'envelope',
-                        hours: 'clock',
-                        wechat: 'weixin'
-                    };
-                    
-                    ['address', 'phone', 'fax', 'email', 'hours', 'wechat'].forEach(key => {
-                        if (siteData.contact[key]) {
-                            const div = document.createElement('div');
-                            div.className = 'flex items-start';
-                            div.innerHTML = `<i class="fas fa-${icons[key]} mt-1 mr-3 text-secondary"></i><p>${siteData.contact[key]}</p>`;
-                            contactList.appendChild(div);
-                        }
-                    });
-                }
-                
-                const qrCode = document.getElementById('contact-qrcode');
-                if (qrCode && siteData.contact.qrCode) {
-                    qrCode.src = siteData.contact.qrCode;
-                }
-            }
-
-            // Update footer
-            const copyrightYear = document.getElementById('copyright-year');
-            if (copyrightYear) {
-                copyrightYear.textContent = new Date().getFullYear();
-            }
+            setTimeout(() => {
+                hero.style.backgroundImage = `url('${currentData.image}')`;
+            }, 100);
             
-            const footerName = document.getElementById('footer-name');
-            if (footerName && siteData.basic && siteData.basic.name) {
-                footerName.textContent = siteData.basic.name;
-            }
-        });
+            setTimeout(() => {
+                heroTitle.innerText = currentData.title;
+                heroSubtitle.innerText = currentData.subtitle;
+                heroTextContainer.classList.remove('fade-out');
+                updateIndicators();
+            }, 300);
 
-        // News Modal Functions
+            slideInterval = setInterval(() => {
+                let nextSlide = (currentSlide + 1) % slides.length;
+                switchSlide(nextSlide);
+            }, intervalTime);
+        }
+
+        function updateIndicators() {
+            document.querySelectorAll('.indicator').forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function createIndicators() {
+            indicatorContainer.innerHTML = '';
+            slides.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'indicator';
+                dot.addEventListener('click', () => switchSlide(index)); 
+                indicatorContainer.appendChild(dot);
+            });
+        }
+
+        // --- 核心函數：活動彈窗邏輯 ---
+        
+        // 關閉彈窗
+        function closeNewsModal() {
+            newsModalOverlay.classList.remove('active');
+            // 恢復背景滾動
+            document.body.style.overflow = 'auto'; 
+        }
+
+        // 根據 ID 打開彈窗
         function openNewsModal(newsId) {
-            console.log('Opening news modal for ID:', newsId);
-            
-            if (typeof siteData === 'undefined' || !siteData.news) {
-                console.error('siteData.news not available');
-                return;
-            }
-            
             const item = siteData.news.find(n => n.id === newsId);
-            if (!item) {
-                console.error('News item not found:', newsId);
-                return;
-            }
+            if (!item) return;
+
+            // 1. 填充文字內容 (確保所有欄位都填充)
+            modalTitle.textContent = item.title;
+            modalDate.textContent = item.date;
+            modalSummary.textContent = item.summary;
+            modalContent.textContent = item.content; // 詳情內容
             
-            console.log('News item found:', item.title);
-            console.log('Detail images:', item.detailImages);
-            
-            document.getElementById('modal-title').textContent = item.title;
-            document.getElementById('modal-date').textContent = item.date;
-            document.getElementById('modal-summary').textContent = item.summary;
-            document.getElementById('modal-content').textContent = item.content;
-            
-            const modalGallery = document.getElementById('modal-gallery');
+            // 2. 填充圖片畫廊 (適配任意數量圖片)
             modalGallery.innerHTML = '';
-            modalGallery.className = 'grid gap-4 grid-cols-1 sm:grid-cols-2';
             
+            // 設置圖片佈局 (默認為 1 到 2 欄)
+            modalGallery.className = `grid gap-4 grid-cols-1 sm:grid-cols-2`;
+
             if (item.detailImages && item.detailImages.length > 0) {
-                item.detailImages.forEach((imgUrl, index) => {
-                    console.log(`Loading image ${index + 1}: ${imgUrl}`);
-                    
+                item.detailImages.forEach(imgUrl => {
                     const img = document.createElement('img');
                     img.src = imgUrl;
-                    img.loading = 'lazy';
-                    img.alt = `${item.title} - 相片 ${index + 1}`;
+                    img.alt = item.title;
                     img.className = 'w-full h-auto rounded-lg shadow-md';
-                    
-                    // Error handling for images
-                    img.onerror = function() {
-                        console.error('Failed to load image:', imgUrl);
-                        this.parentNode.replaceChild(createErrorDiv(imgUrl), this);
-                    };
-                    
-                    img.onload = function() {
-                        console.log('Successfully loaded:', imgUrl);
-                        this.classList.add('loaded');
-                    };
-                    
                     modalGallery.appendChild(img);
                 });
-                
-                const morePhotosLink = document.getElementById('modal-more-photos');
-                if (morePhotosLink) {
-                    morePhotosLink.innerHTML = '<a href="https://longshan.xin/photos/" target="_blank" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition font-medium shadow-md"><i class="fas fa-images"></i>查看更多相片</a>';
-                }
+                // 添加「更多照片」按鈕
+                document.getElementById('modal-more-photos').innerHTML = `
+                    <a href="https://longshan.xin/photos/" target="_blank"
+                       class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition font-medium shadow-md">
+                        <i class="fas fa-images"></i>
+                        更多照片
+                    </a>
+                `;
             } else {
-                modalGallery.innerHTML = '<p class="text-gray-500 col-span-full text-center py-8">暫無此活動相片</p>';
-                const morePhotosLink = document.getElementById('modal-more-photos');
-                if (morePhotosLink) morePhotosLink.innerHTML = '';
+                 modalGallery.innerHTML = '<p class="text-gray-500">暫無相關活動照片。</p>';
+                 document.getElementById('modal-more-photos').innerHTML = '';
             }
+
+            // 3. 顯示彈窗
+            newsModalOverlay.classList.add('active');
+            // 阻止背景滾動
+            document.body.style.overflow = 'hidden'; 
+        }
+        
+        // --- 頁面初始化與渲染 ---
+
+        // 0. 渲染 Logo
+        if (siteData.basic.logo) {
+            const logoContainer = document.getElementById('logo-container');
+            logoContainer.innerHTML = `<img src="${siteData.basic.logo}" alt="Logo" class="w-full h-full object-cover">`;
+        }
+
+        // 1. 輪播初始化
+        createIndicators(); 
+        switchSlide(0);     
+
+        // 2. 渲染會長獻辭
+        document.getElementById('president-photo').src = siteData.president.photo;
+        
+        // --- 關鍵修改：分離姓名與職位，並應用新的 class ---
+        const presidentSignElement = document.getElementById('president-sign');
+        presidentSignElement.innerHTML = `<span class="${siteData.president.nameClass}">${siteData.president.name}</span><br><span class="font-semibold text-xl">${siteData.president.title}</span>`;
+        // --------------------------------------------------
+        
+        const presidentTextContainer = document.getElementById('president-text');
+        siteData.president.paragraphs.forEach(para => {
+// ... (餘下代碼)
+            const p = document.createElement('p');
+            p.className = 'text-gray-700 mb-4 leading-relaxed';
+            p.innerText = para;
+            presidentTextContainer.appendChild(p);
+        });
+
+        // 3. 渲染新聞動態 (點擊事件綁定)
+        const newsGrid = document.getElementById('news-grid');
+        siteData.news.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer news-card'; 
             
-            const overlay = document.getElementById('newsModalOverlay');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+            // 綁定點擊事件，點擊後打開彈窗
+            card.setAttribute('onclick', `openNewsModal(${item.id})`); 
 
-        function closeNewsModal() {
-            const overlay = document.getElementById('newsModalOverlay');
-            overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function createErrorDiv(imgUrl) {
-            const div = document.createElement('div');
-            div.className = 'image-error rounded-lg';
-            div.innerHTML = `
-                <div class="text-center p-4">
-                    <i class="fas fa-exclamation-triangle text-3xl mb-2"></i>
-                    <p>圖片載入失敗</p>
-                    <p class="text-sm mt-1">${imgUrl}</p>
+            card.innerHTML = `
+                <div class="h-48 bg-cover bg-center" style="background-image: url('${item.image}')"></div>
+                <div class="p-6">
+                    <div class="text-secondary text-sm mb-2">${item.date}</div>
+                    <h3 class="text-xl font-semibold text-primary mb-3">${item.title}</h3>
+                    <p class="text-gray-600 mb-4">${item.summary}</p>
+                    <span class="text-primary font-medium hover:underline">查看詳情 &rarr;</span>
                 </div>
             `;
-            return div;
-        }
-
-        // Event listeners for modal
-        document.addEventListener('DOMContentLoaded', function() {
-            const closeBtn = document.getElementById('closeModalButton');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', closeNewsModal);
-            }
-            
-            const overlay = document.getElementById('newsModalOverlay');
-            if (overlay) {
-                overlay.addEventListener('click', function(e) {
-                    if (e.target === overlay) {
-                        closeNewsModal();
-                    }
-                });
-            }
+            newsGrid.appendChild(card);
         });
 
-        // Mobile menu toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if (menuButton && mobileMenu) {
-                menuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('active');
-                    const icon = this.querySelector('i');
-                    if (icon) {
-                        icon.classList.toggle('fa-bars');
-                        icon.classList.toggle('fa-times');
-                    }
-                });
-            }
+        // 4. 渲染相冊
+        const galleryGrid = document.getElementById('gallery-grid');
+        siteData.gallery.forEach(imgUrl => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item rounded-lg';
+            item.style.backgroundImage = `url('${imgUrl}')`;
+            galleryGrid.appendChild(item);
         });
 
-        // Back to top button
+        // 5. 渲染聯繫方式列表
+        const contactList = document.getElementById('contact-info-list');
+        const contactIcons = {
+            address: 'map-marker-alt',
+            phone: 'phone-alt',
+            fax: 'fax',
+            email: 'envelope',
+            hours: 'clock'
+        };
+        const keys = ['address', 'phone', 'fax', 'email', 'hours'];
+        keys.forEach(key => {
+            if(siteData.contact[key]) {
+                const div = document.createElement('div');
+                div.className = 'flex items-start';
+                div.innerHTML = `
+                    <i class="fas fa-${contactIcons[key]} mt-1 mr-3 text-secondary"></i>
+                    <p>${siteData.contact[key]}</p>
+                `;
+                contactList.appendChild(div);
+            }
+        });
+        document.getElementById('contact-qrcode').src = siteData.contact.qrCode;
+
+        // 6. 渲染頁腳
+        document.getElementById('copyright-year').innerText = siteData.basic.copyrightYear;
+        document.getElementById('footer-name').innerText = siteData.basic.name;
+
+        // 7. 彈窗事件監聽器
+        closeModalButton.addEventListener('click', closeNewsModal);
+        // 點擊背景遮罩時關閉彈窗
+        newsModalOverlay.addEventListener('click', function(e) {
+            if (e.target === newsModalOverlay) {
+                closeNewsModal();
+            }
+        });
+        
+        // 8. 菜單和滾動邏輯
+        document.getElementById('mobileMenuButton').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    if (document.getElementById('mobileMenu').classList.contains('active')) {
+                        document.getElementById('mobileMenu').classList.remove('active');
+                        document.getElementById('mobileMenuButton').querySelector('i').classList.remove('fa-times');
+                        document.getElementById('mobileMenuButton').querySelector('i').classList.add('fa-bars');
+                    }
+                }
+            });
+        });
+        
         window.addEventListener('scroll', function() {
-            const btn = document.getElementById('backToTop');
-            if (!btn) return;
-            
-            if (window.scrollY > 400) {
-                btn.style.display = 'block';
-                setTimeout(function() {
-                    btn.style.opacity = '1';
-                    btn.style.transform = 'translateY(0)';
-                }, 10);
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('shadow-lg');
             } else {
-                btn.style.opacity = '0';
-                btn.style.transform = 'translateY(20px)';
-                setTimeout(function() {
-                    if (window.scrollY <= 400) btn.style.display = 'none';
-                }, 300);
-            }
-        });
-
-        // Contact form submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('contact-form');
-            if (form) {
-                form.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    const statusEl = document.getElementById('form-status');
-                    const submitBtn = form.querySelector('button[type="submit"]');
-                    
-                    statusEl.textContent = '提交中...';
-                    statusEl.style.color = '#FCD34D';
-                    submitBtn.disabled = true;
-                    
-                    try {
-                        const response = await fetch(form.action, {
-                            method: 'POST',
-                            body: new FormData(form),
-                            headers: { 'Accept': 'application/json' }
-                        });
-                        
-                        if (response.ok) {
-                            statusEl.textContent = '留言已成功提交！';
-                            statusEl.style.color = '#34D399';
-                            form.reset();
-                        } else {
-                            throw new Error('Submission failed');
-                        }
-                    } catch (error) {
-                        statusEl.textContent = '提交失敗，請致電 +852 2770 8156。';
-                        statusEl.style.color = '#F87171';
-                    } finally {
-                        submitBtn.disabled = false;
-                    }
-                });
+                header.classList.remove('shadow-lg');
             }
         });
     </script>
+
+    <!-- AI Chatbot -->
+    <style>
+      @media(max-width:480px){
+        #chatbot-panel{width:calc(100vw - 24px)!important;right:12px!important;bottom:80px!important;height:70vh!important;}
+      }
+    </style>
+
+    <div class="fixed bottom-6 right-6 z-50 cursor-pointer" onclick="toggleChat()">
+      <div class="bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        <i class="fas fa-comments text-lg" id="chat-btn-icon"></i>
+      </div>
+    </div>
+
+    <div id="chatbot-panel" class="fixed bottom-24 right-6 z-50 w-[380px] h-[520px] bg-white rounded-2xl shadow-2xl flex-col overflow-hidden" style="display:none;">
+      <div class="bg-primary text-white p-4 flex justify-between items-center flex-shrink-0">
+        <div>
+          <h3 class="font-bold text-base">龍山同鄉會 AI 客服</h3>
+          <p class="text-xs opacity-80">關於本同鄉會的問題都可以問我</p>
+        </div>
+        <button onclick="toggleChat()" class="text-white hover:text-secondary transition ml-2">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="chatbot-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+        <div style="display:flex;justify-content:flex-start;">
+          <div style="background:#fff;color:#333;border:1px solid #e5e7eb;border-radius:16px 16px 16px 4px;padding:10px 14px;max-width:80%;font-size:14px;line-height:1.6;">你好呀！我係龍仔 🐉，順德龍山同鄉會嘅AI小助手～入會、活動、聯絡等問題隨時問我啦！😊</div>
+        </div>
+      </div>
+      <div class="p-3 border-t bg-white flex-shrink-0">
+        <form id="chatbot-form" class="flex gap-2">
+          <input id="chatbot-input" type="text" placeholder="請輸入您的問題..." class="flex-1 px-4 py-2.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm" autocomplete="off">
+          <button type="submit" class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-90 transition flex-shrink-0">
+            <i class="fas fa-paper-plane text-sm"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="chatbot.js"></script>
 </body>
 </html>
+
